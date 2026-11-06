@@ -2,27 +2,28 @@
 
 @layer base {
   :root {
-    /* New palette: Black Stallion / Concealed Green / Iron River / Chain Link / Blood God / Thunder Mountain */
-    --bg-base:     #081919;
-    --bg-surface:  #223330;
-    --bg-elevated: #2a3a37;
-    --bg-hover:    #344340;
+    /* Project Caesar Palette: Pure Black #000000 / Burgundy #6D001A / Pure White #FFFFFF */
+    --bg-base:     #000000;
+    --bg-surface:  #0C0608;
+    --bg-elevated: #160B0F;
+    --bg-hover:    #221016;
 
-    --accent:      #CE1A1E;  /* Thunder Mountain - primary CTA */
-    --accent-dark: #65060E;  /* Blood God - hover / deep accent */
-    --accent-glow: rgba(206,26,30,0.18);
+    --accent:        #6D001A; /* Burgundy */
+    --accent-bright: #9E0D2A; /* Vibrant Ruby CTA */
+    --accent-dark:   #460010; /* Deep Burgundy */
+    --accent-glow:   rgba(109, 0, 26, 0.28);
 
-    --border-subtle:  rgba(131,127,120,0.18);
-    --border-default: rgba(131,127,120,0.32);
-    --border-strong:  rgba(131,127,120,0.55);
+    --border-subtle:  rgba(255, 255, 255, 0.10);
+    --border-default: rgba(109, 0, 26, 0.40);
+    --border-strong:  rgba(109, 0, 26, 0.70);
 
-    --text-primary:   #E8EBE4;
-    --text-secondary: #A8ADA6;
-    --text-muted:     #837F78;  /* Chain Link */
+    --text-primary:   #FFFFFF; /* Pure White */
+    --text-secondary: #E4E4E7; /* Silk White */
+    --text-muted:     #8E8E93; /* Muted Silver */
 
     --success: #2DD4BF;
     --warn:    #F5B544;
-    --danger:  #CE1A1E;
+    --danger:  #9E0D2A;
 
     --mono-font: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
   }
@@ -40,7 +41,7 @@
   }
 
   ::selection {
-    background-color: var(--accent-dark);
+    background-color: var(--accent);
     color: var(--text-primary);
   }
 }
@@ -59,42 +60,42 @@
 .border-subtle  { border-color: var(--border-subtle); }
 .border-default { border-color: var(--border-default); }
 
-/* ── Hero gradient mesh ────────────────────────────────────── */
+/* ── Hero gradient mesh: Black & Burgundy luxury glow ─────── */
 .hero-gradient-mesh {
-  background-color: var(--bg-base);
+  background-color: #000000;
   background-image:
-    radial-gradient(at 50% 0%,  rgba(206,26,30,0.14) 0px, transparent 55%),
-    radial-gradient(at 10% 20%, rgba(101,6,14,0.22)  0px, transparent 50%),
-    radial-gradient(at 90% 15%, rgba(206,26,30,0.08) 0px, transparent 42%),
-    radial-gradient(at 50% 50%, rgba(34,51,48,0.70)  0px, transparent 80%);
+    radial-gradient(at 50% 0%,  rgba(109, 0, 26, 0.32) 0px, transparent 60%),
+    radial-gradient(at 10% 25%, rgba(70, 0, 16, 0.40)  0px, transparent 55%),
+    radial-gradient(at 90% 20%, rgba(158, 13, 42, 0.20) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(12, 6, 8, 0.90)  0px, transparent 85%);
 }
 
 /* ── Card hover glow ──────────────────────────────────────── */
 .card-hover-glow {
-  transition: all 0.18s cubic-bezier(0.16,1,0.3,1);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .card-hover-glow:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 0 1px var(--accent), 0 8px 24px -4px rgba(206,26,30,0.14);
+  box-shadow: 0 0 0 1px #6D001A, 0 10px 30px -4px rgba(109, 0, 26, 0.35);
 }
 
 /* ── Glass panel ──────────────────────────────────────────── */
 .glass-panel {
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  background-color: rgba(34,51,48,0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background-color: rgba(12, 6, 8, 0.70);
   border: 1px solid var(--border-subtle);
 }
 
 /* ── Scrollbar ────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: var(--bg-base); }
-::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 9999px; }
-::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+::-webkit-scrollbar-track { background: #000000; }
+::-webkit-scrollbar-thumb { background: rgba(109, 0, 26, 0.6); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #9E0D2A; }
 
 /* ── Live pulse dot ───────────────────────────────────────── */
 @keyframes livepulse {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.5; transform: scale(0.85); }
+  50%       { opacity: 0.4; transform: scale(0.85); }
 }
-.live-dot { animation: livepulse 1.6s ease-in-out infinite; }
+.live-dot { animation: livepulse 1.8s ease-in-out infinite; }

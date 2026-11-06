@@ -20,7 +20,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body
         suppressHydrationWarning
-        className="antialiased min-h-screen flex flex-col bg-[#081919] text-[#E8EBE4] selection:bg-[#65060E] selection:text-[#E8EBE4] font-sans"
+        className="antialiased min-h-screen flex flex-col bg-[#000000] text-[#FFFFFF] selection:bg-[#6D001A] selection:text-[#FFFFFF] font-sans"
       >
         <Providers>
           <Navbar />

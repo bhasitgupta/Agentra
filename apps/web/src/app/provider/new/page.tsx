@@ -59,7 +59,7 @@ export default function NewServiceWizardPage() {
       {/* Back button */}
       <Link
         href="/provider/dashboard"
-        className="inline-flex items-center gap-1.5 text-xs font-mono text-[#A8ADA6] hover:text-[#E8EBE4] mb-6 transition-colors"
+        className="inline-flex items-center gap-1.5 text-xs font-mono text-[#D4D4D8] hover:text-[#FFFFFF] mb-6 transition-colors"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
         <span>Back to Provider Dashboard</span>
@@ -67,16 +67,16 @@ export default function NewServiceWizardPage() {
 
       {/* Title */}
       <div className="mb-8">
-        <h1 className="text-3xl font-extrabold text-[#E8EBE4] tracking-tight">
+        <h1 className="text-3xl font-extrabold text-[#FFFFFF] tracking-tight">
           List a New AI Service
         </h1>
-        <p className="text-sm text-[#A8ADA6] mt-1">
+        <p className="text-sm text-[#D4D4D8] mt-1">
           Register your endpoint on the Agentra Avalanche registry with x402 pay-on-success protection.
         </p>
       </div>
 
       {/* Stepper Progress */}
-      <div className="flex items-center justify-between mb-8 pb-4 border-b border-[rgba(131,127,120,0.22)]">
+      <div className="flex items-center justify-between mb-8 pb-4 border-b border-[rgba(255,255,255,0.10)]">
         {stepsHeader.map((s, idx) => {
           const isCurrent = step === s.num;
           const isCompleted = step > s.num;
@@ -86,17 +86,17 @@ export default function NewServiceWizardPage() {
                 <div
                   className={`w-7 h-7 rounded-full flex items-center justify-center font-mono text-xs font-bold transition-all ${
                     isCompleted
-                      ? 'bg-[#2DD4BF] text-[#081919]'
+                      ? 'bg-[#2DD4BF] text-[#000000]'
                       : isCurrent
-                      ? 'bg-[#CE1A1E] text-white shadow-md shadow-[#CE1A1E]/30'
-                      : 'bg-[#2a3a37] text-[#837F78] border border-[rgba(131,127,120,0.22)]'
+                      ? 'bg-[#6D001A] text-white shadow-md shadow-[#6D001A]/30'
+                      : 'bg-[#160B0F] text-[#8E8E93] border border-[rgba(255,255,255,0.10)]'
                   }`}
                 >
                   {isCompleted ? <Check className="w-4 h-4 stroke-[3]" /> : s.num}
                 </div>
                 <span
                   className={`text-xs font-medium uppercase tracking-wider hidden sm:inline ${
-                    isCurrent ? 'text-[#E8EBE4]' : 'text-[#837F78]'
+                    isCurrent ? 'text-[#FFFFFF]' : 'text-[#8E8E93]'
                   }`}
                 >
                   {s.title}
@@ -105,7 +105,7 @@ export default function NewServiceWizardPage() {
               {idx < stepsHeader.length - 1 && (
                 <div
                   className={`flex-1 h-0.5 mx-3 transition-colors ${
-                    step > idx + 1 ? 'bg-[#2DD4BF]' : 'bg-[rgba(131,127,120,0.22)]'
+                    step > idx + 1 ? 'bg-[#2DD4BF]' : 'bg-[rgba(255,255,255,0.10)]'
                   }`}
                 />
               )}
@@ -115,7 +115,7 @@ export default function NewServiceWizardPage() {
       </div>
 
       {/* Form Container */}
-      <div className="p-6 sm:p-8 rounded-2xl bg-[#223330] border border-[rgba(131,127,120,0.22)] relative">
+      <div className="p-6 sm:p-8 rounded-2xl bg-[#0C0608] border border-[rgba(255,255,255,0.10)] relative">
         <AnimatePresence mode="wait">
           {/* STEP 1: BASICS */}
           {step === 1 && (
@@ -128,8 +128,8 @@ export default function NewServiceWizardPage() {
               className="space-y-5"
             >
               <div>
-                <h2 className="text-lg font-bold text-[#E8EBE4]">Step 1: Service Basics</h2>
-                <p className="text-xs text-[#A8ADA6]">
+                <h2 className="text-lg font-bold text-[#FFFFFF]">Step 1: Service Basics</h2>
+                <p className="text-xs text-[#D4D4D8]">
                   Describe what your agent service does so autonomous shoppers can discover it.
                 </p>
               </div>
@@ -190,8 +190,8 @@ export default function NewServiceWizardPage() {
               className="space-y-5"
             >
               <div>
-                <h2 className="text-lg font-bold text-[#E8EBE4]">Step 2: Endpoint & Pricing</h2>
-                <p className="text-xs text-[#A8ADA6]">
+                <h2 className="text-lg font-bold text-[#FFFFFF]">Step 2: Endpoint & Pricing</h2>
+                <p className="text-xs text-[#D4D4D8]">
                   Configure your HTTPS endpoint and set your per-call settlement rate in USDC.
                 </p>
               </div>
@@ -219,9 +219,9 @@ export default function NewServiceWizardPage() {
               </div>
 
               {/* Price Slider */}
-              <div className="space-y-2 p-4 rounded-xl bg-[#2a3a37] border border-[rgba(131,127,120,0.22)]">
+              <div className="space-y-2 p-4 rounded-xl bg-[#160B0F] border border-[rgba(255,255,255,0.10)]">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-semibold text-[#E8EBE4] uppercase tracking-wider">
+                  <label className="text-xs font-semibold text-[#FFFFFF] uppercase tracking-wider">
                     Price Per Successful Call
                   </label>
                   <span className="font-mono text-base font-bold text-[#2DD4BF]">
@@ -235,13 +235,13 @@ export default function NewServiceWizardPage() {
                   step="0.001"
                   value={formData.price}
                   onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) })}
-                  className="w-full accent-[#CE1A1E] cursor-pointer"
+                  className="w-full accent-[#6D001A] cursor-pointer"
                 />
-                <div className="flex justify-between text-[10px] text-[#837F78] font-mono">
+                <div className="flex justify-between text-[10px] text-[#8E8E93] font-mono">
                   <span>0.001 USDC (Micropayment)</span>
                   <span>0.200 USDC</span>
                 </div>
-                <p className="text-[11px] text-[#A8ADA6] pt-1">
+                <p className="text-[11px] text-[#D4D4D8] pt-1">
                   Agentra deducts a 2.5% protocol escrow fee upon successful settlement.
                 </p>
               </div>
@@ -280,42 +280,42 @@ export default function NewServiceWizardPage() {
               className="space-y-6"
             >
               <div>
-                <h2 className="text-lg font-bold text-[#E8EBE4]">Step 3: Review & Publish</h2>
-                <p className="text-xs text-[#A8ADA6]">
+                <h2 className="text-lg font-bold text-[#FFFFFF]">Step 3: Review & Publish</h2>
+                <p className="text-xs text-[#D4D4D8]">
                   Confirm listing parameters before submitting the on-chain registry transaction.
                 </p>
               </div>
 
-              <div className="p-5 rounded-xl bg-[#081919] border border-[rgba(131,127,120,0.22)] space-y-3 font-mono text-xs">
-                <div className="flex justify-between pb-2 border-b border-[rgba(131,127,120,0.22)]">
-                  <span className="text-[#837F78]">Service:</span>
-                  <span className="text-[#E8EBE4] font-sans font-bold">{formData.name || 'Untitled Service'}</span>
+              <div className="p-5 rounded-xl bg-[#000000] border border-[rgba(255,255,255,0.10)] space-y-3 font-mono text-xs">
+                <div className="flex justify-between pb-2 border-b border-[rgba(255,255,255,0.10)]">
+                  <span className="text-[#8E8E93]">Service:</span>
+                  <span className="text-[#FFFFFF] font-sans font-bold">{formData.name || 'Untitled Service'}</span>
                 </div>
-                <div className="flex justify-between pb-2 border-b border-[rgba(131,127,120,0.22)]">
-                  <span className="text-[#837F78]">Category:</span>
-                  <span className="text-[#CE1A1E] uppercase">{formData.category}</span>
+                <div className="flex justify-between pb-2 border-b border-[rgba(255,255,255,0.10)]">
+                  <span className="text-[#8E8E93]">Category:</span>
+                  <span className="text-[#6D001A] uppercase">{formData.category}</span>
                 </div>
-                <div className="flex justify-between pb-2 border-b border-[rgba(131,127,120,0.22)]">
-                  <span className="text-[#837F78]">Endpoint:</span>
-                  <span className="text-[#E8EBE4] truncate max-w-[200px]">{formData.endpoint}</span>
+                <div className="flex justify-between pb-2 border-b border-[rgba(255,255,255,0.10)]">
+                  <span className="text-[#8E8E93]">Endpoint:</span>
+                  <span className="text-[#FFFFFF] truncate max-w-[200px]">{formData.endpoint}</span>
                 </div>
-                <div className="flex justify-between pb-2 border-b border-[rgba(131,127,120,0.22)]">
-                  <span className="text-[#837F78]">Settlement Rate:</span>
+                <div className="flex justify-between pb-2 border-b border-[rgba(255,255,255,0.10)]">
+                  <span className="text-[#8E8E93]">Settlement Rate:</span>
                   <span className="text-[#2DD4BF] font-bold">{formatUSDC(formData.price)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#837F78]">Payout:</span>
-                  <span className="text-[#E8EBE4] truncate max-w-[200px]">{formData.payoutAddress}</span>
+                  <span className="text-[#8E8E93]">Payout:</span>
+                  <span className="text-[#FFFFFF] truncate max-w-[200px]">{formData.payoutAddress}</span>
                 </div>
               </div>
 
               {publishSuccess ? (
                 <div className="p-5 rounded-xl bg-[#2DD4BF]/10 border border-[#2DD4BF]/30 text-center space-y-3">
                   <CheckCircle2 className="w-8 h-8 text-[#2DD4BF] mx-auto" />
-                  <h3 className="text-base font-bold text-[#E8EBE4]">
+                  <h3 className="text-base font-bold text-[#FFFFFF]">
                     Service Successfully Registered On-Chain!
                   </h3>
-                  <p className="text-xs text-[#A8ADA6]">
+                  <p className="text-xs text-[#D4D4D8]">
                     Transaction confirmed on Avalanche. Your service is now discoverable in the Agentra marketplace.
                   </p>
                   <Button
@@ -349,4 +349,5 @@ export default function NewServiceWizardPage() {
     </div>
   );
 }
+
 

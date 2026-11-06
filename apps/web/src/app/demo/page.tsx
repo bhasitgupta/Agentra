@@ -155,20 +155,20 @@ export default function GuidedDemoPage() {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full space-y-8">
       {/* Header */}
       <div>
-        <div className="flex items-center gap-2 text-xs font-mono text-[#CE1A1E] uppercase tracking-wider mb-2">
+        <div className="flex items-center gap-2 text-xs font-mono text-[#6D001A] uppercase tracking-wider mb-2">
           <Sparkles className="w-3.5 h-3.5" />
           <span>Interactive Protocol Simulation</span>
         </div>
-        <h1 className="text-3xl font-extrabold text-[#E8EBE4] tracking-tight">
+        <h1 className="text-3xl font-extrabold text-[#FFFFFF] tracking-tight">
           Guided Protocol Demo
         </h1>
-        <p className="text-sm text-[#A8ADA6] mt-1 max-w-2xl">
+        <p className="text-sm text-[#D4D4D8] mt-1 max-w-2xl">
           Observe how autonomous agents discover endpoints, verify 402 HTTP challenges, sign EIP-712 vouchers, and settle on Avalanche with zero-charge guarantees.
         </p>
       </div>
 
       {/* Scenario Selector & Action Bar */}
-      <div className="p-4 rounded-2xl bg-[#223330] border border-[rgba(131,127,120,0.22)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="p-4 rounded-2xl bg-[#0C0608] border border-[rgba(255,255,255,0.10)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <button
             type="button"
@@ -178,8 +178,8 @@ export default function GuidedDemoPage() {
             }}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
               activeScenario === 'happy-path'
-                ? 'bg-[#CE1A1E] text-white shadow-sm'
-                : 'bg-[#2a3a37] text-[#A8ADA6] hover:text-[#E8EBE4]'
+                ? 'bg-[#6D001A] text-white shadow-sm'
+                : 'bg-[#160B0F] text-[#D4D4D8] hover:text-[#FFFFFF]'
             }`}
           >
             Scenario A: Successful Call & Settlement
@@ -193,7 +193,7 @@ export default function GuidedDemoPage() {
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
               activeScenario === 'failure-path'
                 ? 'bg-[#F87171] text-white shadow-sm'
-                : 'bg-[#2a3a37] text-[#A8ADA6] hover:text-[#E8EBE4]'
+                : 'bg-[#160B0F] text-[#D4D4D8] hover:text-[#FFFFFF]'
             }`}
           >
             Scenario B: Flaky Failure (Zero Charge)
@@ -240,9 +240,9 @@ export default function GuidedDemoPage() {
               className={`p-5 rounded-xl border transition-all ${
                 isReached
                   ? isCurrent
-                    ? 'bg-[#2a3a37] border-[#CE1A1E] shadow-lg shadow-[#CE1A1E]/15'
-                    : 'bg-[#223330] border-[rgba(131,127,120,0.35)]'
-                  : 'bg-[#081919] border-[rgba(131,127,120,0.22)]'
+                    ? 'bg-[#160B0F] border-[#6D001A] shadow-lg shadow-[#6D001A]/15'
+                    : 'bg-[#0C0608] border-[rgba(255,255,255,0.10)]'
+                  : 'bg-[#000000] border-[rgba(255,255,255,0.10)]'
               }`}
             >
               <div className="flex items-start justify-between gap-4 mb-2">
@@ -252,15 +252,15 @@ export default function GuidedDemoPage() {
                       isReached
                         ? activeScenario === 'failure-path' && idx >= 1
                           ? 'bg-[#F87171] text-white'
-                          : 'bg-[#2DD4BF] text-[#081919]'
-                        : 'bg-[#2a3a37] text-[#837F78] border border-[rgba(131,127,120,0.22)]'
+                          : 'bg-[#2DD4BF] text-[#000000]'
+                        : 'bg-[#160B0F] text-[#8E8E93] border border-[rgba(255,255,255,0.10)]'
                     }`}
                   >
                     {isReached ? <CheckCircle2 className="w-4 h-4" /> : step.stepNumber}
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-[#E8EBE4]">{step.title}</h3>
-                    <span className="text-xs text-[#A8ADA6]">{step.resultContent}</span>
+                    <h3 className="text-sm font-bold text-[#FFFFFF]">{step.title}</h3>
+                    <span className="text-xs text-[#D4D4D8]">{step.resultContent}</span>
                   </div>
                 </div>
 
@@ -273,8 +273,8 @@ export default function GuidedDemoPage() {
 
               {/* Terminal code snippet for step */}
               {isReached && (
-                <div className="mt-3 p-3 rounded-lg bg-[#081919] border border-[rgba(131,127,120,0.22)] font-mono text-xs text-[#CE1A1E] flex items-center gap-2">
-                  <Terminal className="w-3.5 h-3.5 text-[#837F78] shrink-0" />
+                <div className="mt-3 p-3 rounded-lg bg-[#000000] border border-[rgba(255,255,255,0.10)] font-mono text-xs text-[#6D001A] flex items-center gap-2">
+                  <Terminal className="w-3.5 h-3.5 text-[#8E8E93] shrink-0" />
                   <span className="truncate">{step.log}</span>
                 </div>
               )}
@@ -291,22 +291,22 @@ export default function GuidedDemoPage() {
           className={`p-6 rounded-2xl border text-center space-y-3 ${
             activeScenario === 'happy-path'
               ? 'bg-[#2DD4BF]/10 border-[#2DD4BF]/30'
-              : 'bg-[#CE1A1E]/10 border-[#CE1A1E]/30'
+              : 'bg-[#6D001A]/10 border-[#6D001A]/30'
           }`}
         >
-          <div className="inline-flex p-3 rounded-full bg-[#2a3a37] border border-[rgba(131,127,120,0.22)] mb-1">
+          <div className="inline-flex p-3 rounded-full bg-[#160B0F] border border-[rgba(255,255,255,0.10)] mb-1">
             {activeScenario === 'happy-path' ? (
               <ShieldCheck className="w-6 h-6 text-[#2DD4BF]" />
             ) : (
               <AlertTriangle className="w-6 h-6 text-[#F87171]" />
             )}
           </div>
-          <h3 className="text-lg font-bold text-[#E8EBE4]">
+          <h3 className="text-lg font-bold text-[#FFFFFF]">
             {activeScenario === 'happy-path'
               ? 'Protocol Lifecycle Successfully Simulated'
               : 'Zero-Charge Guarantee Proven'}
           </h3>
-          <p className="text-xs text-[#A8ADA6] max-w-lg mx-auto leading-relaxed">
+          <p className="text-xs text-[#D4D4D8] max-w-lg mx-auto leading-relaxed">
             {activeScenario === 'happy-path'
               ? 'Payment was settled in escrow, verified cryptographic receipts were emitted, and the reputation score updated in real time on Avalanche.'
               : 'The upstream service failed, but zero USDC was debited from the caller wallet. Proof of failure was logged to prevent future wasted calls.'}
@@ -316,4 +316,5 @@ export default function GuidedDemoPage() {
     </div>
   );
 }
+
 
