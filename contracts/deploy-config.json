@@ -1,0 +1,35 @@
+{
+  "network": "avalanche-fuji",
+  "chainId": 43113,
+  "rpcUrl": "https://api.avax-test.network/ext/bc/C/rpc",
+  "tokens": {
+    "USDC": "0x5425890298aed601595a70ab815c96711a31bc65"
+  },
+  "deployedContracts": {
+    "ProviderSplitter": "0x943Bc63D6c8DC18B1B234A6E8B8aF82cFc52adbf",
+    "ServiceRegistry": "0x9e7DedF695e2e165c74e9f6dA1ffA212eBCf66fd",
+    "TaskEscrow": "0x751D833aB39A4092fB05fA70968eCbb5674DCd3B"
+  },
+  "contracts": {
+    "TaskEscrow": {
+      "constructorArgs": {
+        "arbiter": "{{YOUR_DEPLOYER_ADDRESS}}",
+        "treasury": "{{YOUR_DEPLOYER_ADDRESS}}",
+        "feeBps": 250
+      },
+      "notes": "feeBps = 250 equals 2.5% protocol fee"
+    },
+    "ProviderSplitter": {
+      "constructorArgs": {
+        "treasury": "{{YOUR_DEPLOYER_ADDRESS}}",
+        "feeBps": 250
+      }
+    },
+    "ServiceRegistry": {
+      "constructorArgs": {
+        "reputationOracle": "{{YOUR_DEPLOYER_ADDRESS}}"
+      }
+    }
+  }
+}
+
