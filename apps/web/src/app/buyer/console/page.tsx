@@ -181,15 +181,9 @@ export default function BuyerConsolePage() {
                         {formatUSDC(rec.amountUSDC ?? 0.01)}
                       </td>
                       <td className="py-3 text-right">
-                        <a
-                          href={getSnowtraceUrl(rec.txHash)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-[#CE1A1E] hover:text-[#FFFFFF]"
-                        >
-                          <span>{truncateTx(rec.txHash, 3)}</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
+                        <span className="inline-flex items-center gap-1 font-mono text-xs text-[#837F78]">
+                          #{truncateTx(rec.txHash, 3)}
+                        </span>
                       </td>
                     </tr>
                   ))}

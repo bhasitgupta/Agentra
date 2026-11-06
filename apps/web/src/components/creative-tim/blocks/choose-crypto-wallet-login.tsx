@@ -211,15 +211,6 @@ export default function ChooseCryptoWalletLogin() {
                   >
                     {copied ? <Check className="w-3.5 h-3.5 text-[#2DD4BF]" /> : <Copy className="w-3.5 h-3.5" />}
                   </button>
-                  <a
-                    href={getSnowtraceAddressUrl(address)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1.5 rounded hover:bg-[#223330] text-[#E8EBE4] hover:text-[#FFFFFF]"
-                    title="View on Snowtrace"
-                  >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
                 </div>
               </div>
             </div>

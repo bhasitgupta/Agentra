@@ -16,7 +16,7 @@ export function WalletAddress({
   address,
   chars = 4,
   showCopy = true,
-  showLink = true,
+  showLink = false,
   className = '',
 }: WalletAddressProps) {
   const [copied, setCopied] = useState(false);

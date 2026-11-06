@@ -113,16 +113,13 @@ export function ActivityFeed({
                 {mounted ? formatTimeAgo(event.timestamp) : 'recently'}
               </span>
               {event.txHash && event.txHash !== '0x0000000000000000000000000000000000000000000000000000000000000000' && (
-                <a
-                  href={getSnowtraceUrl(event.txHash)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs text-[#CE1A1E] hover:text-[#FFFFFF] font-mono bg-[#081919] border border-[#4D524B]/40 hover:border-[#CE1A1E]/50 px-2 py-1 rounded transition-colors"
-                  title="View on Snowtrace (Avalanche)"
+                <span
+                  className="inline-flex items-center gap-1 text-xs text-[#CE1A1E] font-mono bg-[#081919] border border-[#4D524B]/40 px-2 py-1 rounded cursor-default"
+                  title="Verified Execution Receipt"
                 >
-                  <span>{truncateTx(event.txHash, 4)}</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
+                  <span>Receipt #{truncateTx(event.txHash, 3)}</span>
+                  <CheckCircle2 className="w-3 h-3 text-[#2DD4BF]" />
+                </span>
               )}
             </div>
           </motion.div>

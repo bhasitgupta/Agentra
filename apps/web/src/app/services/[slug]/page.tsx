@@ -367,15 +367,9 @@ print("Verified payload:", result.payload)`;
                       </div>
                       <div className="flex items-center gap-3 font-mono">
                         <span className="text-[#2DD4BF]">{formatUSDC(evt.amountUSDC ?? service.price)}</span>
-                        <a
-                          href={getSnowtraceUrl(evt.txHash)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[#6D001A] hover:text-[#FFFFFF] inline-flex items-center gap-1"
-                        >
-                          <span>{truncateTx(evt.txHash, 4)}</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
+                        <span className="text-[#837F78] inline-flex items-center gap-1 text-xs">
+                          #{truncateTx(evt.txHash, 3)}
+                        </span>
                       </div>
                     </div>
                   ))}
