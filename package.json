@@ -16,6 +16,9 @@
     "next": "15.0.3",
     "react": "19.0.0",
     "react-dom": "19.0.0"
+  },
+  "optionalDependencies": {
+    "lightningcss-linux-x64-gnu": "^1.33.0",
+    "lightningcss-linux-x64-musl": "^1.33.0"
   }
 }
-
