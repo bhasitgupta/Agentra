@@ -11,9 +11,10 @@ const nextConfig: NextConfig = {
       'wagmi',
       'three',
       'framer-motion',
+      'lucide-react',
     ],
   },
-  webpack: (config, { webpack }) => {
+  webpack: (config, { webpack, isServer }) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,
@@ -26,13 +27,18 @@ const nextConfig: NextConfig = {
       '@x402/evm': false,
       '@react-native-async-storage/async-storage': false,
     };
-    config.externals = config.externals || [];
-    config.externals.push('pino-pretty', 'lokijs', 'encoding');
+
+    if (isServer) {
+      config.externals = config.externals || [];
+      config.externals.push('pino-pretty', 'lokijs', 'encoding');
+    }
+
     config.plugins.push(
       new webpack.IgnorePlugin({
         resourceRegExp: /^@x402\//,
       })
     );
+
     return config;
   },
 };

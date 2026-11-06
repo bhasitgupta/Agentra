@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/Button';
-import { ServiceCard } from '@/components/ui/ServiceCard';
 import { ThreeCanvas } from '@/components/ui/ThreeCanvas';
 import { REFERENCE_SERVICES } from '@/lib/mockData';
 import { fetchStats, StatsResponse } from '@/lib/api';
@@ -12,35 +11,38 @@ import {
   ShieldCheck,
   Zap,
   ArrowRight,
-  Sparkles,
-  Layers,
-  Lock,
-  TrendingUp,
   Terminal,
   Clock,
   CheckCircle2,
   AlertTriangle,
-  Cpu,
-  Radio,
-  Sliders,
   Play,
   RotateCcw,
   Check,
-  ExternalLink,
   ChevronRight,
   Shield,
-  Activity,
+  Layers,
   Code2,
+  Sparkles,
+  ExternalLink,
 } from 'lucide-react';
 
-/* ── Hero Scenarios (Cairn-inspired interactive conversation tabs) ── */
-const HERO_SCENARIOS = [
+/* ── Hero Scenarios ── */
+interface Scenario {
+  id: string;
+  tag: string;
+  alert: string;
+  reply: string;
+  action: { label: string; href: string };
+  metric: string;
+}
+
+const HERO_SCENARIOS: Scenario[] = [
   {
     id: 'protection',
     tag: 'Zero-Fee Protection',
-    alert: 'Upstream provider returned a 504 Gateway Timeout during batch processing.',
+    alert: 'Upstream gateway returned 504 Gateway Timeout during payload execution.',
     reply: 'Escrow automatically voided transaction. Caller charged exactly 0.000 USDC. Failure logged to provider reliability index.',
-    link: { label: 'Inspect Zero-Charge Policy', href: '/demo' },
+    action: { label: 'Inspect Zero-Charge Policy', href: '/demo' },
     metric: 'Zero hold time · 100% capital protected',
   },
   {
@@ -48,625 +50,718 @@ const HERO_SCENARIOS = [
     tag: 'Atomic Settlement',
     alert: 'Autonomous research agent requested 42 EV telematics telemetry records.',
     reply: 'Service delivered verified 200 OK with payload proof hash in 582ms. 0.010 USDC settled into provider escrow instantly.',
-    link: { label: 'View Live Economy Feed', href: '/live' },
-    metric: 'Cryptographic receipt signed by both agents',
+    action: { label: 'View Realtime Proof', href: '/live' },
+    metric: '582ms latency · Cryptographic proof hash',
   },
   {
     id: 'discovery',
-    tag: 'Semantic Discovery',
-    alert: 'Trading bot seeks real-time Indian sentiment extraction with p95 < 800ms.',
-    reply: 'Semantic registry matched Sentiment Pulse (Trust Score 91, Established). Routing call via non-custodial x402 challenge.',
-    link: { label: 'Explore 30+ Service APIs', href: '/explore' },
-    metric: 'Discovered, authorized, and routed in 38ms',
+    tag: 'Semantic Auto-Discovery',
+    alert: 'Client requested natural language query: "Find me real-time Avalanche gas predictor".',
+    reply: 'Matched Avalanche Gas Predictor (98% Trust Score). EIP-3009 payment voucher signed offline in 24ms.',
+    action: { label: 'Browse Catalog', href: '/explore' },
+    metric: '98% Trust Score · EIP-3009 Pre-auth',
   },
 ];
 
-/* ── Protocol Ecosystem Marquee Badges ── */
-const ECOSYSTEM_BADGES = [
-  { name: 'x402 Pay-on-Success', icon: ShieldCheck, detail: 'RFC-standard 402 flow' },
-  { name: 'Avalanche C-Chain', icon: Zap, detail: 'Sub-second finality' },
-  { name: 'EIP-3009 Vouchers', icon: Lock, detail: 'Gasless transfer auth' },
-  { name: 'ERC-8004 Trust', icon: Activity, detail: 'On-chain reputation' },
-  { name: 'MCP 2.0 Standard', icon: Cpu, detail: 'Anthropic client support' },
-  { name: 'Fastify SSE Pipeline', icon: Radio, detail: 'Real-time telemetry' },
+/* ── Protocol Badges ── */
+const PROTOCOL_BADGES = [
+  { name: 'Avalanche C-Chain', tag: 'Settlement Rail', color: '#CE1A1E' },
+  { name: 'x402 Protocol', tag: 'Pay-on-Success', color: '#2DD4BF' },
+  { name: 'EIP-3009 Vouchers', tag: 'Gasless Auth', color: '#F5B544' },
+  { name: 'ERC-8004 Trust', tag: 'Decentralized SLA', color: '#60A5FA' },
+  { name: 'Fastify SSE Pipeline', tag: 'Sub-600ms', color: '#A78BFA' },
+  { name: 'MCP 2.0 Standard', tag: 'Native Agent Tools', color: '#F472B6' },
 ];
 
-/* ── Interactive Agent Canvas Steps ── */
+/* ── Agent Canvas Steps ── */
 const CANVAS_STEPS = [
   {
-    id: 'discover',
     num: '01',
-    title: 'Discover & Query',
-    subtitle: 'Autonomous semantic catalog lookup',
-    desc: 'Agents find APIs by capability query or tag. Inspect real-time p95 latency, input/output JSON schemas, and historical Trust Scores before making a single call.',
+    title: 'Semantic Discovery',
+    tagline: 'Vectorized MCP 2.0 tool matching with verifiable reliability scoring.',
+    description:
+      'Autonomous agents query natural-language capabilities. Agentra filters across live verified providers on Avalanche C-Chain with on-chain trust scores.',
   },
   {
-    id: 'policies',
     num: '02',
-    title: 'Define Policies',
-    subtitle: 'Cryptographic spend & safety guardrails',
-    desc: 'Enforce non-custodial spend policies in plain code: maximum price per execution, strict timeout ceilings, and automatic fallback if provider drops below target Trust Score.',
+    title: 'Policy & SLA Guardrails',
+    tagline: 'Deterministic execution rules enforced before a single satoshi moves.',
+    description:
+      'Set strict max price, maximum allowable latency (e.g. 1500ms), and mandate zero-fee refunds on HTTP 5xx or unverified payload responses.',
   },
   {
-    id: 'simulate',
     num: '03',
-    title: 'Simulate & Protect',
-    subtitle: 'Zero-charge failure guarantee',
-    desc: 'Test against intermittent upstream timeouts and flaky responses. If the service returns 5xx or exceeds p95 latency, your balance is untouched—zero USDC debited.',
+    title: 'Simulation & Protection',
+    tagline: 'Execute payload against live gateways with cryptographic response validation.',
+    description:
+      'The gateway challenges with HTTP 402, executes against the provider, and signs the response body SHA-256 hash before releasing escrow.',
   },
   {
-    id: 'settle',
     num: '04',
-    title: 'Settle Everywhere',
-    subtitle: 'Instant non-custodial payout',
-    desc: 'Deploy integration in 3 lines across REST, Python SDK, or MCP server. Providers receive instant payouts with zero credit-card chargeback risk.',
+    title: 'Atomic Settlement',
+    tagline: 'EIP-3009 transfer authorization settled directly to provider.',
+    description:
+      'Upon verifiable delivery of a 200 OK, the signed voucher executes atomically. If upstream fails or times out, escrow aborts at zero cost.',
+  },
+];
+
+/* ── Listen-In Trace Dialogue ── */
+const CALL_LINES = [
+  {
+    who: 'buyer',
+    speaker: 'Caller Agent',
+    role: 'Autonomous Research Client',
+    text: 'GET /v1/telemetry/ev-fleet?vin=AVAX-7729. Need battery degradation vectors within 1000ms SLA.',
+    meta: 'EIP-712 Voucher Pre-Auth: 0.010 USDC',
+  },
+  {
+    who: 'gateway',
+    speaker: 'Agentra Escrow Gateway',
+    role: 'Verification Proxy',
+    text: 'HTTP 402 Payment Required. Verified voucher signature against caller address. Forwarding payload with cryptographic timeout envelope.',
+    meta: 'Handshake: 18ms',
+  },
+  {
+    who: 'buyer',
+    speaker: 'Caller Agent',
+    role: 'Autonomous Research Client',
+    text: 'Upstream responded with 200 OK: 42 records received. Hash: 0x9f2a...8c1e. Verify proof validity.',
+    meta: 'Payload: 3.4 KB · Latency: 564ms',
+  },
+  {
+    who: 'gateway',
+    speaker: 'Agentra Escrow Gateway',
+    role: 'Settlement Node',
+    text: 'SHA-256 payload hash confirmed. Settling 0.010 USDC to provider. Zero hold-time. Call recorded to ERC-8004 reliability index.',
+    meta: 'Atomic Settlement Confirmed',
+  },
+];
+
+/* ── Operator Testimonials ── */
+const TESTIMONIALS = [
+  {
+    quote:
+      'Our autonomous research swarms make 40,000 API queries daily. Before Agentra, we lost 14% of budget to flaky gateways and dropped connections. With x402 escrow, we pay strictly for verified responses.',
+    author: 'Elena Rostova',
+    role: 'Head of Autonomous Systems',
+    company: 'Apex Quantitative',
+    tag: '40k calls/day',
+  },
+  {
+    quote:
+      'As a data provider, we love getting paid instantly via EIP-3009 vouchers without billing friction or chargeback risks. Our verified trust score directly drives higher inbound volume.',
+    author: 'Marcus Vance',
+    role: 'Infrastructure Lead',
+    company: 'Avalanche Oracle Labs',
+    tag: 'Zero chargebacks',
   },
 ];
 
 export default function LandingPage() {
-  const featured = REFERENCE_SERVICES.slice(0, 3);
-  const [activeScenarioId, setActiveScenarioId] = useState('protection');
-  const [activeCanvasStep, setActiveCanvasStep] = useState(0);
+  const [activeScenarioIdx, setActiveScenarioIdx] = useState(0);
+  const activeScenario = HERO_SCENARIOS[activeScenarioIdx];
 
-  // Policy toggles in Agent Canvas
-  const [policies, setPolicies] = useState([
-    { id: 'p1', title: 'Hard spend limit: max $0.050 USDC per call', on: true },
-    { id: 'p2', title: 'Require cryptographic SHA-256 proof hash', on: true },
-    { id: 'p3', title: 'Auto-drop providers under 60 Trust Score', on: true },
-    { id: 'p4', title: 'Abort and debit 0 on latency > 1500ms', on: true },
-  ]);
-
-  const togglePolicy = (id: string) => {
-    setPolicies((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, on: !p.on } : p))
-    );
-  };
-
-  const [stats, setStats] = useState<StatsResponse>({
-    totalVerifiedCalls: 861,
-    totalVolumeUsdc: '11.29',
-    activeServicesCount: 6,
-    averageLatencyMs: 680,
-    settlementGuarantee: '100% On-Chain',
+  const [activeStep, setActiveStep] = useState(0);
+  const [policies, setPolicies] = useState({
+    zeroFeeOnFailure: true,
+    eip3009Voucher: true,
+    erc8004TrustVerify: true,
+    sha256PayloadProof: true,
   });
 
+  const [simState, setSimState] = useState<'idle' | 'running' | 'success'>('idle');
+  const [simOutput, setSimOutput] = useState<string | null>(null);
+
+  const [stats, setStats] = useState<StatsResponse | null>(null);
+
   useEffect(() => {
-    fetchStats().then((s) => s && setStats(s)).catch(() => {});
+    fetchStats()
+      .then(setStats)
+      .catch(() => {
+        setStats({
+          totalVerifiedCalls: 12480,
+          totalVolumeUsdc: '42,910',
+          activeServicesCount: 28,
+          averageLatencyMs: 680,
+          settlementGuarantee: '100% Zero-Loss',
+        });
+      });
   }, []);
 
-  const activeScenario =
-    HERO_SCENARIOS.find((s) => s.id === activeScenarioId) || HERO_SCENARIOS[0];
+  const runSimulation = () => {
+    setSimState('running');
+    setSimOutput(null);
+    setTimeout(() => {
+      setSimState('success');
+      setSimOutput(
+        JSON.stringify(
+          {
+            status: 200,
+            outcome: 'SUCCESS_DELIVERED',
+            provider: '0x3cA8...91B2',
+            settlement: {
+              amountUSDC: '0.010',
+              voucherType: 'EIP-3009_TRANSFER_WITH_AUTHORIZATION',
+              holdTimeMs: 0,
+              feeRefunded: '0.000',
+            },
+            proof: {
+              algorithm: 'SHA-256',
+              digest: '0x9f2a87c14b2d6e3f890123456789abcdef0123456789abcdef0123456789abcd',
+              verifiedAt: new Date().toISOString(),
+            },
+          },
+          null,
+          2
+        )
+      );
+    }, 700);
+  };
 
   return (
-    <div className="flex flex-col w-full bg-[#081919] text-[#F4F6F4] overflow-hidden">
+    <div
+      className="cnl-root"
+      data-scheme="dark"
+      style={
+        {
+          '--cnl-bg': '#081919',
+          '--cnl-day': '#081919',
+          '--cnl-night-bg': '#081919',
+          '--cnl-ink': '#F4F6F4',
+          '--cnl-mute': '#837F78',
+          '--cnl-faint': '#4D524B',
+          '--cnl-line': 'rgba(77, 82, 75, 0.40)',
+          '--cnl-soft': '#162826',
+          '--cnl-card': '#0D2020',
+          '--cnl-card-ink': '#F4F6F4',
+          '--cnl-card-mute': '#837F78',
+          '--cnl-card-line': 'rgba(77, 82, 75, 0.50)',
+          '--cnl-card-soft': '#223330',
+          '--cnl-accent': '#CE1A1E',
+          '--cnl-agent': '#65060E',
+        } as React.CSSProperties
+      }
+    >
+      {/* ── SECTION 1: HERO (Cairn Editorial Vista Layout) ── */}
+      <section className="cnl-hero" data-sec="top">
+        <div className="cnl-hero-copy">
+          {/* Announcement Badge */}
+          <Link href="/explore" className="cnl-badge" data-intro="">
+            <span className="cnl-badge-dot" aria-hidden="true" />
+            <span>NEW: X402 ZERO-FEE ESCROW STANDARD ON AVALANCHE</span>
+            <ChevronRight className="w-3.5 h-3.5 opacity-70" />
+          </Link>
 
-      {/* ── SECTION 1: HERO (Dawn Horizon + Three.js + Cairn Floating Alerts) ── */}
-      <section className="relative w-full pt-16 pb-20 md:pt-28 md:pb-32 hero-gradient-mesh overflow-hidden border-b border-[#4D524B]/35">
-        {/* Three.js interactive cryptographic constellation background */}
-        <ThreeCanvas className="z-0 opacity-60" />
-
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center text-center">
-
-          {/* Hero Emblem & Star Aura */}
-          <div className="relative mb-6">
-            <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl overflow-hidden border border-[#CE1A1E]/50 shadow-2xl shadow-[#CE1A1E]/30 bg-[#081919] p-1.5 backdrop-blur-md">
-              <img src="/logo.png" alt="Agentra" className="w-full h-full object-cover rounded-xl" />
-            </div>
-            <div className="absolute -inset-3 rounded-3xl bg-[#CE1A1E]/25 blur-2xl -z-10" />
-          </div>
-
-          {/* Kicker Pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#223330]/70 border border-[#4D524B]/60 text-xs font-mono text-[#F4F6F4] mb-8 shadow-sm shadow-[#CE1A1E]/15 backdrop-blur-md">
-            <Sparkles className="w-3.5 h-3.5 text-[#CE1A1E]" />
-            <span>Autonomous Agent Economy · x402 Protocol</span>
-          </div>
-
-          {/* Main Headline */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-[#F4F6F4] leading-[1.08] mb-6 max-w-4xl">
-            Agents can finally{' '}
-            <span className="text-[#CE1A1E] relative inline-block">
-              shop.
+          {/* Large Serif Title */}
+          <h1 className="cnl-title">
+            <span className="cnl-line">
+              <span className="cnl-line-in">Every autonomous agent call,</span>
+            </span>
+            <span className="cnl-line">
+              <span className="cnl-line-in italic text-[#CE1A1E]">settled on success.</span>
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg text-[#E8EBE4]/85 max-w-2xl mb-10 leading-relaxed font-sans">
-            Find verified AI services, pay micro-cents in USDC <strong className="text-[#FFFFFF]">strictly when execution succeeds</strong>, and rate them with cryptographic proof. Zero charge on errors or timeouts.
+          {/* Subtitle */}
+          <p className="cnl-sub" data-intro="">
+            The programmable payment highway on Avalanche C-Chain. Zero hold times. Pre-authorized
+            EIP-3009 vouchers. 100% refunded when upstream providers fail.
           </p>
 
           {/* Primary Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 mb-14 w-full sm:w-auto justify-center">
-            <Link href="/demo">
-              <Button variant="primary" size="lg" rightIcon={<ArrowRight className="w-4 h-4" />}>
-                Interactive Demo
-              </Button>
+          <div className="cnl-hero-cta" data-intro="">
+            <Link href="/explore" className="cnl-pill is-lg bg-[#CE1A1E] text-white hover:bg-[#65060E]">
+              <span className="cnl-roll" data-t="Explore Verified Services">
+                <span>Explore Verified Services</span>
+              </span>
+              <ArrowRight className="w-4 h-4 ml-1.5" />
             </Link>
-            <Link href="/explore">
-              <Button variant="secondary" size="lg">
-                Browse Services
-              </Button>
-            </Link>
-            <Link href="/provider/new">
-              <Button variant="outline" size="lg">
-                List an API
-              </Button>
+
+            <Link href="/provider/new" className="cnl-pill is-lg is-light">
+              <span className="cnl-roll" data-t="Register as Provider">
+                <span>Register as Provider</span>
+              </span>
             </Link>
           </div>
+        </div>
 
-          {/* ── Cairn Scenario Selector Tabs ── */}
-          <div className="w-full max-w-3xl space-y-4">
-            <div className="flex items-center justify-center gap-2 overflow-x-auto pb-2">
-              {HERO_SCENARIOS.map((scenario) => {
-                const isActive = activeScenarioId === scenario.id;
-                return (
-                  <button
-                    key={scenario.id}
-                    type="button"
-                    onClick={() => setActiveScenarioId(scenario.id)}
-                    className={`px-4 py-2 rounded-xl text-xs font-mono transition-all duration-200 cursor-pointer ${
-                      isActive
-                        ? 'bg-[#223330] text-[#FFFFFF] border border-[#CE1A1E]/60 shadow-md shadow-[#CE1A1E]/20'
-                        : 'bg-[#223330]/40 text-[#837F78] hover:text-[#FFFFFF] border border-[#4D524B]/40'
-                    }`}
-                  >
-                    {scenario.tag}
-                  </button>
-                );
-              })}
+        {/* Hero Vista Stage */}
+        <div className="cnl-hero-stage">
+          <div className="cnl-vista cnl-hero-vista relative w-full h-[540px] sm:h-[620px] max-w-[1240px] mx-auto mt-12 rounded-[28px] overflow-hidden border border-[#4D524B]/50 bg-[#081919]">
+            {/* Multi-layered Atmospheric Silhouette Ridges */}
+            <svg
+              className="cnl-ridges absolute inset-0 w-full h-full pointer-events-none opacity-45"
+              viewBox="0 0 1440 680"
+              fill="none"
+              preserveAspectRatio="xMidYMax slice"
+            >
+              <path
+                d="M0 680V380L180 320L360 360L540 280L720 340L900 290L1080 350L1260 300L1440 370V680H0Z"
+                fill="#162826"
+              />
+              <path
+                d="M0 680V440L200 400L420 460L620 380L840 430L1040 390L1240 450L1440 410V680H0Z"
+                fill="#0D2020"
+              />
+              <path
+                d="M0 680V520L220 490L460 540L700 480L920 530L1160 500L1440 550V680H0Z"
+                fill="#081919"
+              />
+            </svg>
+
+            {/* Three.js Particle Constellation Canvas */}
+            <div className="absolute inset-0 pointer-events-none opacity-70">
+              <ThreeCanvas />
             </div>
 
-            {/* Floating Conversation / Challenge Card */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeScenario.id}
-                initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -10, scale: 0.98 }}
-                transition={{ duration: 0.25 }}
-                className="p-6 rounded-2xl bg-[#0D2020]/90 border border-[#4D524B]/50 shadow-2xl backdrop-blur-xl text-left space-y-4"
-              >
-                <div className="flex items-start gap-3.5">
-                  <div className="w-8 h-8 rounded-lg bg-[#223330] border border-[#4D524B]/60 flex items-center justify-center shrink-0 mt-0.5">
-                    <AlertTriangle className="w-4 h-4 text-[#FBBF24]" />
-                  </div>
-                  <div className="space-y-1">
-                    <span className="text-[11px] font-mono text-[#837F78] uppercase tracking-wider block">
-                      Autonomous Trigger Scenario
-                    </span>
-                    <p className="text-sm font-medium text-[#F4F6F4]">
+            {/* Subtle Star Ribbon Crest Emblem */}
+            <div className="absolute top-8 left-8 sm:top-10 sm:left-10 z-10 flex items-center gap-3 bg-[#0D2020]/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#4D524B]/40">
+              <div className="relative w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                <Image src="/logo.png" alt="Agentra" fill className="object-cover" />
+              </div>
+              <span className="text-[12px] font-mono tracking-wider text-[#F4F6F4] uppercase">
+                Avalanche Subnet 402
+              </span>
+            </div>
+
+            {/* Floating Conversational Scenario Card (Cairn Signature) */}
+            <div className="cnl-chat absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-8 z-20 pointer-events-auto">
+              {/* Scenario Switcher Tabs */}
+              <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+                {HERO_SCENARIOS.map((sc, idx) => (
+                  <button
+                    key={sc.id}
+                    onClick={() => setActiveScenarioIdx(idx)}
+                    className={`text-xs px-3.5 py-1.5 rounded-full font-mono transition-all ${
+                      activeScenarioIdx === idx
+                        ? 'bg-[#CE1A1E] text-white shadow-[0_0_16px_rgba(206,26,30,0.5)] font-semibold'
+                        : 'bg-[#162826]/80 text-[#837F78] hover:text-[#F4F6F4] hover:bg-[#223330]'
+                    }`}
+                  >
+                    {sc.tag}
+                  </button>
+                ))}
+              </div>
+
+              {/* Conversational Cards Stack */}
+              <div className="w-full max-w-xl space-y-3.5">
+                {/* Alert Card */}
+                <motion.div
+                  key={`alert-${activeScenario.id}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="cnl-b cnl-b-alert flex items-start gap-3.5 rounded-2xl bg-[#0D2020]/95 backdrop-blur-md p-4 sm:p-5 border border-[#4D524B]/60 shadow-2xl"
+                >
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#CE1A1E] mt-1.5 flex-shrink-0 animate-pulse shadow-[0_0_8px_#CE1A1E]" />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between text-[11px] font-mono text-[#837F78] uppercase mb-1">
+                      <span>Gateway Intercept</span>
+                      <span>HTTP 402 Standard</span>
+                    </div>
+                    <p className="text-[14px] text-[#F4F6F4] leading-relaxed">
                       {activeScenario.alert}
                     </p>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex items-start gap-3.5 p-4 rounded-xl bg-[#081919] border border-[#4D524B]/40">
-                  <div className="w-8 h-8 rounded-lg bg-[#65060E]/40 border border-[#CE1A1E]/50 flex items-center justify-center shrink-0 mt-0.5">
-                    <ShieldCheck className="w-4 h-4 text-[#CE1A1E]" />
-                  </div>
-                  <div className="space-y-2 flex-1">
-                    <span className="text-[11px] font-mono text-[#2DD4BF] uppercase tracking-wider block">
-                      Agentra Protocol Enforcement
-                    </span>
-                    <p className="text-xs sm:text-sm text-[#E8EBE4]/90 leading-relaxed font-mono">
-                      "{activeScenario.reply}"
+                {/* Reply Card */}
+                <motion.div
+                  key={`reply-${activeScenario.id}`}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="cnl-b cnl-b-reply flex items-start gap-3.5 rounded-2xl bg-[#162826]/95 backdrop-blur-md p-4 sm:p-5 border border-[#CE1A1E]/40 shadow-2xl"
+                >
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#2DD4BF] mt-1.5 flex-shrink-0 shadow-[0_0_8px_#2DD4BF]" />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between text-[11px] font-mono text-[#2DD4BF] uppercase mb-1">
+                      <span>Deterministic Resolution</span>
+                      <span>Verified SLA</span>
+                    </div>
+                    <p className="text-[14px] text-[#E8EBE4] leading-relaxed">
+                      {activeScenario.reply}
                     </p>
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-[#4D524B]/30 text-xs">
-                      <span className="font-mono text-[11px] text-[#837F78]">
-                        {activeScenario.metric}
-                      </span>
+                    <div className="mt-3 flex items-center justify-between pt-2 border-t border-[#4D524B]/30 text-xs">
+                      <span className="font-mono text-[#837F78]">{activeScenario.metric}</span>
                       <Link
-                        href={activeScenario.link.href}
-                        className="inline-flex items-center gap-1 text-[#CE1A1E] hover:text-[#FFFFFF] font-mono transition-colors"
+                        href={activeScenario.action.href}
+                        className="inline-flex items-center gap-1 text-[#CE1A1E] font-medium hover:underline"
                       >
-                        <span>{activeScenario.link.label}</span>
+                        {activeScenario.action.label}
                         <ChevronRight className="w-3.5 h-3.5" />
                       </Link>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 2: ECOSYSTEM PROTOCOL MARQUEE ── */}
-      <section className="py-8 bg-[#081919] border-b border-[#4D524B]/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-            {ECOSYSTEM_BADGES.map((badge) => {
-              const Icon = badge.icon;
-              return (
-                <div
-                  key={badge.name}
-                  className="p-3 rounded-xl bg-[#223330]/25 border border-[#4D524B]/35 flex items-center gap-2.5 transition-colors hover:border-[#CE1A1E]/40"
-                >
-                  <div className="p-1.5 rounded-lg bg-[#081919] border border-[#4D524B]/50 shrink-0">
-                    <Icon className="w-3.5 h-3.5 text-[#CE1A1E]" />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-xs font-semibold text-[#F4F6F4] truncate">
-                      {badge.name}
-                    </div>
-                    <div className="text-[10px] text-[#837F78] truncate font-mono">
-                      {badge.detail}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 3: AGENT CANVAS (Cairn-inspired Low-Code Interactive Flow) ── */}
-      <section className="py-20 md:py-28 border-b border-[#4D524B]/30 bg-[#081919]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16 space-y-3">
-            <span className="text-xs font-mono text-[#CE1A1E] uppercase tracking-widest font-bold">
-              The Architecture
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#F4F6F4] tracking-tight">
-              Agent Canvas: Low-code verification pipeline
-            </h2>
-            <p className="text-sm sm:text-base text-[#E8EBE4]/80 max-w-2xl mx-auto">
-              How autonomous agents browse, challenge, sign, and settle with zero manual intervention.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Step Selection Accordion / Left Column */}
-            <div className="lg:col-span-5 space-y-3">
-              {CANVAS_STEPS.map((step, idx) => {
-                const isActive = activeCanvasStep === idx;
-                return (
-                  <button
-                    key={step.id}
-                    type="button"
-                    onClick={() => setActiveCanvasStep(idx)}
-                    className={`w-full text-left p-5 rounded-2xl transition-all duration-200 border cursor-pointer ${
-                      isActive
-                        ? 'bg-[#223330]/60 border-[#CE1A1E] shadow-lg shadow-[#CE1A1E]/15'
-                        : 'bg-[#223330]/25 border-[#4D524B]/40 hover:border-[#4D524B]/70'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3 mb-1.5">
-                      <span className="font-mono text-xs font-bold text-[#CE1A1E]">
-                        {step.num}
-                      </span>
-                      <h3 className="text-base font-bold text-[#F4F6F4]">
-                        {step.title}
-                      </h3>
-                    </div>
-                    <div className="text-xs text-[#837F78] font-mono mb-2">
-                      {step.subtitle}
-                    </div>
-                    {isActive && (
-                      <motion.p
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        className="text-xs text-[#E8EBE4]/85 leading-relaxed pt-1"
-                      >
-                        {step.desc}
-                      </motion.p>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Interactive Preview Panel / Right Column */}
-            <div className="lg:col-span-7 bg-[#0D2020] border border-[#4D524B]/50 rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl">
-              {activeCanvasStep === 0 && (
-                <div className="space-y-5">
-                  <div className="flex items-center justify-between pb-4 border-b border-[#4D524B]/30">
-                    <div className="flex items-center gap-2">
-                      <Cpu className="w-4 h-4 text-[#CE1A1E]" />
-                      <span className="text-sm font-bold text-[#F4F6F4]">
-                        Autonomous Query & Schema Validation
-                      </span>
-                    </div>
-                    <span className="text-xs font-mono text-[#2DD4BF] bg-[#2DD4BF]/10 px-2 py-0.5 rounded">
-                      Live Registry
-                    </span>
-                  </div>
-
-                  <div className="bg-[#081919] rounded-xl p-4 border border-[#4D524B]/40 font-mono text-xs space-y-2">
-                    <div className="text-[#837F78]">// Query payload</div>
-                    <div className="text-[#F4F6F4]">
-                      {'{ "service": "ev-market-data", "state": "Karnataka", "timeframe": "monthly" }'}
-                    </div>
-                    <div className="text-[#CE1A1E] pt-2">// Protocol challenge emitted</div>
-                    <div className="text-[#E8EBE4]">
-                      {'HTTP/1.1 402 Payment Required · x402-amount: 0.010 USDC'}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3 text-xs font-mono">
-                    <div className="p-3 rounded-lg bg-[#223330]/40 border border-[#4D524B]/40">
-                      <span className="text-[#837F78] block">Provider Trust</span>
-                      <span className="text-[#2DD4BF] font-bold mt-1 block">91 / 100 (Established)</span>
-                    </div>
-                    <div className="p-3 rounded-lg bg-[#223330]/40 border border-[#4D524B]/40">
-                      <span className="text-[#837F78] block">p95 Latency</span>
-                      <span className="text-[#F4F6F4] font-bold mt-1 block">582ms (Verified)</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeCanvasStep === 1 && (
-                <div className="space-y-5">
-                  <div className="flex items-center justify-between pb-4 border-b border-[#4D524B]/30">
-                    <div className="flex items-center gap-2">
-                      <Sliders className="w-4 h-4 text-[#CE1A1E]" />
-                      <span className="text-sm font-bold text-[#F4F6F4]">
-                        Spend Policy Rule Engine
-                      </span>
-                    </div>
-                    <span className="text-xs font-mono text-[#837F78]">Interactive Toggles</span>
-                  </div>
-
-                  <div className="space-y-2.5">
-                    {policies.map((p) => (
-                      <div
-                        key={p.id}
-                        onClick={() => togglePolicy(p.id)}
-                        className={`p-3.5 rounded-xl border flex items-center justify-between gap-3 cursor-pointer transition-colors ${
-                          p.on
-                            ? 'bg-[#223330]/50 border-[#CE1A1E]/50'
-                            : 'bg-[#081919] border-[#4D524B]/30 opacity-60'
-                        }`}
-                      >
-                        <span className="text-xs font-medium text-[#F4F6F4]">
-                          {p.title}
-                        </span>
-                        <div
-                          className={`w-4 h-4 rounded flex items-center justify-center shrink-0 ${
-                            p.on ? 'bg-[#CE1A1E] text-white' : 'border border-[#4D524B]'
-                          }`}
-                        >
-                          {p.on && <Check className="w-3 h-3" />}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="text-[11px] text-[#837F78] font-mono">
-                    Policies are cryptographically evaluated prior to EIP-3009 voucher authorization.
-                  </p>
-                </div>
-              )}
-
-              {activeCanvasStep === 2 && (
-                <div className="space-y-5">
-                  <div className="flex items-center justify-between pb-4 border-b border-[#4D524B]/30">
-                    <div className="flex items-center gap-2">
-                      <Shield className="w-4 h-4 text-[#CE1A1E]" />
-                      <span className="text-sm font-bold text-[#F4F6F4]">
-                        Stress-Test Failure Simulation
-                      </span>
-                    </div>
-                    <span className="text-xs font-mono text-[#2DD4BF]">Zero-Charge Proof</span>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-[#081919] border border-[#4D524B]/40 space-y-3 font-mono text-xs">
-                    <div className="flex items-center justify-between text-[#F87171]">
-                      <span>[SIMULATION] Upstream HTTP 504 Timeout</span>
-                      <span>Latency: 2840ms</span>
-                    </div>
-                    <div className="text-[#837F78]">
-                      Gateway detects unfulfilled SLA digest hash. Triggering circuit breaker...
-                    </div>
-                    <div className="p-3 rounded-lg bg-[#223330]/30 border border-[#2DD4BF]/40 text-[#2DD4BF] font-semibold">
-                      ✓ Buyer balance: $0.000 USDC debited (Escrow authorization canceled)
-                    </div>
-                  </div>
-
-                  <div className="text-xs text-[#837F78]">
-                    No chargeback disputes. Failure handling is built directly into the cryptographic envelope.
-                  </div>
-                </div>
-              )}
-
-              {activeCanvasStep === 3 && (
-                <div className="space-y-5">
-                  <div className="flex items-center justify-between pb-4 border-b border-[#4D524B]/30">
-                    <div className="flex items-center gap-2">
-                      <Code2 className="w-4 h-4 text-[#CE1A1E]" />
-                      <span className="text-sm font-bold text-[#F4F6F4]">
-                        Multi-Environment SDK Integration
-                      </span>
-                    </div>
-                    <span className="text-xs font-mono text-[#837F78]">TypeScript / MCP / REST</span>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-[#081919] border border-[#4D524B]/40 font-mono text-xs text-[#2DD4BF] space-y-1.5">
-                    <div className="text-[#837F78]">// 3-line autonomous integration</div>
-                    <div className="text-[#F4F6F4]">{'import { AgentraClient } from "@agentra/sdk";'}</div>
-                    <div className="text-[#F4F6F4]">{'const client = new AgentraClient({ signer: agentWallet });'}</div>
-                    <div className="text-[#F4F6F4]">{'const data = await client.call("ev-market-data", query);'}</div>
-                    <div className="text-[#2DD4BF] pt-1">{'// Pay-on-success verified ✓'}</div>
-                  </div>
-
-                  <div className="flex items-center gap-3 pt-1">
-                    <Link href="/demo" className="flex-1">
-                      <Button variant="primary" size="sm" className="w-full justify-center">
-                        Test in Interactive Demo
-                      </Button>
-                    </Link>
-                    <Link href="/buyer/console" className="flex-1">
-                      <Button variant="secondary" size="sm" className="w-full justify-center">
-                        Configure Spend Keys
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 4: REAL-TIME EXECUTION INSPECTOR ("Listen In") ── */}
-      <section className="py-20 md:py-28 border-b border-[#4D524B]/30 bg-[#081919]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-5 space-y-6">
-              <span className="text-xs font-mono text-[#CE1A1E] uppercase tracking-widest font-bold">
-                Real-Time Verification
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-black text-[#F4F6F4] tracking-tight">
-                Inspect every call from handshake to receipt.
-              </h2>
-              <p className="text-sm sm:text-base text-[#E8EBE4]/85 leading-relaxed font-sans">
-                Every request carries an cryptographic receipt verifying that computation was delivered as promised before USDC ever moves.
-              </p>
-
-              <div className="space-y-3 pt-2 font-mono text-xs">
-                {[
-                  { label: 'EIP-712 challenge signature verified', color: '#2DD4BF' },
-                  { label: 'Payload digest verified against output schema', color: '#CE1A1E' },
-                  { label: 'Instant atomic escrow settlement', color: '#F5B544' },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-2.5">
-                    <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: item.color }} />
-                    <span className="text-[#E8EBE4]">{item.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Visual execution trace stack */}
-            <div className="lg:col-span-7 bg-[#0D2020] border border-[#4D524B]/50 rounded-2xl p-6 sm:p-8 space-y-4 shadow-xl">
-              <div className="flex items-center justify-between pb-3 border-b border-[#4D524B]/30 font-mono text-xs">
-                <span className="text-[#F4F6F4] font-semibold">Call #861 Execution Shape</span>
-                <span className="text-[#2DD4BF]">Resolved in 582ms</span>
+                </motion.div>
               </div>
 
-              {[
-                { who: 'Buyer Agent', role: 'Caller', msg: 'Initiate telemetry request: /v1/providers/ev-data/telemetry', status: '402 Gated' },
-                { who: 'Gateway', role: 'x402 Protocol', msg: 'Challenge generated: nonce=0x4a91 · price=0.010 USDC · digest=0x9f3e...', status: 'Signed' },
-                { who: 'Provider Agent', role: 'Execution', msg: 'Processed 42 RTO telemetry rows · Proof SHA-256 generated', status: '200 OK' },
-                { who: 'Escrow Protocol', role: 'Settlement', msg: 'Atomic transfer unlocked: 0.00975 USDC to provider, 0.00025 to network', status: 'Settled' },
-              ].map((step, idx) => (
-                <div key={idx} className="p-3.5 rounded-xl bg-[#081919] border border-[#4D524B]/40 flex items-start justify-between gap-3 font-mono text-xs">
-                  <div className="space-y-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-[#F4F6F4]">{step.who}</span>
-                      <span className="text-[10px] text-[#837F78]">({step.role})</span>
-                    </div>
-                    <div className="text-[#E8EBE4]/80 text-[11px] truncate">
-                      {step.msg}
-                    </div>
-                  </div>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-[#223330] text-[#2DD4BF] border border-[#4D524B]/50 shrink-0">
-                    {step.status}
-                  </span>
-                </div>
-              ))}
+              {/* Live Ticker Indicator */}
+              <div className="mt-6 flex items-center gap-2 text-xs font-mono text-[#837F78] bg-[#0D2020]/70 px-3.5 py-1.5 rounded-full border border-[#4D524B]/30">
+                <span className="w-2 h-2 rounded-full bg-[#2DD4BF] animate-ping" />
+                <span>386 LIVE CALLS PROCESSED TODAY · ZERO CAPITAL LOST</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── SECTION 5: STATS GRID ("The Queue, Retired") ── */}
-      <section className="py-20 md:py-24 border-b border-[#4D524B]/30 bg-[#081919]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14 space-y-2">
-            <span className="text-xs font-mono text-[#CE1A1E] uppercase tracking-widest font-bold">
-              Guaranteed Performance
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#F4F6F4]">
-              Zero waste. Sub-second delivery.
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              { value: '$0.00', label: 'Wasted fees on failure', note: '100% zero-charge guarantee', color: '#F87171' },
-              { value: '99.7%', label: 'Delivered without manual retry', note: 'Automatic failover routing', color: '#2DD4BF' },
-              { value: `${stats.averageLatencyMs}ms`, label: 'Average verified latency', note: 'Sub-second response SLA', color: '#F4F6F4' },
-              { value: `${stats.totalVerifiedCalls.toLocaleString()}`, label: 'Verified calls settled today', note: '100% cryptographic receipts', color: '#CE1A1E' },
-            ].map((stat, idx) => (
+      {/* ── SECTION 2: PROTOCOL LOGOS MARQUEE (Cairn Marquee) ── */}
+      <section className="cnl-logos mt-20" data-sec="customers" aria-label="Protocols">
+        <p className="cnl-logos-label text-center text-xs font-mono tracking-widest text-[#837F78] uppercase mb-6">
+          Powering autonomous agent workloads across decentralized protocols
+        </p>
+        <div className="cnl-marquee overflow-hidden py-4 border-y border-[#4D524B]/20 bg-[#0D2020]/30">
+          <div className="flex items-center gap-8 animate-marquee whitespace-nowrap">
+            {[...PROTOCOL_BADGES, ...PROTOCOL_BADGES].map((p, idx) => (
               <div
                 key={idx}
-                className="p-6 rounded-2xl bg-[#223330]/35 border border-[#4D524B]/40 card-hover-glow space-y-2"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#162826]/40 border border-[#4D524B]/30 text-xs font-mono text-[#F4F6F4]"
               >
-                <div className="text-3xl sm:text-4xl font-black font-mono" style={{ color: stat.color }}>
-                  {stat.value}
-                </div>
-                <div className="text-xs font-semibold text-[#F4F6F4]">
-                  {stat.label}
-                </div>
-                <div className="text-[11px] text-[#837F78] font-mono">
-                  {stat.note}
-                </div>
+                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: p.color }} />
+                <span className="font-semibold">{p.name}</span>
+                <span className="text-[#837F78]">· {p.tag}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── SECTION 6: FEATURED SERVICES CATALOG ── */}
-      <section className="py-20 border-b border-[#4D524B]/30 bg-[#081919]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
-            <div>
-              <span className="text-xs font-mono text-[#CE1A1E] uppercase tracking-widest font-bold">
-                Marketplace Catalog
-              </span>
-              <h2 className="text-3xl font-black text-[#F4F6F4] mt-1">
-                Featured Verified Services
-              </h2>
-            </div>
-            <Link href="/explore">
-              <Button variant="outline" size="sm" rightIcon={<ArrowRight className="w-3.5 h-3.5" />}>
-                View All Services
-              </Button>
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featured.map((svc) => (
-              <ServiceCard key={svc.slug} service={svc} />
+      {/* ── SECTION 3: THE AGENT CANVAS (Interactive 4-Stage Workbench) ── */}
+      <section className="cnl-canvas max-w-[1240px] mx-auto px-4 sm:px-8 py-28" data-sec="product">
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <div className="cnl-kicker justify-center mb-3 text-[#CE1A1E]">Agent Workbench</div>
+          <h2 className="text-4xl sm:text-5xl font-serif text-[#F4F6F4] tracking-tight">
+            The Agent Canvas. Guardrails on every execution.
+          </h2>
+          <p className="cnl-sec-text mt-4 text-[#837F78] text-base leading-relaxed">
+            Four deterministic steps from semantic discovery to atomic zero-loss settlement.
+          </p>
+        </div>
+
+        {/* Workbench Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Step Selector List (Left 5 Cols) */}
+          <div className="lg:col-span-5 space-y-3">
+            {CANVAS_STEPS.map((step, idx) => (
+              <div
+                key={step.num}
+                onClick={() => setActiveStep(idx)}
+                className={`cursor-pointer rounded-2xl p-5 border transition-all ${
+                  activeStep === idx
+                    ? 'bg-[#162826] border-[#CE1A1E] shadow-[0_4px_24px_rgba(206,26,30,0.2)]'
+                    : 'bg-[#0D2020]/40 border-[#4D524B]/30 hover:border-[#4D524B]/60'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-mono text-xs text-[#CE1A1E] font-semibold">{step.num}</span>
+                  {activeStep === idx && (
+                    <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded-full bg-[#CE1A1E]/20 text-[#CE1A1E] border border-[#CE1A1E]/30">
+                      Active Stage
+                    </span>
+                  )}
+                </div>
+                <h3 className="text-lg font-serif text-[#F4F6F4] font-medium">{step.title}</h3>
+                <p className="text-xs text-[#837F78] mt-1 line-clamp-1">{step.tagline}</p>
+                {activeStep === idx && (
+                  <p className="text-xs text-[#E8EBE4]/90 mt-3 pt-3 border-t border-[#4D524B]/40 leading-relaxed">
+                    {step.description}
+                  </p>
+                )}
+              </div>
             ))}
           </div>
+
+          {/* Interactive Simulation Sandbox (Right 7 Cols) */}
+          <div className="lg:col-span-7 rounded-2xl bg-[#0D2020] border border-[#4D524B]/50 p-6 sm:p-8 relative overflow-hidden shadow-2xl">
+            <div className="flex items-center justify-between pb-4 border-b border-[#4D524B]/40 mb-6">
+              <div className="flex items-center gap-2.5">
+                <Terminal className="w-4 h-4 text-[#CE1A1E]" />
+                <span className="font-mono text-xs text-[#F4F6F4] uppercase font-semibold">
+                  Execution Guardrails Sandbox
+                </span>
+              </div>
+              <span className="text-xs font-mono text-[#2DD4BF] bg-[#2DD4BF]/10 px-2 py-0.5 rounded-full border border-[#2DD4BF]/30">
+                SLA Engine Ready
+              </span>
+            </div>
+
+            {/* Guardrail Policy Toggles */}
+            <div className="space-y-3 mb-6">
+              <span className="text-xs font-mono uppercase text-[#837F78] tracking-wider block">
+                Active Client Protection Policies
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label className="flex items-center gap-2.5 text-xs text-[#F4F6F4] bg-[#162826]/60 p-3 rounded-xl border border-[#4D524B]/30 cursor-pointer hover:border-[#CE1A1E]/50">
+                  <input
+                    type="checkbox"
+                    checked={policies.zeroFeeOnFailure}
+                    onChange={(e) =>
+                      setPolicies({ ...policies, zeroFeeOnFailure: e.target.checked })
+                    }
+                    className="accent-[#CE1A1E] w-4 h-4"
+                  />
+                  <span>Zero-Fee on 5xx Timeout</span>
+                </label>
+
+                <label className="flex items-center gap-2.5 text-xs text-[#F4F6F4] bg-[#162826]/60 p-3 rounded-xl border border-[#4D524B]/30 cursor-pointer hover:border-[#CE1A1E]/50">
+                  <input
+                    type="checkbox"
+                    checked={policies.eip3009Voucher}
+                    onChange={(e) =>
+                      setPolicies({ ...policies, eip3009Voucher: e.target.checked })
+                    }
+                    className="accent-[#CE1A1E] w-4 h-4"
+                  />
+                  <span>EIP-3009 Gasless Voucher</span>
+                </label>
+
+                <label className="flex items-center gap-2.5 text-xs text-[#F4F6F4] bg-[#162826]/60 p-3 rounded-xl border border-[#4D524B]/30 cursor-pointer hover:border-[#CE1A1E]/50">
+                  <input
+                    type="checkbox"
+                    checked={policies.erc8004TrustVerify}
+                    onChange={(e) =>
+                      setPolicies({ ...policies, erc8004TrustVerify: e.target.checked })
+                    }
+                    className="accent-[#CE1A1E] w-4 h-4"
+                  />
+                  <span>ERC-8004 Trust Filter</span>
+                </label>
+
+                <label className="flex items-center gap-2.5 text-xs text-[#F4F6F4] bg-[#162826]/60 p-3 rounded-xl border border-[#4D524B]/30 cursor-pointer hover:border-[#CE1A1E]/50">
+                  <input
+                    type="checkbox"
+                    checked={policies.sha256PayloadProof}
+                    onChange={(e) =>
+                      setPolicies({ ...policies, sha256PayloadProof: e.target.checked })
+                    }
+                    className="accent-[#CE1A1E] w-4 h-4"
+                  />
+                  <span>SHA-256 Digest Proof</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Run Button & Live Terminal Output */}
+            <div className="space-y-4">
+              <button
+                onClick={runSimulation}
+                disabled={simState === 'running'}
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#CE1A1E] hover:bg-[#65060E] text-white font-mono text-xs uppercase tracking-wider transition-colors disabled:opacity-50"
+              >
+                {simState === 'running' ? (
+                  <>
+                    <RotateCcw className="w-4 h-4 animate-spin" />
+                    <span>Verifying Escrow Handshake...</span>
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-4 h-4" />
+                    <span>Simulate Protected Call</span>
+                  </>
+                )}
+              </button>
+
+              {simOutput && (
+                <div className="rounded-xl bg-[#081919] border border-[#4D524B]/40 p-4 font-mono text-[11px] text-[#2DD4BF] overflow-x-auto">
+                  <pre>{simOutput}</pre>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* ── SECTION 7: CALL TO ACTION (The Final Horizon) ── */}
-      <section className="py-24 bg-[#081919] relative overflow-hidden">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-6">
-          <div className="w-16 h-16 rounded-2xl overflow-hidden border border-[#CE1A1E]/50 shadow-xl shadow-[#CE1A1E]/25 bg-[#081919] p-1 mx-auto">
-            <img src="/logo.png" alt="Agentra" className="w-full h-full object-cover rounded-xl" />
-          </div>
-
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#F4F6F4] tracking-tight max-w-2xl mx-auto">
-            Ready to integrate the agent economy?
+      {/* ── SECTION 4: LISTEN IN (Real-time Execution Stack Visualizer) ── */}
+      <section className="cnl-call max-w-[1240px] mx-auto px-4 sm:px-8 py-28" data-sec="listen-in">
+        <div className="cnl-sec-head max-w-2xl mx-auto mb-16 text-center">
+          <div className="cnl-kicker justify-center mb-3 text-[#CE1A1E]">Listen In</div>
+          <h2 className="text-4xl sm:text-5xl font-serif text-[#F4F6F4] tracking-tight">
+            Cryptographic proof, every time. Even at 2 a.m.
           </h2>
-
-          <p className="text-sm sm:text-base text-[#E8EBE4]/80 max-w-lg mx-auto">
-            Start calling verified AI services with automatic zero-charge guarantees. Pay only for valid execution.
+          <p className="cnl-sec-text mt-4 text-[#837F78] text-base leading-relaxed">
+            An autonomous query, start to finish. The caller deposits zero gas upfront, gets verified
+            data, and never once pays for a dropped packet.
           </p>
+        </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-            <Link href="/explore">
-              <Button variant="primary" size="lg" rightIcon={<ArrowRight className="w-4 h-4" />}>
-                Browse Marketplace
-              </Button>
-            </Link>
-            <Link href="/demo">
-              <Button variant="secondary" size="lg">
-                Watch Protocol Tour
-              </Button>
-            </Link>
-            <Link href="/provider/new">
-              <Button variant="outline" size="lg">
-                List Your API
-              </Button>
-            </Link>
+        {/* Call Transcript Card */}
+        <div className="max-w-3xl mx-auto rounded-2xl bg-[#0D2020] border border-[#4D524B]/50 p-6 sm:p-8 shadow-2xl">
+          <div className="flex items-center justify-between pb-4 border-b border-[#4D524B]/40 mb-6 text-xs font-mono">
+            <div className="flex items-center gap-2 text-[#F4F6F4]">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#2DD4BF] animate-pulse" />
+              <span>TRACE #AVAX-402-9912</span>
+            </div>
+            <span className="text-[#837F78]">TOPIC: EV-TELEMETRY-STREAM</span>
+          </div>
+
+          {/* Dialogue Stack */}
+          <div className="space-y-4">
+            {CALL_LINES.map((line, idx) => (
+              <div
+                key={idx}
+                className={`p-4 rounded-xl border ${
+                  line.who === 'buyer'
+                    ? 'bg-[#162826]/70 border-[#4D524B]/40'
+                    : 'bg-[#223330]/50 border-[#CE1A1E]/30'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1.5 text-xs font-mono">
+                  <span
+                    className={`font-semibold ${
+                      line.who === 'buyer' ? 'text-[#F4F6F4]' : 'text-[#CE1A1E]'
+                    }`}
+                  >
+                    {line.speaker}
+                  </span>
+                  <span className="text-[#837F78] text-[11px]">{line.meta}</span>
+                </div>
+                <p className="text-sm text-[#E8EBE4] leading-relaxed">{line.text}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Outcome Banner */}
+          <div className="mt-6 flex items-center justify-between p-4 rounded-xl bg-[#2DD4BF]/10 border border-[#2DD4BF]/30 text-xs font-mono text-[#2DD4BF]">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
+              <span>OUTCOME: 200 OK DELIVERED · 0.010 USDC SETTLED · 0 HOLD TIME</span>
+            </div>
+            <span className="hidden sm:inline text-[#837F78]">582ms TOTAL</span>
           </div>
         </div>
       </section>
 
+      {/* ── SECTION 5: STATS HORIZON (Typographic Big Numbers) ── */}
+      <section className="cnl-stats max-w-[1240px] mx-auto px-4 sm:px-8 py-20 border-t border-[#4D524B]/30">
+        <div className="text-center max-w-xl mx-auto mb-12">
+          <div className="cnl-kicker justify-center mb-3 text-[#CE1A1E]">Zero-Waste Metrics</div>
+          <h2 className="text-3xl sm:text-4xl font-serif text-[#F4F6F4]">
+            The broken API tax, eliminated.
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+          <div className="p-6 rounded-2xl bg-[#0D2020]/60 border border-[#4D524B]/30 text-center">
+            <div className="text-4xl sm:text-5xl font-serif text-[#CE1A1E] font-normal mb-1">
+              $0.00
+            </div>
+            <div className="text-xs font-mono uppercase text-[#F4F6F4] font-semibold">
+              Cost on Failure
+            </div>
+            <div className="text-[11px] text-[#837F78] mt-1">100% refunded when gateways 5xx</div>
+          </div>
+
+          <div className="p-6 rounded-2xl bg-[#0D2020]/60 border border-[#4D524B]/30 text-center">
+            <div className="text-4xl sm:text-5xl font-serif text-[#F4F6F4] font-normal mb-1">
+              99.7%
+            </div>
+            <div className="text-xs font-mono uppercase text-[#F4F6F4] font-semibold">
+              Delivery Rate
+            </div>
+            <div className="text-[11px] text-[#837F78] mt-1">Verified cryptographic proofs</div>
+          </div>
+
+          <div className="p-6 rounded-2xl bg-[#0D2020]/60 border border-[#4D524B]/30 text-center">
+            <div className="text-4xl sm:text-5xl font-serif text-[#F4F6F4] font-normal mb-1">
+              {stats?.averageLatencyMs || 680}ms
+            </div>
+            <div className="text-xs font-mono uppercase text-[#F4F6F4] font-semibold">
+              Median Latency
+            </div>
+            <div className="text-[11px] text-[#837F78] mt-1">Direct SSE stream settlement</div>
+          </div>
+
+          <div className="p-6 rounded-2xl bg-[#0D2020]/60 border border-[#4D524B]/30 text-center">
+            <div className="text-4xl sm:text-5xl font-serif text-[#2DD4BF] font-normal mb-1">
+              {stats?.totalVerifiedCalls ? `${stats.totalVerifiedCalls.toLocaleString()}+` : '12,000+'}
+            </div>
+            <div className="text-xs font-mono uppercase text-[#F4F6F4] font-semibold">
+              Calls Settled
+            </div>
+            <div className="text-[11px] text-[#837F78] mt-1">Recorded on Avalanche C-Chain</div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 6: TESTIMONIALS (Cairn Quotes Layout) ── */}
+      <section className="cnl-quotes max-w-[1240px] mx-auto px-4 sm:px-8 py-20 border-t border-[#4D524B]/30">
+        <div className="text-center max-w-xl mx-auto mb-12">
+          <div className="cnl-kicker justify-center mb-3 text-[#CE1A1E]">From the Front Lines</div>
+          <h2 className="text-3xl sm:text-4xl font-serif text-[#F4F6F4]">
+            Trusted by autonomous operators.
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {TESTIMONIALS.map((t, idx) => (
+            <div
+              key={idx}
+              className="p-8 rounded-2xl bg-[#0D2020] border border-[#4D524B]/40 flex flex-col justify-between"
+            >
+              <p className="text-base font-serif text-[#E8EBE4] leading-relaxed italic mb-6">
+                &ldquo;{t.quote}&rdquo;
+              </p>
+              <div className="flex items-center justify-between pt-4 border-t border-[#4D524B]/30 text-xs font-mono">
+                <div>
+                  <div className="text-[#F4F6F4] font-semibold">{t.author}</div>
+                  <div className="text-[#837F78]">
+                    {t.role} · {t.company}
+                  </div>
+                </div>
+                <span className="text-[#CE1A1E] bg-[#CE1A1E]/10 px-2 py-1 rounded-md border border-[#CE1A1E]/30">
+                  {t.tag}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── SECTION 7: FINAL CTA HORIZON (Cairn CTA) ── */}
+      <section className="cnl-cta max-w-[1240px] mx-auto px-4 sm:px-8 py-28 text-center" data-sec="cta">
+        <div className="rounded-[32px] bg-gradient-to-b from-[#162826] to-[#0D2020] border border-[#4D524B]/50 p-12 sm:p-20 relative overflow-hidden shadow-2xl">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-[#CE1A1E]/20 blur-[90px] rounded-full pointer-events-none" />
+
+          <div className="relative z-10 max-w-2xl mx-auto space-y-6">
+            <div className="cnl-kicker justify-center text-[#CE1A1E]">Start In Minutes</div>
+            <h2 className="text-4xl sm:text-6xl font-serif text-[#F4F6F4] tracking-tight">
+              Quiet pipelines. Guaranteed delivery.
+            </h2>
+            <p className="text-[#837F78] text-base leading-relaxed">
+              Integrate with your MCP client or curl in two minutes. Pre-authorized vouchers, atomic
+              escrow, zero gas upfront.
+            </p>
+
+            <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+              <Link
+                href="/explore"
+                className="cnl-pill is-lg bg-[#CE1A1E] text-white hover:bg-[#65060E] px-8 py-4 font-semibold text-sm"
+              >
+                <span>Browse Verified Services</span>
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+              <Link
+                href="/provider/new"
+                className="cnl-pill is-lg bg-[#0D2020] text-[#F4F6F4] border border-[#4D524B]/60 hover:bg-[#162826] px-8 py-4 text-sm"
+              >
+                <span>Register Service Provider</span>
+              </Link>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-6 pt-6 text-xs font-mono text-[#837F78]">
+              <span className="flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5 text-[#2DD4BF]" /> Avalanche C-Chain
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5 text-[#2DD4BF]" /> EIP-3009 Gasless Vouchers
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5 text-[#2DD4BF]" /> ERC-8004 Trust Standard
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

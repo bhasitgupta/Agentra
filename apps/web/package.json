@@ -18,8 +18,10 @@
     "@radix-ui/react-tabs": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.1.3",
     "@rainbow-me/rainbowkit": "^2.1.6",
+    "@tailwindcss/postcss": "^4.0.0-beta.5",
     "@tanstack/react-query": "^5.59.20",
     "@types/three": "^0.187.0",
+    "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.11.17",
@@ -30,17 +32,15 @@
     "react-dom": "19.0.0",
     "recharts": "^2.13.3",
     "tailwind-merge": "^2.5.4",
+    "tailwindcss": "^4.0.0-beta.5",
     "three": "^0.187.0",
     "viem": "^2.21.37",
     "wagmi": "^2.12.17"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.0.0-beta.5",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "autoprefixer": "^10.4.20",
-    "tailwindcss": "^4.0.0-beta.5",
     "typescript": "^5.6.3"
   },
   "optionalDependencies": {

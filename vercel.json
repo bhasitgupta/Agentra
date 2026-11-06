@@ -5,6 +5,7 @@
   "buildCommand": "npm run build --prefix apps/web",
   "outputDirectory": "apps/web/.next",
   "env": {
-    "NEXT_TELEMETRY_DISABLED": "1"
+    "NEXT_TELEMETRY_DISABLED": "1",
+    "NODE_OPTIONS": "--max-old-space-size=4096"
   }
 }
