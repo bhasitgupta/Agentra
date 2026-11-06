@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ConnectButton } from '@/components/web3/ConnectButton';
-import { Menu, X, Cpu, Radio, Sparkles, LayoutDashboard, Terminal, Wallet } from 'lucide-react';
+import { useIsAdmin } from '@/lib/admin';
+import { Menu, X, Cpu, Radio, Sparkles, LayoutDashboard, Terminal, Wallet, Shield } from 'lucide-react';
 
 const NAV = [
   { name: 'Explore',  href: '/explore',            icon: Cpu },
@@ -17,6 +18,7 @@ const NAV = [
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const { isAdmin } = useIsAdmin();
 
   const active = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href);
@@ -50,6 +52,19 @@ export function Navbar() {
               {link.name}
             </Link>
           ))}
+          {isAdmin && (
+            <Link
+              href="/admin/audit-logs"
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all ${
+                active('/admin/audit-logs')
+                  ? 'bg-[#65060E]/60 text-white border border-[#CE1A1E] shadow-sm shadow-[#CE1A1E]/30'
+                  : 'text-[#CE1A1E] hover:text-white hover:bg-[#65060E]/40 border border-[#CE1A1E]/40'
+              }`}
+            >
+              <Shield className="w-3.5 h-3.5 text-[#CE1A1E]" />
+              <span>Audit Logs</span>
+            </Link>
+          )}
         </nav>
 
         {/* Right */}
@@ -98,6 +113,16 @@ export function Navbar() {
               </Link>
             );
           })}
+          {isAdmin && (
+            <Link
+              href="/admin/audit-logs"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium bg-[#65060E]/40 text-[#CE1A1E] border border-[#CE1A1E]/50"
+            >
+              <Shield className="w-4 h-4 shrink-0" />
+              <span>Admin Audit Logs</span>
+            </Link>
+          )}
           <div className="pt-2 flex flex-col gap-2">
             <Link
               href="/choose-crypto-wallet-login"
