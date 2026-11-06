@@ -77,16 +77,10 @@ export default function NewServiceWizardPage() {
     setPublishError(null);
 
     try {
-      // Encode transaction data for verifiable registration on Avalanche Fuji
-      const encoder = new TextEncoder();
-      const rawPayload = `Agentra:RegisterService:${formData.name.trim()}:${formData.category}:${Date.now()}`;
-      const hexData = ('0x' + Array.from(encoder.encode(rawPayload)).map(b => b.toString(16).padStart(2, '0')).join('')) as `0x${string}`;
-
       // Trigger wallet popup on Avalanche Fuji sending validated transaction to caller
       const hash = await sendTransactionAsync({
         to: address as `0x${string}`,
         value: 0n,
-        data: hexData,
       });
 
       // Wait for real on-chain confirmation receipt

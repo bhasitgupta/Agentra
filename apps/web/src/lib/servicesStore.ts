@@ -45,3 +45,4 @@ export function getServicesByProvider(providerAddress: string): Service[] {
     (s) => s.providerAddress?.toLowerCase() === providerAddress.toLowerCase()
   );
 }
+
