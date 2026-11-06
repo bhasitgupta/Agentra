@@ -10,6 +10,7 @@ import { Select } from '@/components/ui/Select';
 import { Textarea } from '@/components/ui/Textarea';
 import { CATEGORIES } from '@/lib/constants';
 import { formatUSDC } from '@/lib/utils';
+import { createProviderService, verifyProviderEndpoint, confirmPublishService } from '@/lib/api';
 import {
   ArrowLeft,
   ArrowRight,

@@ -340,3 +340,97 @@ export async function executeGatewayCall(
     };
   }
 }
+
+// 7. Provider API
+export async function fetchProviderSummary(): Promise<any> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/v1/provider/summary`, {
+      cache: 'no-store',
+      signal: AbortSignal.timeout(3000),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    console.warn('Fallback provider summary used:', err);
+    return null;
+  }
+}
+
+export async function createProviderService(data: {
+  name: string;
+  description: string;
+  category: string;
+  tags?: string[];
+  endpointUrl: string;
+  httpMethod?: 'GET' | 'POST';
+  priceUsdc: number;
+  payoutAddress: string;
+}): Promise<any> {
+  const res = await fetch(`${API_BASE_URL}/v1/provider/services`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function verifyProviderEndpoint(id: string): Promise<any> {
+  const res = await fetch(`${API_BASE_URL}/v1/provider/services/${id}/verify`, {
+    method: 'POST',
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function confirmPublishService(id: string, txHash?: string): Promise<any> {
+  const res = await fetch(`${API_BASE_URL}/v1/provider/services/${id}/confirm-publish`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ txHash }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function toggleProviderServicePause(id: string, pause: boolean): Promise<any> {
+  const endpoint = pause ? 'pause' : 'resume';
+  const res = await fetch(`${API_BASE_URL}/v1/provider/services/${id}/${endpoint}`, {
+    method: 'POST',
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+// 8. Buyer API
+export async function fetchBuyerSummary(): Promise<any> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/v1/buyer/summary`, {
+      cache: 'no-store',
+      signal: AbortSignal.timeout(3000),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    console.warn('Fallback buyer summary used:', err);
+    return null;
+  }
+}
+
+export async function saveBuyerPolicy(
+  address: string,
+  policy: {
+    maxPerCallUsdc: number;
+    dailyCapUsdc: number;
+    minTrust: number;
+    allowCategories: string[];
+  }
+): Promise<any> {
+  const res = await fetch(`${API_BASE_URL}/v1/buyer/wallets/${address}/policy`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(policy),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}

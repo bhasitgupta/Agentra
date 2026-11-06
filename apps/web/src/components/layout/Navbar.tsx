@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ConnectButton } from '@/components/web3/ConnectButton';
-import { Menu, X, Cpu, Radio, Sparkles, LayoutDashboard, Terminal } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Menu, X, Cpu, Radio, Sparkles, LayoutDashboard, Terminal, Wallet } from 'lucide-react';
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -68,6 +69,17 @@ export function Navbar() {
 
         {/* Right Action: Wallet Connect */}
         <div className="flex items-center gap-3">
+          <Link
+            href="/choose-crypto-wallet-login"
+            className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+              pathname === '/choose-crypto-wallet-login'
+                ? 'bg-[#8B5CF6]/15 border-[#8B5CF6] text-[#A78BFA]'
+                : 'bg-[#14142A] border-[#2D2D52] text-[#F1F0FF] hover:border-[#8B5CF6] hover:text-white'
+            }`}
+          >
+            <Wallet className="w-3.5 h-3.5 text-[#8B5CF6]" />
+            <span>Wallets</span>
+          </Link>
           <ConnectButton />
 
           {/* Mobile hamburger button */}
@@ -89,6 +101,18 @@ export function Navbar() {
             <span className="w-2 h-2 rounded-full bg-[#E84142]" />
             <span>Network: Avalanche Fuji Testnet (43113)</span>
           </div>
+          <Link
+            href="/choose-crypto-wallet-login"
+            onClick={() => setMobileMenuOpen(false)}
+            className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+              pathname === '/choose-crypto-wallet-login'
+                ? 'bg-[#14142A] text-[#8B5CF6] border border-[#2D2D52]'
+                : 'text-[#9B99C4] hover:text-[#F1F0FF] hover:bg-[#14142A]'
+            }`}
+          >
+            <Wallet className="w-4 h-4 text-[#8B5CF6]" />
+            <span>Choose Wallet</span>
+          </Link>
           {navLinks.map((link) => {
             const Icon = link.icon;
             const active = isActive(link.href);

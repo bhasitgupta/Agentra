@@ -11,6 +11,20 @@ import { WagmiProvider, http } from 'wagmi';
 import { avalancheFuji, avalanche } from 'viem/chains';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
+// Suppress rogue third-party Chrome extension errors (e.g. M_ID undefined)
+if (typeof window !== 'undefined') {
+  window.addEventListener('error', (event) => {
+    if (
+      event.filename?.includes('chrome-extension://') ||
+      event.filename?.includes('executors') ||
+      event.message?.includes('M_ID')
+    ) {
+      event.stopImmediatePropagation();
+      event.preventDefault();
+    }
+  });
+}
+
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '21fef48091f12692cad574a6f7753643';
 
 const config = getDefaultConfig({
@@ -51,7 +65,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
             overlayBlur: 'small',
           })}
         >
-          {mounted ? children : children}
+          <div suppressHydrationWarning className="w-full flex-1 flex flex-col">
+            {children}
+          </div>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

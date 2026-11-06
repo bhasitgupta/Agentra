@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { StatCard } from '@/components/ui/StatCard';
 import { Button } from '@/components/ui/Button';
@@ -10,6 +10,7 @@ import {
   MOCK_EARNINGS_CHART,
   REFERENCE_SERVICES,
 } from '@/lib/mockData';
+import { fetchProviderSummary, toggleProviderServicePause } from '@/lib/api';
 import { formatUSDC, truncateAddress, truncateTx, getSnowtraceUrl } from '@/lib/utils';
 import {
   AreaChart,
@@ -38,13 +39,25 @@ export default function ProviderDashboardPage() {
   const [activeTab, setActiveTab] = useState<'overview' | 'services' | 'calls' | 'settings'>('overview');
   const [serviceStatus, setServiceStatus] = useState<Record<string, boolean>>({
     'ev-market-data': true,
+    'srv-101': true,
   });
+  const [summaryData, setSummaryData] = useState<any>(null);
 
-  const toggleService = (slug: string) => {
+  useEffect(() => {
+    fetchProviderSummary().then((res) => {
+      if (res) setSummaryData(res);
+    });
+  }, []);
+
+  const toggleService = async (slug: string) => {
+    const nextState = !serviceStatus[slug];
     setServiceStatus((prev) => ({
       ...prev,
-      [slug]: !prev[slug],
+      [slug]: nextState,
     }));
+    try {
+      await toggleProviderServicePause(slug, !nextState);
+    } catch {}
   };
 
   const myServices = REFERENCE_SERVICES.slice(0, 2);
