@@ -53,7 +53,7 @@ export function Badge({
     return (
       <span
         className={cn(
-          'inline-flex items-center gap-1 font-medium rounded-full bg-[#6D001A]/10 text-[#6D001A] border border-[#6D001A]/30 border-dashed',
+          'inline-flex items-center gap-1 font-medium rounded-full bg-[#CE1A1E]/15 text-[#CE1A1E] border border-[#CE1A1E]/30 border-dashed',
           sizeClasses,
           className
         )}
@@ -66,14 +66,14 @@ export function Badge({
   }
 
   const variants: Record<string, string> = {
-    default: 'bg-[#160B0F] text-[#D4D4D8] border border-[rgba(255,255,255,0.10)]',
-    outline: 'bg-transparent text-[#D4D4D8] border border-[rgba(255,255,255,0.10)]',
-    category: 'bg-[#160B0F] text-[#6D001A] border border-[#2E1065]',
+    default: 'bg-[#223330]/60 text-[#E8EBE4] border border-[#4D524B]/40',
+    outline: 'bg-transparent text-[#E8EBE4] border border-[#4D524B]/40',
+    category: 'bg-[#223330]/50 text-[#CE1A1E] border border-[#4D524B]/50 font-mono',
     success: 'bg-[#2DD4BF]/10 text-[#2DD4BF] border border-[#2DD4BF]/30',
     failure: 'bg-[#F87171]/10 text-[#F87171] border border-[#F87171]/30',
     warning: 'bg-[#FBBF24]/10 text-[#FBBF24] border border-[#FBBF24]/30',
-    violet: 'bg-[#6D001A]/15 text-[#6D001A] border border-[#6D001A]/30',
-    trust: 'bg-[#6D001A]/15 text-[#6D001A] border border-[#6D001A]/30',
+    violet: 'bg-[#65060E]/25 text-[#CE1A1E] border border-[#CE1A1E]/40',
+    trust: 'bg-[#65060E]/25 text-[#CE1A1E] border border-[#CE1A1E]/40',
   };
 
   return (

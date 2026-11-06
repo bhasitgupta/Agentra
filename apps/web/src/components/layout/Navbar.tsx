@@ -22,16 +22,16 @@ export function Navbar() {
     href === '/' ? pathname === '/' : pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-[rgba(109,0,26,0.35)] bg-[#000000]/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-[#4D524B]/35 bg-[#081919]/90 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
 
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 group shrink-0">
-          <div className="w-8 h-8 rounded-lg overflow-hidden border border-[#6D001A]/60 shadow-sm shadow-[#6D001A]/40 group-hover:scale-105 transition-transform bg-[#000000]">
+          <div className="w-8 h-8 rounded-lg overflow-hidden border border-[#CE1A1E]/50 shadow-sm shadow-[#CE1A1E]/30 group-hover:scale-105 transition-transform bg-[#081919]">
             <img src="/logo.png" alt="Agentra" className="w-full h-full object-cover" />
           </div>
-          <span className="font-bold text-xl tracking-tight text-[#FFFFFF]">
-            Agentr<span className="text-[#6D001A]">a</span>
+          <span className="font-bold text-xl tracking-tight text-[#F4F6F4]">
+            Agentr<span className="text-[#CE1A1E]">a</span>
           </span>
         </Link>
 
@@ -43,8 +43,8 @@ export function Navbar() {
               href={link.href}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                 active(link.href)
-                  ? 'bg-[#160B0F] text-[#FFFFFF] border border-[#6D001A]/60 shadow-xs'
-                  : 'text-[#D4D4D8] hover:text-[#FFFFFF] hover:bg-[#0C0608]'
+                  ? 'bg-[#223330] text-[#FFFFFF] border border-[#CE1A1E]/50 shadow-xs'
+                  : 'text-[#837F78] hover:text-[#FFFFFF] hover:bg-[#223330]/50'
               }`}
             >
               {link.name}
@@ -58,18 +58,18 @@ export function Navbar() {
             href="/choose-crypto-wallet-login"
             className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
               pathname === '/choose-crypto-wallet-login'
-                ? 'bg-[#6D001A]/20 border-[#6D001A] text-[#FFFFFF]'
-                : 'bg-[#0C0608] border-[rgba(255,255,255,0.12)] text-[#D4D4D8] hover:border-[#6D001A] hover:text-[#FFFFFF]'
+                ? 'bg-[#65060E]/40 border-[#CE1A1E] text-[#FFFFFF]'
+                : 'bg-[#223330]/40 border-[#4D524B]/50 text-[#E8EBE4] hover:border-[#CE1A1E]/60 hover:text-[#FFFFFF]'
             }`}
           >
-            <Wallet className="w-3.5 h-3.5 text-[#9E0D2A]" />
+            <Wallet className="w-3.5 h-3.5 text-[#CE1A1E]" />
             <span>Wallets</span>
           </Link>
           <ConnectButton />
           <button
             type="button"
             onClick={() => setOpen(!open)}
-            className="md:hidden p-2 rounded-lg text-[#D4D4D8] hover:text-[#FFFFFF] hover:bg-[#0C0608] transition-colors"
+            className="md:hidden p-2 rounded-lg text-[#837F78] hover:text-[#FFFFFF] hover:bg-[#223330]/50 transition-colors"
             aria-label="Toggle menu"
           >
             {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -79,7 +79,7 @@ export function Navbar() {
 
       {/* Mobile drawer */}
       {open && (
-        <div className="md:hidden border-b border-[rgba(109,0,26,0.35)] bg-[#0C0608] px-4 pt-2 pb-5 space-y-1">
+        <div className="md:hidden border-b border-[#4D524B]/35 bg-[#081919] px-4 pt-2 pb-5 space-y-1">
           {NAV.map((link) => {
             const Icon = link.icon;
             return (
@@ -89,8 +89,8 @@ export function Navbar() {
                 onClick={() => setOpen(false)}
                 className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   active(link.href)
-                    ? 'bg-[#160B0F] text-[#FFFFFF] border border-[#6D001A]/60'
-                    : 'text-[#D4D4D8] hover:text-[#FFFFFF] hover:bg-[#160B0F]'
+                    ? 'bg-[#223330] text-[#FFFFFF] border border-[#CE1A1E]/50'
+                    : 'text-[#837F78] hover:text-[#FFFFFF] hover:bg-[#223330]/40'
                 }`}
               >
                 <Icon className="w-4 h-4 shrink-0" />
@@ -102,9 +102,9 @@ export function Navbar() {
             <Link
               href="/choose-crypto-wallet-login"
               onClick={() => setOpen(false)}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-[#D4D4D8] bg-[#160B0F] border border-[rgba(255,255,255,0.12)]"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-[#E8EBE4] bg-[#223330]/50 border border-[#4D524B]/50"
             >
-              <Wallet className="w-4 h-4 text-[#9E0D2A]" />
+              <Wallet className="w-4 h-4 text-[#CE1A1E]" />
               <span>Choose Wallet</span>
             </Link>
             <ConnectButton />

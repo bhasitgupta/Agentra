@@ -155,8 +155,8 @@ export default function ExplorePage() {
                 type="button"
                 className={`px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                   isSelected
-                    ? 'bg-[#6D001A] text-[#FFFFFF] shadow-sm shadow-[#6D001A]/30 border border-[#6D001A]/30'
-                    : 'bg-[#0C0608] text-[#D4D4D8] hover:text-[#FFFFFF] border border-[rgba(255,255,255,0.10)] hover:border-[rgba(255,255,255,0.10)]'
+                    ? 'bg-[#CE1A1E] text-[#FFFFFF] shadow-sm shadow-[#CE1A1E]/30 border border-[#CE1A1E]'
+                    : 'bg-[#223330]/40 text-[#837F78] hover:text-[#FFFFFF] border border-[#4D524B]/40 hover:border-[#CE1A1E]/40'
                 }`}
               >
                 {cat.label}
@@ -168,14 +168,14 @@ export default function ExplorePage() {
 
       {/* Discovery Reason Banner */}
       {discoverResults && discoverResults.length > 0 && (
-        <div className="mb-6 p-4 rounded-xl bg-[#160B0F] border border-[#6D001A]/30 flex items-start gap-3">
-          <Sparkles className="w-5 h-5 text-[#6D001A] shrink-0 mt-0.5" />
-          <div className="text-xs text-[#D4D4D8]">
-            <p className="font-semibold text-[#FFFFFF]">
+        <div className="mb-6 p-4 rounded-xl bg-[#223330]/40 border border-[#CE1A1E]/40 flex items-start gap-3">
+          <Sparkles className="w-5 h-5 text-[#CE1A1E] shrink-0 mt-0.5" />
+          <div className="text-xs text-[#E8EBE4]">
+            <p className="font-semibold text-[#F4F6F4]">
               Semantic Ranking Activated (TRD-A §8):
             </p>
             <p className="mt-1">
-              Top match: <strong className="text-[#6D001A]">{discoverResults[0].name}</strong> — {discoverResults[0].reason}
+              Top match: <strong className="text-[#CE1A1E]">{discoverResults[0].name}</strong> — {discoverResults[0].reason}
             </p>
           </div>
         </div>
@@ -185,17 +185,17 @@ export default function ExplorePage() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Left Sidebar Filters */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-[#0C0608] border border-[rgba(255,255,255,0.10)] rounded-2xl p-5 space-y-6">
-            <div className="flex items-center justify-between pb-4 border-b border-[rgba(255,255,255,0.10)]">
-              <div className="flex items-center gap-2 text-sm font-semibold text-[#FFFFFF]">
-                <Filter className="w-4 h-4 text-[#6D001A]" />
+          <div className="bg-[#223330]/30 border border-[#4D524B]/40 rounded-2xl p-5 space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b border-[#4D524B]/30">
+              <div className="flex items-center gap-2 text-sm font-semibold text-[#F4F6F4]">
+                <Filter className="w-4 h-4 text-[#CE1A1E]" />
                 <span>Filters</span>
               </div>
               {hasActiveFilters && (
                 <button
                   onClick={resetFilters}
                   type="button"
-                  className="text-xs text-[#6D001A] hover:text-[#FFFFFF] flex items-center gap-1 transition-colors cursor-pointer"
+                  className="text-xs text-[#CE1A1E] hover:text-[#FFFFFF] flex items-center gap-1 transition-colors cursor-pointer"
                 >
                   <RotateCcw className="w-3 h-3" />
                   <span>Reset</span>
@@ -205,19 +205,19 @@ export default function ExplorePage() {
 
             {/* Sort Order */}
             <div className="space-y-2">
-              <label className="text-xs font-semibold text-[#D4D4D8] uppercase tracking-wider">
+              <label className="text-xs font-semibold text-[#837F78] uppercase tracking-wider font-mono">
                 Sort By
               </label>
-              <div className="grid grid-cols-3 gap-1.5 p-1 bg-[#000000] rounded-lg border border-[rgba(255,255,255,0.10)]">
+              <div className="grid grid-cols-3 gap-1.5 p-1 bg-[#081919] rounded-lg border border-[#4D524B]/40">
                 {(['trust', 'price', 'calls'] as const).map((s) => (
                   <button
                     key={s}
                     type="button"
                     onClick={() => setSortBy(s)}
-                    className={`py-1.5 text-xs font-medium rounded-md capitalize transition-all cursor-pointer ${
+                    className={`py-1.5 text-xs font-medium rounded-md capitalize transition-all cursor-pointer font-mono ${
                       sortBy === s
-                        ? 'bg-[#160B0F] text-[#FFFFFF] shadow-xs border border-[rgba(255,255,255,0.10)]'
-                        : 'text-[#D4D4D8] hover:text-[#FFFFFF]'
+                        ? 'bg-[#223330] text-[#FFFFFF] shadow-xs border border-[#CE1A1E]/50'
+                        : 'text-[#837F78] hover:text-[#FFFFFF]'
                     }`}
                   >
                     {s}
@@ -229,7 +229,7 @@ export default function ExplorePage() {
             {/* Max Price Slider */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-semibold text-[#D4D4D8] uppercase tracking-wider">
+                <span className="font-semibold text-[#837F78] uppercase tracking-wider font-mono">
                   Max Price
                 </span>
                 <span className="font-mono text-[#2DD4BF] font-medium">
@@ -243,9 +243,9 @@ export default function ExplorePage() {
                 step="0.005"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(parseFloat(e.target.value))}
-                className="w-full h-1.5 bg-[#160B0F] rounded-lg appearance-none cursor-pointer accent-[#6D001A]"
+                className="w-full h-1.5 bg-[#081919] rounded-lg appearance-none cursor-pointer accent-[#CE1A1E]"
               />
-              <div className="flex justify-between text-[10px] text-[#8E8E93] font-mono">
+              <div className="flex justify-between text-[10px] text-[#837F78] font-mono">
                 <span>0.005</span>
                 <span>0.025</span>
                 <span>0.050</span>
@@ -255,10 +255,10 @@ export default function ExplorePage() {
             {/* Min Trust Score Slider */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-semibold text-[#D4D4D8] uppercase tracking-wider">
+                <span className="font-semibold text-[#837F78] uppercase tracking-wider font-mono">
                   Min Trust Score
                 </span>
-                <span className="font-mono text-[#6D001A] font-medium">
+                <span className="font-mono text-[#CE1A1E] font-medium">
                   {minTrustScore}+
                 </span>
               </div>
@@ -269,9 +269,9 @@ export default function ExplorePage() {
                 step="10"
                 value={minTrustScore}
                 onChange={(e) => setMinTrustScore(parseInt(e.target.value, 10))}
-                className="w-full h-1.5 bg-[#160B0F] rounded-lg appearance-none cursor-pointer accent-[#6D001A]"
+                className="w-full h-1.5 bg-[#081919] rounded-lg appearance-none cursor-pointer accent-[#CE1A1E]"
               />
-              <div className="flex justify-between text-[10px] text-[#8E8E93] font-mono">
+              <div className="flex justify-between text-[10px] text-[#837F78] font-mono">
                 <span>Any (0)</span>
                 <span>Prov (40)</span>
                 <span>Est (70)</span>
@@ -279,9 +279,9 @@ export default function ExplorePage() {
             </div>
 
             {/* Security Guarantee Notice */}
-            <div className="p-3 rounded-xl bg-[#160B0F]/60 border border-[rgba(255,255,255,0.10)]/60 text-[11px] text-[#D4D4D8] leading-relaxed">
+            <div className="p-3 rounded-xl bg-[#081919] border border-[#4D524B]/40 text-[11px] text-[#E8EBE4] leading-relaxed">
               <span className="text-[#2DD4BF] font-medium">Pay-on-Success Guarantee:</span>{' '}
-              All calls are gated by x402 . If a provider fails or times out, you are charged 0 USDC.
+              All calls are gated by x402. If a provider fails or times out, you are charged 0 USDC.
             </div>
           </div>
         </div>
@@ -289,8 +289,8 @@ export default function ExplorePage() {
         {/* Right Main Grid */}
         <div className="lg:col-span-3">
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-20 text-[#D4D4D8] space-y-3">
-              <Loader2 className="w-8 h-8 animate-spin text-[#6D001A]" />
+            <div className="flex flex-col items-center justify-center py-20 text-[#837F78] space-y-3">
+              <Loader2 className="w-8 h-8 animate-spin text-[#CE1A1E]" />
               <p className="text-sm">Querying Agentra Registry ...</p>
             </div>
           ) : filteredServices.length > 0 ? (
@@ -301,14 +301,14 @@ export default function ExplorePage() {
             </div>
           ) : (
             /* Empty State */
-            <div className="bg-[#0C0608] border border-[rgba(255,255,255,0.10)] rounded-2xl p-12 text-center flex flex-col items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-[#160B0F] flex items-center justify-center text-[#8E8E93] mb-4">
+            <div className="bg-[#223330]/30 border border-[#4D524B]/40 rounded-2xl p-12 text-center flex flex-col items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-[#081919] flex items-center justify-center text-[#837F78] mb-4">
                 <SlidersHorizontal className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-semibold text-[#FFFFFF]">
+              <h3 className="text-base font-semibold text-[#F4F6F4]">
                 No matching services found
               </h3>
-              <p className="text-sm text-[#D4D4D8] max-w-sm mt-1">
+              <p className="text-sm text-[#837F78] max-w-sm mt-1">
                 Try loosening your filters, reducing the minimum Trust Score, or broadening your search terms.
               </p>
               <Button

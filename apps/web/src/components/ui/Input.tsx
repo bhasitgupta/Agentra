@@ -15,13 +15,13 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type = 'text', label, error, hint, leftIcon, rightIcon, ...props }, ref) => (
     <div className="w-full space-y-1.5">
       {label && (
-        <label className="block text-xs font-medium text-[#D4D4D8] uppercase tracking-wider">
+        <label className="block text-xs font-medium text-[#E8EBE4] uppercase tracking-wider font-mono">
           {label}
         </label>
       )}
       <div className="relative flex items-center">
         {leftIcon && (
-          <div className="absolute left-3 text-[#8E8E93] pointer-events-none flex items-center justify-center">
+          <div className="absolute left-3 text-[#837F78] pointer-events-none flex items-center justify-center">
             {leftIcon}
           </div>
         )}
@@ -29,26 +29,26 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           type={type}
           ref={ref}
           className={cn(
-            'w-full h-10 px-3.5 rounded-lg bg-[#0C0608] border border-[rgba(255,255,255,0.12)] text-sm text-[#FFFFFF] placeholder-[#8E8E93] transition-all duration-150',
-            'focus:outline-none focus:border-[#6D001A] focus:ring-1 focus:ring-[#6D001A]/60',
+            'w-full h-10 px-3.5 rounded-lg bg-[#223330]/30 border border-[#4D524B]/50 text-sm text-[#F4F6F4] placeholder-[#837F78] transition-all duration-150',
+            'focus:outline-none focus:border-[#CE1A1E] focus:ring-1 focus:ring-[#CE1A1E]/60',
             'disabled:opacity-50 disabled:cursor-not-allowed',
             leftIcon && 'pl-9',
             rightIcon && 'pr-9',
-            error && 'border-[#9E0D2A] focus:ring-[#9E0D2A]',
+            error && 'border-[#CE1A1E] focus:ring-[#CE1A1E]',
             className
           )}
           {...props}
         />
         {rightIcon && (
-          <div className="absolute right-3 text-[#8E8E93] flex items-center justify-center">
+          <div className="absolute right-3 text-[#837F78] flex items-center justify-center">
             {rightIcon}
           </div>
         )}
       </div>
       {error ? (
-        <p className="text-xs text-[#9E0D2A]">{error}</p>
+        <p className="text-xs text-[#CE1A1E] font-mono">{error}</p>
       ) : hint ? (
-        <p className="text-xs text-[#8E8E93]">{hint}</p>
+        <p className="text-xs text-[#837F78] font-mono">{hint}</p>
       ) : null}
     </div>
   )

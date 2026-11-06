@@ -6,6 +6,7 @@ import { getDefaultConfig, RainbowKitProvider, darkTheme } from '@rainbow-me/rai
 import { WagmiProvider, http } from 'wagmi';
 import { avalancheFuji, avalanche } from 'viem/chains';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { SmoothScroll } from './SmoothScroll';
 
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '21fef48091f12692cad574a6f7753643';
 
@@ -32,16 +33,18 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
           theme={darkTheme({
-            accentColor: '#6D001A',
+            accentColor: '#CE1A1E',
             accentColorForeground: '#FFFFFF',
             borderRadius: 'medium',
             fontStack: 'system',
             overlayBlur: 'small',
           })}
         >
-          <div suppressHydrationWarning className="w-full flex-1 flex flex-col">
-            {mounted ? children : <div className="w-full flex-1 flex flex-col">{children}</div>}
-          </div>
+          <SmoothScroll>
+            <div suppressHydrationWarning className="w-full flex-1 flex flex-col">
+              {mounted ? children : <div className="w-full flex-1 flex flex-col">{children}</div>}
+            </div>
+          </SmoothScroll>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

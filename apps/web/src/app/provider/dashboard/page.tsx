@@ -70,7 +70,7 @@ export default function ProviderDashboardPage() {
           <h1 className="text-3xl font-extrabold text-[#FFFFFF] tracking-tight">
             Provider Dashboard
           </h1>
-          <p className="text-sm text-[#D4D4D8] mt-1">
+          <p className="text-sm text-[#E8EBE4] mt-1">
             Manage your AI endpoints, monitor real-time earnings, and track escrow settlements on Avalanche.
           </p>
         </div>
@@ -83,7 +83,7 @@ export default function ProviderDashboardPage() {
       </div>
 
       {/* Nav Tabs */}
-      <div className="flex items-center gap-2 border-b border-[rgba(255,255,255,0.10)] pb-3 mb-8">
+      <div className="flex items-center gap-2 border-b border-[rgba(77,82,75,0.40)] pb-3 mb-8">
         {[
           { id: 'overview', label: 'Overview', icon: Activity },
           { id: 'services', label: 'My Services', icon: Layers },
@@ -99,8 +99,8 @@ export default function ProviderDashboardPage() {
               type="button"
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer ${
                 isActive
-                  ? 'bg-[#160B0F] text-[#6D001A] border border-[rgba(255,255,255,0.10)]'
-                  : 'text-[#D4D4D8] hover:text-[#FFFFFF]'
+                  ? 'bg-[#223330]/60 text-[#CE1A1E] border border-[rgba(77,82,75,0.40)]'
+                  : 'text-[#E8EBE4] hover:text-[#FFFFFF]'
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
@@ -124,7 +124,7 @@ export default function ProviderDashboardPage() {
               label="Verified Calls (Today)"
               value="340"
               trend={{ value: '+8.5% volume', isPositive: true }}
-              icon={<PhoneCall className="w-4 h-4 text-[#6D001A]" />}
+              icon={<PhoneCall className="w-4 h-4 text-[#CE1A1E]" />}
             />
             <StatCard
               label="Success Rate"
@@ -141,11 +141,11 @@ export default function ProviderDashboardPage() {
           </div>
 
           {/* 7-day Earnings Chart */}
-          <div className="p-6 rounded-2xl bg-[#0C0608] border border-[rgba(255,255,255,0.10)]">
+          <div className="p-6 rounded-2xl bg-[#223330]/35 border border-[rgba(77,82,75,0.40)]">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h3 className="text-base font-bold text-[#FFFFFF]">7-Day Revenue Velocity</h3>
-                <p className="text-xs text-[#D4D4D8]">USDC settled via Avalanche Escrow</p>
+                <p className="text-xs text-[#E8EBE4]">USDC settled via Avalanche Escrow</p>
               </div>
               <span className="text-xs font-mono text-[#2DD4BF] bg-[#2DD4BF]/10 px-2.5 py-1 rounded-full border border-[#2DD4BF]/20">
                 Total: $19.00 USDC
@@ -157,28 +157,28 @@ export default function ProviderDashboardPage() {
                 <AreaChart data={MOCK_EARNINGS_CHART}>
                   <defs>
                     <linearGradient id="earningsGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#6D001A" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="#6D001A" stopOpacity={0.0} />
+                      <stop offset="5%" stopColor="#CE1A1E" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#CE1A1E" stopOpacity={0.0} />
                     </linearGradient>
                   </defs>
                   <XAxis
                     dataKey="day"
-                    stroke="#8E8E93"
+                    stroke="#837F78"
                     fontSize={12}
                     tickLine={false}
-                    axisLine={{ stroke: 'rgba(255,255,255,0.10)' }}
+                    axisLine={{ stroke: 'rgba(77,82,75,0.40)' }}
                   />
                   <YAxis
-                    stroke="#8E8E93"
+                    stroke="#837F78"
                     fontSize={12}
                     tickLine={false}
-                    axisLine={{ stroke: 'rgba(255,255,255,0.10)' }}
+                    axisLine={{ stroke: 'rgba(77,82,75,0.40)' }}
                     tickFormatter={(val) => `$${val}`}
                   />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: '#0C0608',
-                      borderColor: 'rgba(255,255,255,0.10)',
+                      backgroundColor: '#223330]/35',
+                      borderColor: 'rgba(77,82,75,0.40)',
                       borderRadius: '8px',
                       color: '#FFFFFF',
                       fontSize: '12px',
@@ -187,7 +187,7 @@ export default function ProviderDashboardPage() {
                   <Area
                     type="monotone"
                     dataKey="earnings"
-                    stroke="#6D001A"
+                    stroke="#CE1A1E"
                     strokeWidth={2}
                     fillOpacity={1}
                     fill="url(#earningsGradient)"
@@ -198,16 +198,16 @@ export default function ProviderDashboardPage() {
           </div>
 
           {/* Recent Calls Table */}
-          <div className="p-6 rounded-2xl bg-[#0C0608] border border-[rgba(255,255,255,0.10)]">
+          <div className="p-6 rounded-2xl bg-[#223330]/35 border border-[rgba(77,82,75,0.40)]">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-base font-bold text-[#FFFFFF]">Live Call Telemetry</h3>
-              <span className="text-xs text-[#8E8E93] font-mono">Auto-refreshed via SSE</span>
+              <span className="text-xs text-[#837F78] font-mono">Auto-refreshed via SSE</span>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs font-mono">
                 <thead>
-                  <tr className="border-b border-[rgba(255,255,255,0.10)] text-[#8E8E93]">
+                  <tr className="border-b border-[rgba(77,82,75,0.40)] text-[#837F78]">
                     <th className="pb-3 font-medium">Service</th>
                     <th className="pb-3 font-medium">Caller</th>
                     <th className="pb-3 font-medium">Status</th>
@@ -216,13 +216,13 @@ export default function ProviderDashboardPage() {
                     <th className="pb-3 font-medium text-right">Proof Tx</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[rgba(255,255,255,0.10)]">
+                <tbody className="divide-y divide-[rgba(77,82,75,0.40)]">
                   {MOCK_PROVIDER_CALLS.map((call) => (
-                    <tr key={call.id} className="hover:bg-[#160B0F]/50 transition-colors">
+                    <tr key={call.id} className="hover:bg-[#223330]/60/50 transition-colors">
                       <td className="py-3 text-[#FFFFFF] font-sans font-semibold">
                         {call.serviceName}
                       </td>
-                      <td className="py-3 text-[#D4D4D8]">
+                      <td className="py-3 text-[#E8EBE4]">
                         {truncateAddress(call.buyerAddress, 4)}
                       </td>
                       <td className="py-3">
@@ -236,7 +236,7 @@ export default function ProviderDashboardPage() {
                           </span>
                         )}
                       </td>
-                      <td className="py-3 text-[#D4D4D8]">{call.latencyMs}ms</td>
+                      <td className="py-3 text-[#E8EBE4]">{call.latencyMs}ms</td>
                       <td className="py-3 font-semibold text-[#2DD4BF]">
                         {formatUSDC(call.amountUSDC)}
                       </td>
@@ -246,13 +246,13 @@ export default function ProviderDashboardPage() {
                             href={getSnowtraceUrl(call.txHash)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-[#6D001A] hover:text-[#FFFFFF]"
+                            className="inline-flex items-center gap-1 text-[#CE1A1E] hover:text-[#FFFFFF]"
                           >
                             <span>{truncateTx(call.txHash, 3)}</span>
                             <ExternalLink className="w-3 h-3" />
                           </a>
                         ) : (
-                          <span className="text-[#8E8E93]">—</span>
+                          <span className="text-[#837F78]">—</span>
                         )}
                       </td>
                     </tr>
@@ -266,12 +266,12 @@ export default function ProviderDashboardPage() {
 
       {activeTab === 'services' && (
         <div className="space-y-4">
-          <div className="p-6 rounded-2xl bg-[#0C0608] border border-[rgba(255,255,255,0.10)]">
+          <div className="p-6 rounded-2xl bg-[#223330]/35 border border-[rgba(77,82,75,0.40)]">
             <h3 className="text-base font-bold text-[#FFFFFF] mb-4">Active Listed Services</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs font-mono">
                 <thead>
-                  <tr className="border-b border-[rgba(255,255,255,0.10)] text-[#8E8E93]">
+                  <tr className="border-b border-[rgba(77,82,75,0.40)] text-[#837F78]">
                     <th className="pb-3">Name</th>
                     <th className="pb-3">Category</th>
                     <th className="pb-3">Price</th>
@@ -280,17 +280,17 @@ export default function ProviderDashboardPage() {
                     <th className="pb-3 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[rgba(255,255,255,0.10)]">
+                <tbody className="divide-y divide-[rgba(77,82,75,0.40)]">
                   {myServices.map((s) => {
                     const isRunning = serviceStatus[s.slug] ?? true;
                     return (
-                      <tr key={s.slug} className="hover:bg-[#160B0F]/50">
+                      <tr key={s.slug} className="hover:bg-[#223330]/60/50">
                         <td className="py-3 font-sans font-semibold text-[#FFFFFF]">
-                          <Link href={`/services/${s.slug}`} className="hover:text-[#6D001A]">
+                          <Link href={`/services/${s.slug}`} className="hover:text-[#CE1A1E]">
                             {s.name}
                           </Link>
                         </td>
-                        <td className="py-3 text-[#D4D4D8] uppercase">{s.category}</td>
+                        <td className="py-3 text-[#E8EBE4] uppercase">{s.category}</td>
                         <td className="py-3 text-[#2DD4BF] font-semibold">{formatUSDC(s.price)}</td>
                         <td className="py-3 text-[#FFFFFF]">{s.trustScore}/100</td>
                         <td className="py-3">
@@ -308,7 +308,7 @@ export default function ProviderDashboardPage() {
                           <button
                             type="button"
                             onClick={() => toggleService(s.slug)}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#160B0F] hover:bg-[rgba(255,255,255,0.10)] text-[#D4D4D8] hover:text-[#FFFFFF] border border-[rgba(255,255,255,0.10)] cursor-pointer"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#223330]/60 hover:bg-[rgba(77,82,75,0.40)] text-[#E8EBE4] hover:text-[#FFFFFF] border border-[rgba(77,82,75,0.40)] cursor-pointer"
                           >
                             {isRunning ? (
                               <>
@@ -334,22 +334,22 @@ export default function ProviderDashboardPage() {
       )}
 
       {activeTab === 'calls' && (
-        <div className="p-6 rounded-2xl bg-[#0C0608] border border-[rgba(255,255,255,0.10)] space-y-4">
+        <div className="p-6 rounded-2xl bg-[#223330]/35 border border-[rgba(77,82,75,0.40)] space-y-4">
           <h3 className="text-base font-bold text-[#FFFFFF]">Historical Calls Log</h3>
-          <p className="text-xs text-[#D4D4D8]">All incoming x402 payment authorization records.</p>
+          <p className="text-xs text-[#E8EBE4]">All incoming x402 payment authorization records.</p>
           <div className="space-y-2">
             {MOCK_PROVIDER_CALLS.map((call) => (
               <div
                 key={call.id}
-                className="p-3 rounded-xl bg-[#160B0F] border border-[rgba(255,255,255,0.10)] flex items-center justify-between text-xs font-mono"
+                className="p-3 rounded-xl bg-[#223330]/60 border border-[rgba(77,82,75,0.40)] flex items-center justify-between text-xs font-mono"
               >
                 <div>
                   <span className="text-[#FFFFFF] font-semibold">{call.serviceName}</span>
-                  <span className="text-[#8E8E93] block">From {call.buyerAddress}</span>
+                  <span className="text-[#837F78] block">From {call.buyerAddress}</span>
                 </div>
                 <div className="text-right">
                   <span className="text-[#2DD4BF] font-bold">{formatUSDC(call.amountUSDC)}</span>
-                  <span className="text-[#8E8E93] block">{call.timestamp}</span>
+                  <span className="text-[#837F78] block">{call.timestamp}</span>
                 </div>
               </div>
             ))}
@@ -358,20 +358,20 @@ export default function ProviderDashboardPage() {
       )}
 
       {activeTab === 'settings' && (
-        <div className="p-6 rounded-2xl bg-[#0C0608] border border-[rgba(255,255,255,0.10)] max-w-xl space-y-4">
+        <div className="p-6 rounded-2xl bg-[#223330]/35 border border-[rgba(77,82,75,0.40)] max-w-xl space-y-4">
           <h3 className="text-base font-bold text-[#FFFFFF]">Payout Configuration</h3>
-          <p className="text-xs text-[#D4D4D8]">
+          <p className="text-xs text-[#E8EBE4]">
             USDC will automatically stream to this Avalanche C-Chain address when receipts settle.
           </p>
           <div className="space-y-3 pt-2">
             <div>
-              <label className="text-xs font-medium text-[#D4D4D8] uppercase tracking-wider block mb-1">
+              <label className="text-xs font-medium text-[#E8EBE4] uppercase tracking-wider block mb-1">
                 Payout Recipient Address
               </label>
               <input
                 type="text"
                 defaultValue="0x32A478F59C72E6F22e4Bca3d9c7f6071B8B36F72"
-                className="w-full h-10 px-3 rounded-lg bg-[#000000] border border-[rgba(255,255,255,0.10)] text-xs font-mono text-[#FFFFFF] focus:outline-none focus:border-[#6D001A]"
+                className="w-full h-10 px-3 rounded-lg bg-[#081919] border border-[rgba(77,82,75,0.40)] text-xs font-mono text-[#FFFFFF] focus:outline-none focus:border-[#CE1A1E]"
               />
             </div>
             <Button variant="primary" size="sm">

@@ -14,15 +14,15 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 const variants: Record<NonNullable<ButtonProps['variant']>, string> = {
   primary:
-    'bg-[#6D001A] hover:bg-[#8B0024] text-white border border-[#9E0D2A]/60 shadow-md shadow-[#6D001A]/30',
+    'bg-[#CE1A1E] hover:bg-[#E52226] text-white border border-[#CE1A1E] shadow-md shadow-[#CE1A1E]/30',
   secondary:
-    'bg-[#0C0608] hover:bg-[#160B0F] text-[#FFFFFF] border border-[rgba(255,255,255,0.12)] hover:border-[#6D001A]/70',
+    'bg-[#223330]/60 hover:bg-[#223330] text-[#F4F6F4] border border-[#4D524B]/50 hover:border-[#CE1A1E]/60',
   outline:
-    'bg-transparent hover:bg-[#0C0608] text-[#FFFFFF] border border-[rgba(255,255,255,0.20)] hover:border-[#6D001A]',
+    'bg-transparent hover:bg-[#223330]/40 text-[#F4F6F4] border border-[#4D524B]/60 hover:border-[#CE1A1E]',
   ghost:
-    'bg-transparent hover:bg-[#160B0F] text-[#D4D4D8] hover:text-white border border-transparent',
+    'bg-transparent hover:bg-[#223330]/40 text-[#837F78] hover:text-white border border-transparent',
   destructive:
-    'bg-[#460010]/50 text-[#FFFFFF] border border-[#9E0D2A]/50 hover:bg-[#6D001A]/50',
+    'bg-[#65060E]/70 text-white border border-[#CE1A1E]/60 hover:bg-[#65060E]',
 };
 
 const sizes: Record<NonNullable<ButtonProps['size']>, string> = {
@@ -40,7 +40,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ref={ref}
       className={cn(
         'inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-150',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6D001A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#000000]',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CE1A1E] focus-visible:ring-offset-2 focus-visible:ring-offset-[#081919]',
         'disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98] select-none cursor-pointer',
         variants[variant],
         sizes[size],
