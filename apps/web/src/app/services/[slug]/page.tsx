@@ -24,7 +24,6 @@ import {
   Check,
   Play,
   Terminal,
-  FileCode,
   ArrowLeft,
   ExternalLink,
   Lock,
@@ -40,9 +39,7 @@ export default function ServiceDetailPage() {
     notFound();
   }
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'schema' | 'activity' | 'reviews'>('overview');
-  const [sdkLanguage, setSdkLanguage] = useState<'ts' | 'curl' | 'python'>('ts');
-  const [codeCopied, setCodeCopied] = useState(false);
+  const [activeTab, setActiveTab] = useState<'overview' | 'activity' | 'reviews'>('overview');
 
   const { address, isConnected } = useAccount();
   const { signMessageAsync } = useSignMessage();
@@ -144,46 +141,6 @@ export default function ServiceDetailPage() {
     }
   };
 
-  const getCodeSnippet = () => {
-    if (sdkLanguage === 'ts') {
-      return `import { AgentraClient } from '@agentra/sdk';
-
-const agentra = new AgentraClient({
-  privateKey: process.env.AGENT_WALLET_KEY,
-  rpcUrl: 'https://api.avax-test.network/ext/bc/C/rpc',
-});
-
-// Call with automatic x402 escrow payment
-const response = await agentra.callService('${service.slug}', ${tryInput});
-
-console.log('Result:', response.data);
-console.log('USDC Settled:', response.receipt.chargedUSDC);`;
-    }
-    if (sdkLanguage === 'curl') {
-      return `curl -X POST https://api.agentra.io/v1/services/${service.slug}/call \\
-  -H "Authorization: Bearer <AGENTRA_SESSION_TOKEN>" \\
-  -H "Content-Type: application/json" \\
-  -d '${tryInput.replace(/\n/g, ' ')}'`;
-    }
-    return `from agentra import AgentraClient
-
-client = AgentraClient(private_key=os.getenv("AGENT_WALLET_KEY"))
-
-# Executes call and signs 402 payment proof
-result = client.call("${service.slug}", ${tryInput.replace(/\n/g, '')})
-print("Verified payload:", result.payload)`;
-  };
-
-  const handleCopyCode = async () => {
-    try {
-      await navigator.clipboard.writeText(getCodeSnippet());
-      setCodeCopied(true);
-      setTimeout(() => setCodeCopied(false), 2000);
-    } catch {
-      // ignore
-    }
-  };
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
       {/* Back button */}
@@ -265,7 +222,7 @@ print("Verified payload:", result.payload)`;
         <div className="lg:col-span-7 space-y-6">
           {/* Tabs bar */}
           <div className="flex items-center gap-1 border-b border-[rgba(255,255,255,0.10)] pb-1">
-            {(['overview', 'schema', 'activity', 'reviews'] as const).map((tab) => (
+            {(['overview', 'activity', 'reviews'] as const).map((tab) => (
               <button
                 key={tab}
                 type="button"
@@ -373,29 +330,7 @@ print("Verified payload:", result.payload)`;
             </div>
           )}
 
-          {/* Tab 2: Schema */}
-          {activeTab === 'schema' && (
-            <div className="p-6 rounded-2xl bg-[#0C0608] border border-[rgba(255,255,255,0.10)] space-y-4">
-              <h3 className="text-sm font-bold text-[#FFFFFF]">JSON Input Schema</h3>
-              <pre className="p-4 rounded-xl bg-[#000000] border border-[rgba(255,255,255,0.10)] text-xs font-mono text-[#6D001A] overflow-x-auto">
-                {JSON.stringify(service.inputSchema || { type: 'object' }, null, 2)}
-              </pre>
-
-              <h3 className="text-sm font-bold text-[#FFFFFF] pt-4">Expected Output Schema</h3>
-              <pre className="p-4 rounded-xl bg-[#000000] border border-[rgba(255,255,255,0.10)] text-xs font-mono text-[#2DD4BF] overflow-x-auto">
-                {JSON.stringify(
-                  service.outputSchema || {
-                    type: 'object',
-                    properties: { data: { type: 'any' }, proofHash: { type: 'string' } },
-                  },
-                  null,
-                  2
-                )}
-              </pre>
-            </div>
-          )}
-
-          {/* Tab 3: Activity */}
+          {/* Tab 2: Activity */}
           {activeTab === 'activity' && (
             <div className="space-y-3">
               <h3 className="text-sm font-bold text-[#FFFFFF]">Recent Verified Calls</h3>
@@ -532,52 +467,6 @@ print("Verified payload:", result.payload)`;
                   )}
                 </div>
               )}
-            </div>
-          </div>
-
-          {/* SDK Code Snippet Panel */}
-          <div className="rounded-2xl bg-[#0C0608] border border-[rgba(255,255,255,0.10)] p-5">
-            <div className="flex items-center justify-between pb-3 border-b border-[rgba(255,255,255,0.10)]">
-              <div className="flex items-center gap-2">
-                <FileCode className="w-4 h-4 text-[#6D001A]" />
-                <h3 className="text-sm font-bold text-[#FFFFFF]">Integration Snippet</h3>
-              </div>
-
-              {/* Language switcher */}
-              <div className="flex items-center gap-1 bg-[#160B0F] p-1 rounded-lg border border-[rgba(255,255,255,0.10)] text-xs">
-                {(['ts', 'curl', 'python'] as const).map((lang) => (
-                  <button
-                    key={lang}
-                    type="button"
-                    onClick={() => setSdkLanguage(lang)}
-                    className={`px-2 py-0.5 rounded font-mono transition-colors ${
-                      sdkLanguage === lang
-                        ? 'bg-[#6D001A] text-white font-semibold'
-                        : 'text-[#D4D4D8] hover:text-[#FFFFFF]'
-                    }`}
-                  >
-                    {lang}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="relative mt-3">
-              <pre className="p-4 rounded-xl bg-[#000000] border border-[rgba(255,255,255,0.10)] text-xs font-mono text-[#FFFFFF] overflow-x-auto leading-relaxed max-h-72">
-                {getCodeSnippet()}
-              </pre>
-              <button
-                type="button"
-                onClick={handleCopyCode}
-                className="absolute top-3 right-3 p-1.5 rounded-lg bg-[#160B0F] hover:bg-[rgba(255,255,255,0.10)] text-[#D4D4D8] hover:text-white border border-[rgba(255,255,255,0.10)] transition-colors"
-                title="Copy code"
-              >
-                {codeCopied ? (
-                  <Check className="w-3.5 h-3.5 text-[#2DD4BF]" />
-                ) : (
-                  <Copy className="w-3.5 h-3.5" />
-                )}
-              </button>
             </div>
           </div>
         </div>

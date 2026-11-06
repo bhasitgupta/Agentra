@@ -9,10 +9,10 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { StatCard } from '@/components/ui/StatCard';
 import { Button } from '@/components/ui/Button';
 import { WalletAddress } from '@/components/web3/WalletAddress';
-import { MOCK_AGENT_WALLETS, DEFAULT_SPEND_POLICY, MOCK_ACTIVITY_FEED } from '@/lib/mockData';
+import { DEFAULT_SPEND_POLICY } from '@/lib/mockData';
 import { CATEGORIES } from '@/lib/constants';
 import { formatUSDC, formatUSDCTotal, truncateTx, truncateAddress, getSnowtraceUrl } from '@/lib/utils';
-import { recordAuditEntry } from '@/lib/auditStore';
+import { recordAuditEntry, getAuditTrail, AuditLogEntry } from '@/lib/auditStore';
 import { AgentWallet } from '@/lib/types';
 import {
   Wallet,
@@ -38,7 +38,8 @@ export default function BuyerConsolePage() {
   const { sendTransactionAsync } = useSendTransaction();
   const config = useConfig();
 
-  const [wallets, setWallets] = useState<AgentWallet[]>(MOCK_AGENT_WALLETS);
+  const [wallets, setWallets] = useState<AgentWallet[]>([]);
+  const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>([]);
   const [policy, setPolicy] = useState(DEFAULT_SPEND_POLICY);
   const [isSaved, setIsSaved] = useState(false);
 
@@ -52,17 +53,32 @@ export default function BuyerConsolePage() {
   const [deployError, setDeployError] = useState<string | null>(null);
   const [copiedKey, setCopiedKey] = useState(false);
 
-  // Load custom created wallets from localStorage
+  // Load custom created wallets & audit logs
   useEffect(() => {
     try {
       const stored = localStorage.getItem('agentra_buyer_wallets');
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setWallets(parsed);
+        if (Array.isArray(parsed)) {
+          const realWallets = parsed.filter(
+            (w) =>
+              w.address &&
+              !w.address.toLowerCase().startsWith('0x71c50d4f') &&
+              !w.address.toLowerCase().startsWith('0x94d12034') &&
+              !w.address.toLowerCase().startsWith('0x12fa9203')
+          );
+          setWallets(realWallets);
+          localStorage.setItem('agentra_buyer_wallets', JSON.stringify(realWallets));
         }
       }
     } catch {}
+
+    const refreshAudit = () => {
+      setAuditLogs(getAuditTrail());
+    };
+    refreshAudit();
+    window.addEventListener('agentra_audit_updated', refreshAudit);
+    return () => window.removeEventListener('agentra_audit_updated', refreshAudit);
   }, []);
 
   const handleOpenCreateModal = () => {
@@ -138,11 +154,13 @@ export default function BuyerConsolePage() {
         active: true,
       };
 
-      const updated = [newWallet, ...wallets];
-      setWallets(updated);
-      try {
-        localStorage.setItem('agentra_buyer_wallets', JSON.stringify(updated));
-      } catch {}
+      setWallets((prev) => {
+        const updated = [newWallet, ...prev.filter((w) => w.address.toLowerCase() !== newWallet.address.toLowerCase())];
+        try {
+          localStorage.setItem('agentra_buyer_wallets', JSON.stringify(updated));
+        } catch {}
+        return updated;
+      });
 
       setTxSuccess({
         hash,
@@ -159,11 +177,13 @@ export default function BuyerConsolePage() {
 
   const toggleWallet = (addr: string) => {
     setWallets((prev) => {
-      const next = prev.map((w) => (w.address === addr ? { ...w, active: !w.active } : w));
+      const next = prev.map((w) =>
+        w.address.toLowerCase() === addr.toLowerCase() ? { ...w, active: !w.active } : w
+      );
       try {
         localStorage.setItem('agentra_buyer_wallets', JSON.stringify(next));
       } catch {}
-      return next;
+      return [...next];
     });
   };
 
@@ -226,24 +246,27 @@ export default function BuyerConsolePage() {
         </div>
       </div>
 
-      {/* Spend Summary StatCards */}
+      {/* Real Spend Summary StatCards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
         <StatCard
-          label="Today's Spend"
-          value="$1.45 USDC"
-          subtitle="14 calls executed"
+          label="Today's Settled Spend"
+          value={`$${auditLogs
+            .filter((e) => e.action === 'SETTLE_PAYMENT')
+            .reduce((acc, curr) => acc + (parseFloat(curr.value) || 0), 0)
+            .toFixed(2)} USDC`}
+          subtitle={`${auditLogs.filter((e) => e.action === 'SETTLE_PAYMENT').length} calls executed`}
           icon={<Coins className="w-4 h-4 text-[#2DD4BF]" />}
         />
         <StatCard
-          label="7-Day Cumulative Spend"
-          value="$14.20 USDC"
-          subtitle="142 calls executed"
+          label="Autonomous Agents"
+          value={`${wallets.filter((w) => w.active).length} / ${wallets.length} Active`}
+          subtitle="Configured on Avalanche Fuji"
           icon={<Wallet className="w-4 h-4 text-[#CE1A1E]" />}
         />
         <StatCard
-          label="All-Time Verified Spend"
-          value="$86.50 USDC"
-          subtitle="870 calls settled"
+          label="Verified On-Chain Proofs"
+          value={`${auditLogs.length} Receipts`}
+          subtitle="Recorded in Fuji Audit Trail"
           icon={<History className="w-4 h-4 text-[#22D3EE]" />}
         />
       </div>
@@ -264,47 +287,69 @@ export default function BuyerConsolePage() {
             </div>
 
             <div className="space-y-3">
-              {wallets.map((wallet) => (
-                <div
-                  key={wallet.address}
-                  className="p-4 rounded-xl bg-[#223330]/60 border border-[rgba(77,82,75,0.40)] flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-                >
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold text-[#FFFFFF]">{wallet.label}</span>
-                      <span
-                        className={`text-[10px] font-mono px-2 py-0.5 rounded ${
+              {wallets.length === 0 ? (
+                <div className="text-center py-8 px-4 border border-dashed border-[rgba(77,82,75,0.40)] rounded-xl bg-[#223330]/20">
+                  <Cpu className="w-8 h-8 text-[#837F78] mx-auto mb-2 opacity-50" />
+                  <p className="text-sm font-semibold text-[#FFFFFF]">No Agent Wallets Deployed</p>
+                  <p className="text-xs text-[#837F78] mt-1 mb-4">
+                    Deploy an autonomous agent key on Avalanche Fuji to get started.
+                  </p>
+                  <Button
+                    onClick={handleOpenCreateModal}
+                    variant="primary"
+                    size="sm"
+                    leftIcon={<Plus className="w-4 h-4" />}
+                  >
+                    Deploy First Agent
+                  </Button>
+                </div>
+              ) : (
+                wallets.map((wallet) => (
+                  <div
+                    key={wallet.address}
+                    className="p-4 rounded-xl bg-[#223330]/60 border border-[rgba(77,82,75,0.40)] flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  >
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-bold text-[#FFFFFF]">{wallet.label}</span>
+                        <span
+                          className={`text-[10px] font-mono px-2 py-0.5 rounded ${
+                            wallet.active
+                              ? 'bg-[#2DD4BF]/10 text-[#2DD4BF] border border-[#2DD4BF]/20'
+                              : 'bg-[#F87171]/10 text-[#F87171] border border-[#F87171]/20'
+                          }`}
+                        >
+                          {wallet.active ? 'ACTIVE' : 'MUTED'}
+                        </span>
+                      </div>
+                      <WalletAddress address={wallet.address} chars={4} />
+                    </div>
+
+                    <div className="flex items-center justify-between sm:justify-end gap-5">
+                      <div className="text-right font-mono text-xs">
+                        <span className="text-[#2DD4BF] font-bold block">
+                          {wallet.balanceUSDC.toFixed(2)} USDC
+                        </span>
+                        <span className="text-[#837F78] text-[11px]">
+                          Today: {wallet.todaySpendUSDC.toFixed(2)} USDC
+                        </span>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => toggleWallet(wallet.address)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer ${
                           wallet.active
-                            ? 'bg-[#2DD4BF]/10 text-[#2DD4BF] border border-[#2DD4BF]/20'
-                            : 'bg-[#F87171]/10 text-[#F87171] border border-[#F87171]/20'
+                            ? 'bg-[#223330]/35 hover:bg-[#CE1A1E]/20 text-[#E8EBE4] hover:text-[#FFFFFF] border-[rgba(77,82,75,0.40)]'
+                            : 'bg-[#2DD4BF]/20 hover:bg-[#2DD4BF]/30 text-[#2DD4BF] border-[#2DD4BF]/30'
                         }`}
                       >
-                        {wallet.active ? 'ACTIVE' : 'MUTED'}
-                      </span>
+                        {wallet.active ? 'Pause' : 'Enable'}
+                      </button>
                     </div>
-                    <WalletAddress address={wallet.address} chars={4} />
                   </div>
-
-                  <div className="flex items-center justify-between sm:justify-end gap-5">
-                    <div className="text-right font-mono text-xs">
-                      <span className="text-[#2DD4BF] font-bold block">
-                        {wallet.balanceUSDC.toFixed(2)} USDC
-                      </span>
-                      <span className="text-[#837F78] text-[11px]">
-                        Today: {wallet.todaySpendUSDC.toFixed(2)} USDC
-                      </span>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => toggleWallet(wallet.address)}
-                      className="px-3 py-1.5 rounded-lg text-xs font-medium bg-[#223330]/35 hover:bg-[#1A1A30] text-[#E8EBE4] hover:text-[#FFFFFF] border border-[rgba(77,82,75,0.40)] transition-colors cursor-pointer"
-                    >
-                      {wallet.active ? 'Pause' : 'Enable'}
-                    </button>
-                  </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
 
@@ -317,43 +362,51 @@ export default function BuyerConsolePage() {
               <table className="w-full text-left text-xs font-mono">
                 <thead>
                   <tr className="border-b border-[rgba(77,82,75,0.40)] text-[#837F78]">
-                    <th className="pb-3">Service</th>
-                    <th className="pb-3">Agent</th>
+                    <th className="pb-3">Action / Service</th>
+                    <th className="pb-3">Caller</th>
                     <th className="pb-3">Status</th>
                     <th className="pb-3">Settled</th>
                     <th className="pb-3 text-right">Proof</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[rgba(77,82,75,0.40)]">
-                  {MOCK_ACTIVITY_FEED.slice(0, 4).map((rec) => (
-                    <tr key={rec.id} className="hover:bg-[#223330]/60/50">
-                      <td className="py-3 font-sans font-semibold text-[#FFFFFF]">
-                        {rec.serviceName}
-                      </td>
-                      <td className="py-3 text-[#E8EBE4]">{rec.buyerAddress}</td>
-                      <td className="py-3">
-                        {rec.type === 'CALL_FAILED' ? (
-                          <span className="text-[#F87171]">Zero Fee</span>
-                        ) : (
-                          <span className="text-[#2DD4BF]">Settled</span>
-                        )}
-                      </td>
-                      <td className="py-3 text-[#2DD4BF] font-bold">
-                        {formatUSDC(rec.amountUSDC ?? 0.01)}
-                      </td>
-                      <td className="py-3 text-right">
-                        <a
-                          href={getSnowtraceUrl(rec.txHash)}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex items-center gap-1 font-mono text-xs text-[#CE1A1E] hover:underline"
-                        >
-                          #{truncateTx(rec.txHash, 3)}
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
+                  {auditLogs.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="py-6 text-center text-[#837F78] font-sans">
+                        No on-chain receipts recorded yet. Call a service or deploy an agent to generate verified proofs.
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    auditLogs.slice(0, 5).map((log) => (
+                      <tr key={log.id} className="hover:bg-[#223330]/60/50">
+                        <td className="py-3 font-sans font-semibold text-[#FFFFFF]">
+                          {log.actionLabel || log.details}
+                        </td>
+                        <td className="py-3 text-[#E8EBE4]">{truncateAddress(log.caller || '', 4)}</td>
+                        <td className="py-3">
+                          {log.status === 'CONFIRMED' ? (
+                            <span className="text-[#2DD4BF]">Settled</span>
+                          ) : (
+                            <span className="text-[#F87171]">{log.status}</span>
+                          )}
+                        </td>
+                        <td className="py-3 text-[#2DD4BF] font-bold">
+                          {log.value || '0.00 USDC'}
+                        </td>
+                        <td className="py-3 text-right">
+                          <a
+                            href={getSnowtraceUrl(log.hash)}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1 font-mono text-xs text-[#CE1A1E] hover:underline"
+                          >
+                            #{truncateTx(log.hash, 3)}
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
