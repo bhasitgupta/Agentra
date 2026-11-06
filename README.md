@@ -42,20 +42,7 @@ flowchart TD
     Registry -. "Query metadata / identity" .- Web
 ```
 
----
 
-## 📜 Deployed Contracts (Avalanche Fuji Testnet — 43113)
-
-| Contract | Address | Purpose |
-|---|---|---|
-| **SplitterFactory** | `0x943Bc63D6c8DC18B1B234A6E8B8aF82cFc52adbf` | Deploys deterministic EIP-1167 clones routing 97.5% to provider and 2.5% to treasury |
-| **ServiceRegistry** | `0x9e7DedF695e2e165c74e9f6dA1ffA212eBCf66fd` | Tamper-evident on-chain catalog tied to ERC-8004 agent NFT ownership |
-| **TaskEscrow** | `0x751D833aB39A4092fB05fA70968eCbb5674DCd3B` | Asynchronous task escrow with EIP-3009 front-running protection and dispute arbitration |
-| **USDC (Testnet)** | `0x5425890298aed601595a70AB815c96711a31bc65` | Circle testnet USDC with EIP-3009 authorization support |
-| **ERC-8004 Identity** | `0x8004A818BFB912233c491871b3d84c89A494BD9e` | Canonical ERC-8004 agent identity registry on Fuji |
-| **ERC-8004 Reputation**| `0x8004B663056A597Dffe9eCcC1965A193B7388713` | Canonical ERC-8004 reputation event oracle |
-
----
 
 ## 🗂 Repository Structure
 
