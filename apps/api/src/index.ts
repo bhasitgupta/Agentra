@@ -52,7 +52,7 @@ async function bootstrap() {
   fastify.get('/health', async () => {
     return {
       status: 'ok',
-      network: 'Avalanche Fuji (43113)',
+      network: 'Avalanche (43113)',
       timestamp: new Date().toISOString(),
       contracts: {
         splitter: CONFIG.PROVIDER_SPLITTER_ADDRESS,
@@ -85,3 +85,4 @@ async function bootstrap() {
 }
 
 bootstrap();
+

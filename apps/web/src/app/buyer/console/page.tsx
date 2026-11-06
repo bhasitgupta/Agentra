@@ -53,10 +53,10 @@ export default function BuyerConsolePage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold text-[#F1F0FF] tracking-tight">
+          <h1 className="text-3xl font-extrabold text-[#E8EBE4] tracking-tight">
             Buyer Agent Console
           </h1>
-          <p className="text-sm text-[#9B99C4] mt-1">
+          <p className="text-sm text-[#A8ADA6] mt-1">
             Manage autonomous shopper wallets, enforce strict spending policies, and verify cryptographic receipts.
           </p>
         </div>
@@ -74,13 +74,13 @@ export default function BuyerConsolePage() {
           label="Today's Spend"
           value="$1.45 USDC"
           subtitle="14 calls executed"
-          icon={<Coins className="w-4 h-4 text-[#34D399]" />}
+          icon={<Coins className="w-4 h-4 text-[#2DD4BF]" />}
         />
         <StatCard
           label="7-Day Cumulative Spend"
           value="$14.20 USDC"
           subtitle="142 calls executed"
-          icon={<Wallet className="w-4 h-4 text-[#8B5CF6]" />}
+          icon={<Wallet className="w-4 h-4 text-[#CE1A1E]" />}
         />
         <StatCard
           label="All-Time Verified Spend"
@@ -94,10 +94,10 @@ export default function BuyerConsolePage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Column (7 cols): Agent Wallets */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="p-6 rounded-2xl bg-[#0E0E1A] border border-[#1E1E3A]">
+          <div className="p-6 rounded-2xl bg-[#223330] border border-[rgba(131,127,120,0.22)]">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-bold text-[#F1F0FF]">Connected Autonomous Agents</h3>
-              <span className="text-xs text-[#9B99C4] font-mono">
+              <h3 className="text-base font-bold text-[#E8EBE4]">Connected Autonomous Agents</h3>
+              <span className="text-xs text-[#A8ADA6] font-mono">
                 {wallets.filter((w) => w.active).length} Active
               </span>
             </div>
@@ -106,15 +106,15 @@ export default function BuyerConsolePage() {
               {wallets.map((wallet) => (
                 <div
                   key={wallet.address}
-                  className="p-4 rounded-xl bg-[#14142A] border border-[#1E1E3A] flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  className="p-4 rounded-xl bg-[#2a3a37] border border-[rgba(131,127,120,0.22)] flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold text-[#F1F0FF]">{wallet.label}</span>
+                      <span className="text-sm font-bold text-[#E8EBE4]">{wallet.label}</span>
                       <span
                         className={`text-[10px] font-mono px-2 py-0.5 rounded ${
                           wallet.active
-                            ? 'bg-[#34D399]/10 text-[#34D399] border border-[#34D399]/20'
+                            ? 'bg-[#2DD4BF]/10 text-[#2DD4BF] border border-[#2DD4BF]/20'
                             : 'bg-[#F87171]/10 text-[#F87171] border border-[#F87171]/20'
                         }`}
                       >
@@ -126,10 +126,10 @@ export default function BuyerConsolePage() {
 
                   <div className="flex items-center justify-between sm:justify-end gap-5">
                     <div className="text-right font-mono text-xs">
-                      <span className="text-[#34D399] font-bold block">
+                      <span className="text-[#2DD4BF] font-bold block">
                         {wallet.balanceUSDC.toFixed(2)} USDC
                       </span>
-                      <span className="text-[#5C5A8A] text-[11px]">
+                      <span className="text-[#837F78] text-[11px]">
                         Today: {wallet.todaySpendUSDC.toFixed(2)} USDC
                       </span>
                     </div>
@@ -137,7 +137,7 @@ export default function BuyerConsolePage() {
                     <button
                       type="button"
                       onClick={() => toggleWallet(wallet.address)}
-                      className="px-3 py-1.5 rounded-lg text-xs font-medium bg-[#0E0E1A] hover:bg-[#1A1A30] text-[#9B99C4] hover:text-[#F1F0FF] border border-[#1E1E3A] transition-colors cursor-pointer"
+                      className="px-3 py-1.5 rounded-lg text-xs font-medium bg-[#223330] hover:bg-[#1A1A30] text-[#A8ADA6] hover:text-[#E8EBE4] border border-[rgba(131,127,120,0.22)] transition-colors cursor-pointer"
                     >
                       {wallet.active ? 'Pause' : 'Enable'}
                     </button>
@@ -148,14 +148,14 @@ export default function BuyerConsolePage() {
           </div>
 
           {/* Recent Agent Receipts Table */}
-          <div className="p-6 rounded-2xl bg-[#0E0E1A] border border-[#1E1E3A]">
-            <h3 className="text-base font-bold text-[#F1F0FF] mb-4">
+          <div className="p-6 rounded-2xl bg-[#223330] border border-[rgba(131,127,120,0.22)]">
+            <h3 className="text-base font-bold text-[#E8EBE4] mb-4">
               Recent On-Chain Settlement Receipts
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs font-mono">
                 <thead>
-                  <tr className="border-b border-[#1E1E3A] text-[#5C5A8A]">
+                  <tr className="border-b border-[rgba(131,127,120,0.22)] text-[#837F78]">
                     <th className="pb-3">Service</th>
                     <th className="pb-3">Agent</th>
                     <th className="pb-3">Status</th>
@@ -163,21 +163,21 @@ export default function BuyerConsolePage() {
                     <th className="pb-3 text-right">Proof</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1E1E3A]">
+                <tbody className="divide-y divide-[rgba(131,127,120,0.22)]">
                   {MOCK_ACTIVITY_FEED.slice(0, 4).map((rec) => (
-                    <tr key={rec.id} className="hover:bg-[#14142A]/50">
-                      <td className="py-3 font-sans font-semibold text-[#F1F0FF]">
+                    <tr key={rec.id} className="hover:bg-[#2a3a37]/50">
+                      <td className="py-3 font-sans font-semibold text-[#E8EBE4]">
                         {rec.serviceName}
                       </td>
-                      <td className="py-3 text-[#9B99C4]">{rec.buyerAddress}</td>
+                      <td className="py-3 text-[#A8ADA6]">{rec.buyerAddress}</td>
                       <td className="py-3">
                         {rec.type === 'CALL_FAILED' ? (
                           <span className="text-[#F87171]">Zero Fee</span>
                         ) : (
-                          <span className="text-[#34D399]">Settled</span>
+                          <span className="text-[#2DD4BF]">Settled</span>
                         )}
                       </td>
-                      <td className="py-3 text-[#34D399] font-bold">
+                      <td className="py-3 text-[#2DD4BF] font-bold">
                         {formatUSDC(rec.amountUSDC ?? 0.01)}
                       </td>
                       <td className="py-3 text-right">
@@ -185,7 +185,7 @@ export default function BuyerConsolePage() {
                           href={getSnowtraceUrl(rec.txHash)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-[#A78BFA] hover:text-[#F1F0FF]"
+                          className="inline-flex items-center gap-1 text-[#CE1A1E] hover:text-[#E8EBE4]"
                         >
                           <span>{truncateTx(rec.txHash, 3)}</span>
                           <ExternalLink className="w-3 h-3" />
@@ -201,12 +201,12 @@ export default function BuyerConsolePage() {
 
         {/* Right Column (5 cols): Spend Policy Guardrails */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="p-6 rounded-2xl bg-[#0E0E1A] border border-[#2D2D52] shadow-xl space-y-6">
-            <div className="flex items-center gap-2 pb-3 border-b border-[#1E1E3A]">
-              <ShieldAlert className="w-5 h-5 text-[#8B5CF6]" />
+          <div className="p-6 rounded-2xl bg-[#223330] border border-[rgba(131,127,120,0.35)] shadow-xl space-y-6">
+            <div className="flex items-center gap-2 pb-3 border-b border-[rgba(131,127,120,0.22)]">
+              <ShieldAlert className="w-5 h-5 text-[#CE1A1E]" />
               <div>
-                <h3 className="text-base font-bold text-[#F1F0FF]">Spend Policy Guardrails</h3>
-                <p className="text-xs text-[#9B99C4]">
+                <h3 className="text-base font-bold text-[#E8EBE4]">Spend Policy Guardrails</h3>
+                <p className="text-xs text-[#A8ADA6]">
                   Enforced at the client SDK level before x402 signatures are generated.
                 </p>
               </div>
@@ -215,8 +215,8 @@ export default function BuyerConsolePage() {
             {/* Per-Call Cap */}
             <div className="space-y-2">
               <div className="flex justify-between text-xs">
-                <span className="font-medium text-[#9B99C4] uppercase">Per-Call Cap</span>
-                <span className="font-mono text-[#34D399] font-bold">
+                <span className="font-medium text-[#A8ADA6] uppercase">Per-Call Cap</span>
+                <span className="font-mono text-[#2DD4BF] font-bold">
                   {formatUSDC(policy.perCallCap)}
                 </span>
               </div>
@@ -227,9 +227,9 @@ export default function BuyerConsolePage() {
                 step="0.005"
                 value={policy.perCallCap}
                 onChange={(e) => setPolicy({ ...policy, perCallCap: parseFloat(e.target.value) })}
-                className="w-full accent-[#8B5CF6] cursor-pointer"
+                className="w-full accent-[#CE1A1E] cursor-pointer"
               />
-              <p className="text-[11px] text-[#5C5A8A]">
+              <p className="text-[11px] text-[#837F78]">
                 Any call requesting more than this will be rejected before calling.
               </p>
             </div>
@@ -237,8 +237,8 @@ export default function BuyerConsolePage() {
             {/* Daily Cap */}
             <div className="space-y-2">
               <div className="flex justify-between text-xs">
-                <span className="font-medium text-[#9B99C4] uppercase">Daily Budget Cap</span>
-                <span className="font-mono text-[#34D399] font-bold">
+                <span className="font-medium text-[#A8ADA6] uppercase">Daily Budget Cap</span>
+                <span className="font-mono text-[#2DD4BF] font-bold">
                   ${policy.dailyCap.toFixed(2)} USDC
                 </span>
               </div>
@@ -249,9 +249,9 @@ export default function BuyerConsolePage() {
                 step="1.00"
                 value={policy.dailyCap}
                 onChange={(e) => setPolicy({ ...policy, dailyCap: parseFloat(e.target.value) })}
-                className="w-full accent-[#8B5CF6] cursor-pointer"
+                className="w-full accent-[#CE1A1E] cursor-pointer"
               />
-              <p className="text-[11px] text-[#5C5A8A]">
+              <p className="text-[11px] text-[#837F78]">
                 Daily spend across all agents is throttled once this limit is hit.
               </p>
             </div>
@@ -259,8 +259,8 @@ export default function BuyerConsolePage() {
             {/* Min Trust Score */}
             <div className="space-y-2">
               <div className="flex justify-between text-xs">
-                <span className="font-medium text-[#9B99C4] uppercase">Min Trust Score</span>
-                <span className="font-mono text-[#F1F0FF] font-bold">
+                <span className="font-medium text-[#A8ADA6] uppercase">Min Trust Score</span>
+                <span className="font-mono text-[#E8EBE4] font-bold">
                   {policy.minTrustScore} / 100
                 </span>
               </div>
@@ -271,16 +271,16 @@ export default function BuyerConsolePage() {
                 step="5"
                 value={policy.minTrustScore}
                 onChange={(e) => setPolicy({ ...policy, minTrustScore: parseInt(e.target.value) })}
-                className="w-full accent-[#8B5CF6] cursor-pointer"
+                className="w-full accent-[#CE1A1E] cursor-pointer"
               />
-              <p className="text-[11px] text-[#5C5A8A]">
+              <p className="text-[11px] text-[#837F78]">
                 Rejects calls to unverified or provisional providers below this score.
               </p>
             </div>
 
             {/* Category Allowlist */}
-            <div className="space-y-3 pt-2 border-t border-[#1E1E3A]">
-              <span className="text-xs font-semibold text-[#F1F0FF] uppercase tracking-wider block">
+            <div className="space-y-3 pt-2 border-t border-[rgba(131,127,120,0.22)]">
+              <span className="text-xs font-semibold text-[#E8EBE4] uppercase tracking-wider block">
                 Allowed Service Categories
               </span>
               <div className="grid grid-cols-2 gap-2">
@@ -289,15 +289,15 @@ export default function BuyerConsolePage() {
                   return (
                     <label
                       key={cat.id}
-                      className="flex items-center gap-2 p-2 rounded-lg bg-[#14142A] border border-[#1E1E3A] text-xs text-[#9B99C4] cursor-pointer hover:border-[#2D2D52]"
+                      className="flex items-center gap-2 p-2 rounded-lg bg-[#2a3a37] border border-[rgba(131,127,120,0.22)] text-xs text-[#A8ADA6] cursor-pointer hover:border-[rgba(131,127,120,0.35)]"
                     >
                       <input
                         type="checkbox"
                         checked={checked}
                         onChange={() => toggleCategory(cat.id)}
-                        className="rounded accent-[#8B5CF6]"
+                        className="rounded accent-[#CE1A1E]"
                       />
-                      <span className={checked ? 'text-[#F1F0FF] font-medium' : ''}>
+                      <span className={checked ? 'text-[#E8EBE4] font-medium' : ''}>
                         {cat.label}
                       </span>
                     </label>
@@ -320,3 +320,4 @@ export default function BuyerConsolePage() {
     </div>
   );
 }
+

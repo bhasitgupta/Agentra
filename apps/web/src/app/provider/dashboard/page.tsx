@@ -67,10 +67,10 @@ export default function ProviderDashboardPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-extrabold text-[#F1F0FF] tracking-tight">
+          <h1 className="text-3xl font-extrabold text-[#E8EBE4] tracking-tight">
             Provider Dashboard
           </h1>
-          <p className="text-sm text-[#9B99C4] mt-1">
+          <p className="text-sm text-[#A8ADA6] mt-1">
             Manage your AI endpoints, monitor real-time earnings, and track escrow settlements on Avalanche.
           </p>
         </div>
@@ -83,7 +83,7 @@ export default function ProviderDashboardPage() {
       </div>
 
       {/* Nav Tabs */}
-      <div className="flex items-center gap-2 border-b border-[#1E1E3A] pb-3 mb-8">
+      <div className="flex items-center gap-2 border-b border-[rgba(131,127,120,0.22)] pb-3 mb-8">
         {[
           { id: 'overview', label: 'Overview', icon: Activity },
           { id: 'services', label: 'My Services', icon: Layers },
@@ -99,8 +99,8 @@ export default function ProviderDashboardPage() {
               type="button"
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer ${
                 isActive
-                  ? 'bg-[#14142A] text-[#8B5CF6] border border-[#2D2D52]'
-                  : 'text-[#9B99C4] hover:text-[#F1F0FF]'
+                  ? 'bg-[#2a3a37] text-[#CE1A1E] border border-[rgba(131,127,120,0.35)]'
+                  : 'text-[#A8ADA6] hover:text-[#E8EBE4]'
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
@@ -118,19 +118,19 @@ export default function ProviderDashboardPage() {
               label="Earnings (Today)"
               value="$3.40 USDC"
               trend={{ value: '+14.2% vs yesterday', isPositive: true }}
-              icon={<DollarSign className="w-4 h-4 text-[#34D399]" />}
+              icon={<DollarSign className="w-4 h-4 text-[#2DD4BF]" />}
             />
             <StatCard
               label="Verified Calls (Today)"
               value="340"
               trend={{ value: '+8.5% volume', isPositive: true }}
-              icon={<PhoneCall className="w-4 h-4 text-[#8B5CF6]" />}
+              icon={<PhoneCall className="w-4 h-4 text-[#CE1A1E]" />}
             />
             <StatCard
               label="Success Rate"
               value="99.4%"
               subtitle="0 disputes filed"
-              icon={<ShieldCheck className="w-4 h-4 text-[#34D399]" />}
+              icon={<ShieldCheck className="w-4 h-4 text-[#2DD4BF]" />}
             />
             <StatCard
               label="Trust Score"
@@ -141,13 +141,13 @@ export default function ProviderDashboardPage() {
           </div>
 
           {/* 7-day Earnings Chart */}
-          <div className="p-6 rounded-2xl bg-[#0E0E1A] border border-[#1E1E3A]">
+          <div className="p-6 rounded-2xl bg-[#223330] border border-[rgba(131,127,120,0.22)]">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-base font-bold text-[#F1F0FF]">7-Day Revenue Velocity</h3>
-                <p className="text-xs text-[#9B99C4]">USDC settled via Avalanche Escrow</p>
+                <h3 className="text-base font-bold text-[#E8EBE4]">7-Day Revenue Velocity</h3>
+                <p className="text-xs text-[#A8ADA6]">USDC settled via Avalanche Escrow</p>
               </div>
-              <span className="text-xs font-mono text-[#34D399] bg-[#34D399]/10 px-2.5 py-1 rounded-full border border-[#34D399]/20">
+              <span className="text-xs font-mono text-[#2DD4BF] bg-[#2DD4BF]/10 px-2.5 py-1 rounded-full border border-[#2DD4BF]/20">
                 Total: $19.00 USDC
               </span>
             </div>
@@ -157,37 +157,37 @@ export default function ProviderDashboardPage() {
                 <AreaChart data={MOCK_EARNINGS_CHART}>
                   <defs>
                     <linearGradient id="earningsGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.0} />
+                      <stop offset="5%" stopColor="#CE1A1E" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#CE1A1E" stopOpacity={0.0} />
                     </linearGradient>
                   </defs>
                   <XAxis
                     dataKey="day"
-                    stroke="#5C5A8A"
+                    stroke="#837F78"
                     fontSize={12}
                     tickLine={false}
-                    axisLine={{ stroke: '#1E1E3A' }}
+                    axisLine={{ stroke: 'rgba(131,127,120,0.22)' }}
                   />
                   <YAxis
-                    stroke="#5C5A8A"
+                    stroke="#837F78"
                     fontSize={12}
                     tickLine={false}
-                    axisLine={{ stroke: '#1E1E3A' }}
+                    axisLine={{ stroke: 'rgba(131,127,120,0.22)' }}
                     tickFormatter={(val) => `$${val}`}
                   />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: '#0E0E1A',
-                      borderColor: '#2D2D52',
+                      backgroundColor: '#223330',
+                      borderColor: 'rgba(131,127,120,0.35)',
                       borderRadius: '8px',
-                      color: '#F1F0FF',
+                      color: '#E8EBE4',
                       fontSize: '12px',
                     }}
                   />
                   <Area
                     type="monotone"
                     dataKey="earnings"
-                    stroke="#8B5CF6"
+                    stroke="#CE1A1E"
                     strokeWidth={2}
                     fillOpacity={1}
                     fill="url(#earningsGradient)"
@@ -198,16 +198,16 @@ export default function ProviderDashboardPage() {
           </div>
 
           {/* Recent Calls Table */}
-          <div className="p-6 rounded-2xl bg-[#0E0E1A] border border-[#1E1E3A]">
+          <div className="p-6 rounded-2xl bg-[#223330] border border-[rgba(131,127,120,0.22)]">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-bold text-[#F1F0FF]">Live Call Telemetry</h3>
-              <span className="text-xs text-[#5C5A8A] font-mono">Auto-refreshed via SSE</span>
+              <h3 className="text-base font-bold text-[#E8EBE4]">Live Call Telemetry</h3>
+              <span className="text-xs text-[#837F78] font-mono">Auto-refreshed via SSE</span>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs font-mono">
                 <thead>
-                  <tr className="border-b border-[#1E1E3A] text-[#5C5A8A]">
+                  <tr className="border-b border-[rgba(131,127,120,0.22)] text-[#837F78]">
                     <th className="pb-3 font-medium">Service</th>
                     <th className="pb-3 font-medium">Caller</th>
                     <th className="pb-3 font-medium">Status</th>
@@ -216,18 +216,18 @@ export default function ProviderDashboardPage() {
                     <th className="pb-3 font-medium text-right">Proof Tx</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1E1E3A]">
+                <tbody className="divide-y divide-[rgba(131,127,120,0.22)]">
                   {MOCK_PROVIDER_CALLS.map((call) => (
-                    <tr key={call.id} className="hover:bg-[#14142A]/50 transition-colors">
-                      <td className="py-3 text-[#F1F0FF] font-sans font-semibold">
+                    <tr key={call.id} className="hover:bg-[#2a3a37]/50 transition-colors">
+                      <td className="py-3 text-[#E8EBE4] font-sans font-semibold">
                         {call.serviceName}
                       </td>
-                      <td className="py-3 text-[#9B99C4]">
+                      <td className="py-3 text-[#A8ADA6]">
                         {truncateAddress(call.buyerAddress, 4)}
                       </td>
                       <td className="py-3">
                         {call.status === 'SUCCEEDED' ? (
-                          <span className="text-[#34D399] bg-[#34D399]/10 px-2 py-0.5 rounded text-[11px]">
+                          <span className="text-[#2DD4BF] bg-[#2DD4BF]/10 px-2 py-0.5 rounded text-[11px]">
                             200 OK
                           </span>
                         ) : (
@@ -236,8 +236,8 @@ export default function ProviderDashboardPage() {
                           </span>
                         )}
                       </td>
-                      <td className="py-3 text-[#9B99C4]">{call.latencyMs}ms</td>
-                      <td className="py-3 font-semibold text-[#34D399]">
+                      <td className="py-3 text-[#A8ADA6]">{call.latencyMs}ms</td>
+                      <td className="py-3 font-semibold text-[#2DD4BF]">
                         {formatUSDC(call.amountUSDC)}
                       </td>
                       <td className="py-3 text-right">
@@ -246,13 +246,13 @@ export default function ProviderDashboardPage() {
                             href={getSnowtraceUrl(call.txHash)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-[#A78BFA] hover:text-[#F1F0FF]"
+                            className="inline-flex items-center gap-1 text-[#CE1A1E] hover:text-[#E8EBE4]"
                           >
                             <span>{truncateTx(call.txHash, 3)}</span>
                             <ExternalLink className="w-3 h-3" />
                           </a>
                         ) : (
-                          <span className="text-[#5C5A8A]">—</span>
+                          <span className="text-[#837F78]">—</span>
                         )}
                       </td>
                     </tr>
@@ -266,12 +266,12 @@ export default function ProviderDashboardPage() {
 
       {activeTab === 'services' && (
         <div className="space-y-4">
-          <div className="p-6 rounded-2xl bg-[#0E0E1A] border border-[#1E1E3A]">
-            <h3 className="text-base font-bold text-[#F1F0FF] mb-4">Active Listed Services</h3>
+          <div className="p-6 rounded-2xl bg-[#223330] border border-[rgba(131,127,120,0.22)]">
+            <h3 className="text-base font-bold text-[#E8EBE4] mb-4">Active Listed Services</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs font-mono">
                 <thead>
-                  <tr className="border-b border-[#1E1E3A] text-[#5C5A8A]">
+                  <tr className="border-b border-[rgba(131,127,120,0.22)] text-[#837F78]">
                     <th className="pb-3">Name</th>
                     <th className="pb-3">Category</th>
                     <th className="pb-3">Price</th>
@@ -280,24 +280,24 @@ export default function ProviderDashboardPage() {
                     <th className="pb-3 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1E1E3A]">
+                <tbody className="divide-y divide-[rgba(131,127,120,0.22)]">
                   {myServices.map((s) => {
                     const isRunning = serviceStatus[s.slug] ?? true;
                     return (
-                      <tr key={s.slug} className="hover:bg-[#14142A]/50">
-                        <td className="py-3 font-sans font-semibold text-[#F1F0FF]">
-                          <Link href={`/services/${s.slug}`} className="hover:text-[#8B5CF6]">
+                      <tr key={s.slug} className="hover:bg-[#2a3a37]/50">
+                        <td className="py-3 font-sans font-semibold text-[#E8EBE4]">
+                          <Link href={`/services/${s.slug}`} className="hover:text-[#CE1A1E]">
                             {s.name}
                           </Link>
                         </td>
-                        <td className="py-3 text-[#9B99C4] uppercase">{s.category}</td>
-                        <td className="py-3 text-[#34D399] font-semibold">{formatUSDC(s.price)}</td>
-                        <td className="py-3 text-[#F1F0FF]">{s.trustScore}/100</td>
+                        <td className="py-3 text-[#A8ADA6] uppercase">{s.category}</td>
+                        <td className="py-3 text-[#2DD4BF] font-semibold">{formatUSDC(s.price)}</td>
+                        <td className="py-3 text-[#E8EBE4]">{s.trustScore}/100</td>
                         <td className="py-3">
                           <span
                             className={`px-2 py-0.5 rounded text-[11px] ${
                               isRunning
-                                ? 'bg-[#34D399]/10 text-[#34D399]'
+                                ? 'bg-[#2DD4BF]/10 text-[#2DD4BF]'
                                 : 'bg-[#FBBF24]/10 text-[#FBBF24]'
                             }`}
                           >
@@ -308,7 +308,7 @@ export default function ProviderDashboardPage() {
                           <button
                             type="button"
                             onClick={() => toggleService(s.slug)}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#14142A] hover:bg-[#1E1E3A] text-[#9B99C4] hover:text-[#F1F0FF] border border-[#1E1E3A] cursor-pointer"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#2a3a37] hover:bg-[rgba(131,127,120,0.22)] text-[#A8ADA6] hover:text-[#E8EBE4] border border-[rgba(131,127,120,0.22)] cursor-pointer"
                           >
                             {isRunning ? (
                               <>
@@ -317,7 +317,7 @@ export default function ProviderDashboardPage() {
                               </>
                             ) : (
                               <>
-                                <Play className="w-3 h-3 text-[#34D399]" />
+                                <Play className="w-3 h-3 text-[#2DD4BF]" />
                                 <span>Resume</span>
                               </>
                             )}
@@ -334,22 +334,22 @@ export default function ProviderDashboardPage() {
       )}
 
       {activeTab === 'calls' && (
-        <div className="p-6 rounded-2xl bg-[#0E0E1A] border border-[#1E1E3A] space-y-4">
-          <h3 className="text-base font-bold text-[#F1F0FF]">Historical Calls Log</h3>
-          <p className="text-xs text-[#9B99C4]">All incoming x402 payment authorization records.</p>
+        <div className="p-6 rounded-2xl bg-[#223330] border border-[rgba(131,127,120,0.22)] space-y-4">
+          <h3 className="text-base font-bold text-[#E8EBE4]">Historical Calls Log</h3>
+          <p className="text-xs text-[#A8ADA6]">All incoming x402 payment authorization records.</p>
           <div className="space-y-2">
             {MOCK_PROVIDER_CALLS.map((call) => (
               <div
                 key={call.id}
-                className="p-3 rounded-xl bg-[#14142A] border border-[#1E1E3A] flex items-center justify-between text-xs font-mono"
+                className="p-3 rounded-xl bg-[#2a3a37] border border-[rgba(131,127,120,0.22)] flex items-center justify-between text-xs font-mono"
               >
                 <div>
-                  <span className="text-[#F1F0FF] font-semibold">{call.serviceName}</span>
-                  <span className="text-[#5C5A8A] block">From {call.buyerAddress}</span>
+                  <span className="text-[#E8EBE4] font-semibold">{call.serviceName}</span>
+                  <span className="text-[#837F78] block">From {call.buyerAddress}</span>
                 </div>
                 <div className="text-right">
-                  <span className="text-[#34D399] font-bold">{formatUSDC(call.amountUSDC)}</span>
-                  <span className="text-[#5C5A8A] block">{call.timestamp}</span>
+                  <span className="text-[#2DD4BF] font-bold">{formatUSDC(call.amountUSDC)}</span>
+                  <span className="text-[#837F78] block">{call.timestamp}</span>
                 </div>
               </div>
             ))}
@@ -358,20 +358,20 @@ export default function ProviderDashboardPage() {
       )}
 
       {activeTab === 'settings' && (
-        <div className="p-6 rounded-2xl bg-[#0E0E1A] border border-[#1E1E3A] max-w-xl space-y-4">
-          <h3 className="text-base font-bold text-[#F1F0FF]">Payout Configuration</h3>
-          <p className="text-xs text-[#9B99C4]">
+        <div className="p-6 rounded-2xl bg-[#223330] border border-[rgba(131,127,120,0.22)] max-w-xl space-y-4">
+          <h3 className="text-base font-bold text-[#E8EBE4]">Payout Configuration</h3>
+          <p className="text-xs text-[#A8ADA6]">
             USDC will automatically stream to this Avalanche C-Chain address when receipts settle.
           </p>
           <div className="space-y-3 pt-2">
             <div>
-              <label className="text-xs font-medium text-[#9B99C4] uppercase tracking-wider block mb-1">
+              <label className="text-xs font-medium text-[#A8ADA6] uppercase tracking-wider block mb-1">
                 Payout Recipient Address
               </label>
               <input
                 type="text"
                 defaultValue="0x32A478F59C72E6F22e4Bca3d9c7f6071B8B36F72"
-                className="w-full h-10 px-3 rounded-lg bg-[#07070F] border border-[#1E1E3A] text-xs font-mono text-[#F1F0FF] focus:outline-none focus:border-[#8B5CF6]"
+                className="w-full h-10 px-3 rounded-lg bg-[#081919] border border-[rgba(131,127,120,0.22)] text-xs font-mono text-[#E8EBE4] focus:outline-none focus:border-[#CE1A1E]"
               />
             </div>
             <Button variant="primary" size="sm">
@@ -383,3 +383,4 @@ export default function ProviderDashboardPage() {
     </div>
   );
 }
+

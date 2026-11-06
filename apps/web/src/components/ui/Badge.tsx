@@ -24,7 +24,7 @@ export function Badge({
       return (
         <span
           className={cn(
-            'inline-flex items-center gap-1 font-medium rounded-full bg-[#34D399]/10 text-[#34D399] border border-[#34D399]/30',
+            'inline-flex items-center gap-1 font-medium rounded-full bg-[#2DD4BF]/10 text-[#2DD4BF] border border-[#2DD4BF]/30',
             sizeClasses,
             className
           )}
@@ -53,7 +53,7 @@ export function Badge({
     return (
       <span
         className={cn(
-          'inline-flex items-center gap-1 font-medium rounded-full bg-[#A78BFA]/10 text-[#A78BFA] border border-[#A78BFA]/30 border-dashed',
+          'inline-flex items-center gap-1 font-medium rounded-full bg-[#CE1A1E]/10 text-[#CE1A1E] border border-[#CE1A1E]/30 border-dashed',
           sizeClasses,
           className
         )}
@@ -66,14 +66,14 @@ export function Badge({
   }
 
   const variants: Record<string, string> = {
-    default: 'bg-[#14142A] text-[#9B99C4] border border-[#1E1E3A]',
-    outline: 'bg-transparent text-[#9B99C4] border border-[#2D2D52]',
-    category: 'bg-[#14142A] text-[#A78BFA] border border-[#2E1065]',
-    success: 'bg-[#34D399]/10 text-[#34D399] border border-[#34D399]/30',
+    default: 'bg-[#2a3a37] text-[#A8ADA6] border border-[rgba(131,127,120,0.22)]',
+    outline: 'bg-transparent text-[#A8ADA6] border border-[rgba(131,127,120,0.35)]',
+    category: 'bg-[#2a3a37] text-[#CE1A1E] border border-[#2E1065]',
+    success: 'bg-[#2DD4BF]/10 text-[#2DD4BF] border border-[#2DD4BF]/30',
     failure: 'bg-[#F87171]/10 text-[#F87171] border border-[#F87171]/30',
     warning: 'bg-[#FBBF24]/10 text-[#FBBF24] border border-[#FBBF24]/30',
-    violet: 'bg-[#8B5CF6]/15 text-[#A78BFA] border border-[#8B5CF6]/30',
-    trust: 'bg-[#8B5CF6]/15 text-[#A78BFA] border border-[#8B5CF6]/30',
+    violet: 'bg-[#CE1A1E]/15 text-[#CE1A1E] border border-[#CE1A1E]/30',
+    trust: 'bg-[#CE1A1E]/15 text-[#CE1A1E] border border-[#CE1A1E]/30',
   };
 
   return (
@@ -90,3 +90,4 @@ export function Badge({
     </span>
   );
 }
+

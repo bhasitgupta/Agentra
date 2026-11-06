@@ -12,48 +12,45 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type = 'text', label, error, hint, leftIcon, rightIcon, ...props }, ref) => {
-    return (
-      <div className="w-full space-y-1.5">
-        {label && (
-          <label className="block text-xs font-medium text-[#9B99C4] uppercase tracking-wider">
-            {label}
-          </label>
+  ({ className, type = 'text', label, error, hint, leftIcon, rightIcon, ...props }, ref) => (
+    <div className="w-full space-y-1.5">
+      {label && (
+        <label className="block text-xs font-medium text-[#A8ADA6] uppercase tracking-wider">
+          {label}
+        </label>
+      )}
+      <div className="relative flex items-center">
+        {leftIcon && (
+          <div className="absolute left-3 text-[#837F78] pointer-events-none flex items-center justify-center">
+            {leftIcon}
+          </div>
         )}
-        <div className="relative flex items-center">
-          {leftIcon && (
-            <div className="absolute left-3 text-[#5C5A8A] pointer-events-none flex items-center justify-center">
-              {leftIcon}
-            </div>
+        <input
+          type={type}
+          ref={ref}
+          className={cn(
+            'w-full h-10 px-3.5 rounded-lg bg-[#223330] border border-[rgba(131,127,120,0.32)] text-sm text-[#E8EBE4] placeholder-[#837F78] transition-all duration-150',
+            'focus:outline-none focus:border-[#CE1A1E] focus:ring-1 focus:ring-[#CE1A1E]/50',
+            'disabled:opacity-50 disabled:cursor-not-allowed',
+            leftIcon && 'pl-9',
+            rightIcon && 'pr-9',
+            error && 'border-[#CE1A1E] focus:ring-[#CE1A1E]',
+            className
           )}
-          <input
-            type={type}
-            ref={ref}
-            className={cn(
-              'w-full h-10 px-3.5 rounded-lg bg-[#0E0E1A] border border-[#1E1E3A] text-sm text-[#F1F0FF] placeholder-[#5C5A8A] transition-all duration-150',
-              'focus:outline-none focus:border-[#8B5CF6] focus:ring-1 focus:ring-[#8B5CF6]',
-              'disabled:opacity-50 disabled:cursor-not-allowed',
-              leftIcon && 'pl-9',
-              rightIcon && 'pr-9',
-              error && 'border-[#F87171] focus:border-[#F87171] focus:ring-[#F87171]',
-              className
-            )}
-            {...props}
-          />
-          {rightIcon && (
-            <div className="absolute right-3 text-[#5C5A8A] flex items-center justify-center">
-              {rightIcon}
-            </div>
-          )}
-        </div>
-        {error ? (
-          <p className="text-xs text-[#F87171]">{error}</p>
-        ) : hint ? (
-          <p className="text-xs text-[#5C5A8A]">{hint}</p>
-        ) : null}
+          {...props}
+        />
+        {rightIcon && (
+          <div className="absolute right-3 text-[#837F78] flex items-center justify-center">
+            {rightIcon}
+          </div>
+        )}
       </div>
-    );
-  }
+      {error ? (
+        <p className="text-xs text-[#CE1A1E]">{error}</p>
+      ) : hint ? (
+        <p className="text-xs text-[#837F78]">{hint}</p>
+      ) : null}
+    </div>
+  )
 );
-
 Input.displayName = 'Input';

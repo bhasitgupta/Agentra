@@ -125,10 +125,10 @@ export default function ExplorePage() {
       {/* Header & Search Bar */}
       <div className="mb-8 space-y-4">
         <div>
-          <h1 className="text-3xl font-extrabold text-[#F1F0FF] tracking-tight">
+          <h1 className="text-3xl font-extrabold text-[#E8EBE4] tracking-tight">
             Explore AI Agent Services
           </h1>
-          <p className="text-sm text-[#9B99C4] mt-1">
+          <p className="text-sm text-[#A8ADA6] mt-1">
             Browse verified on-chain endpoints. Pay in USDC with zero charge on failed executions.
           </p>
         </div>
@@ -139,8 +139,8 @@ export default function ExplorePage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={placeholders[placeholderIndex]}
-            leftIcon={<Search className="w-4 h-4 text-[#8B5CF6]" />}
-            className="h-12 text-sm bg-[#0E0E1A] border-[#2D2D52] pl-10 focus:border-[#8B5CF6]"
+            leftIcon={<Search className="w-4 h-4 text-[#CE1A1E]" />}
+            className="h-12 text-sm bg-[#223330] border-[rgba(131,127,120,0.35)] pl-10 focus:border-[#CE1A1E]"
           />
         </div>
 
@@ -155,8 +155,8 @@ export default function ExplorePage() {
                 type="button"
                 className={`px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                   isSelected
-                    ? 'bg-[#8B5CF6] text-[#F1F0FF] shadow-sm shadow-[#8B5CF6]/30 border border-[#A78BFA]/30'
-                    : 'bg-[#0E0E1A] text-[#9B99C4] hover:text-[#F1F0FF] border border-[#1E1E3A] hover:border-[#2D2D52]'
+                    ? 'bg-[#CE1A1E] text-[#E8EBE4] shadow-sm shadow-[#CE1A1E]/30 border border-[#CE1A1E]/30'
+                    : 'bg-[#223330] text-[#A8ADA6] hover:text-[#E8EBE4] border border-[rgba(131,127,120,0.22)] hover:border-[rgba(131,127,120,0.35)]'
                 }`}
               >
                 {cat.label}
@@ -168,14 +168,14 @@ export default function ExplorePage() {
 
       {/* Discovery Reason Banner */}
       {discoverResults && discoverResults.length > 0 && (
-        <div className="mb-6 p-4 rounded-xl bg-[#14142A] border border-[#8B5CF6]/30 flex items-start gap-3">
-          <Sparkles className="w-5 h-5 text-[#8B5CF6] shrink-0 mt-0.5" />
-          <div className="text-xs text-[#9B99C4]">
-            <p className="font-semibold text-[#F1F0FF]">
+        <div className="mb-6 p-4 rounded-xl bg-[#2a3a37] border border-[#CE1A1E]/30 flex items-start gap-3">
+          <Sparkles className="w-5 h-5 text-[#CE1A1E] shrink-0 mt-0.5" />
+          <div className="text-xs text-[#A8ADA6]">
+            <p className="font-semibold text-[#E8EBE4]">
               Semantic Ranking Activated (TRD-A §8):
             </p>
             <p className="mt-1">
-              Top match: <strong className="text-[#A78BFA]">{discoverResults[0].name}</strong> — {discoverResults[0].reason}
+              Top match: <strong className="text-[#CE1A1E]">{discoverResults[0].name}</strong> — {discoverResults[0].reason}
             </p>
           </div>
         </div>
@@ -185,17 +185,17 @@ export default function ExplorePage() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Left Sidebar Filters */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-[#0E0E1A] border border-[#1E1E3A] rounded-2xl p-5 space-y-6">
-            <div className="flex items-center justify-between pb-4 border-b border-[#1E1E3A]">
-              <div className="flex items-center gap-2 text-sm font-semibold text-[#F1F0FF]">
-                <Filter className="w-4 h-4 text-[#8B5CF6]" />
+          <div className="bg-[#223330] border border-[rgba(131,127,120,0.22)] rounded-2xl p-5 space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b border-[rgba(131,127,120,0.22)]">
+              <div className="flex items-center gap-2 text-sm font-semibold text-[#E8EBE4]">
+                <Filter className="w-4 h-4 text-[#CE1A1E]" />
                 <span>Filters</span>
               </div>
               {hasActiveFilters && (
                 <button
                   onClick={resetFilters}
                   type="button"
-                  className="text-xs text-[#A78BFA] hover:text-[#F1F0FF] flex items-center gap-1 transition-colors cursor-pointer"
+                  className="text-xs text-[#CE1A1E] hover:text-[#E8EBE4] flex items-center gap-1 transition-colors cursor-pointer"
                 >
                   <RotateCcw className="w-3 h-3" />
                   <span>Reset</span>
@@ -205,10 +205,10 @@ export default function ExplorePage() {
 
             {/* Sort Order */}
             <div className="space-y-2">
-              <label className="text-xs font-semibold text-[#9B99C4] uppercase tracking-wider">
+              <label className="text-xs font-semibold text-[#A8ADA6] uppercase tracking-wider">
                 Sort By
               </label>
-              <div className="grid grid-cols-3 gap-1.5 p-1 bg-[#07070F] rounded-lg border border-[#1E1E3A]">
+              <div className="grid grid-cols-3 gap-1.5 p-1 bg-[#081919] rounded-lg border border-[rgba(131,127,120,0.22)]">
                 {(['trust', 'price', 'calls'] as const).map((s) => (
                   <button
                     key={s}
@@ -216,8 +216,8 @@ export default function ExplorePage() {
                     onClick={() => setSortBy(s)}
                     className={`py-1.5 text-xs font-medium rounded-md capitalize transition-all cursor-pointer ${
                       sortBy === s
-                        ? 'bg-[#14142A] text-[#F1F0FF] shadow-xs border border-[#2D2D52]'
-                        : 'text-[#9B99C4] hover:text-[#F1F0FF]'
+                        ? 'bg-[#2a3a37] text-[#E8EBE4] shadow-xs border border-[rgba(131,127,120,0.35)]'
+                        : 'text-[#A8ADA6] hover:text-[#E8EBE4]'
                     }`}
                   >
                     {s}
@@ -229,10 +229,10 @@ export default function ExplorePage() {
             {/* Max Price Slider */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-semibold text-[#9B99C4] uppercase tracking-wider">
+                <span className="font-semibold text-[#A8ADA6] uppercase tracking-wider">
                   Max Price
                 </span>
-                <span className="font-mono text-[#34D399] font-medium">
+                <span className="font-mono text-[#2DD4BF] font-medium">
                   {maxPrice.toFixed(3)} USDC
                 </span>
               </div>
@@ -243,9 +243,9 @@ export default function ExplorePage() {
                 step="0.005"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(parseFloat(e.target.value))}
-                className="w-full h-1.5 bg-[#14142A] rounded-lg appearance-none cursor-pointer accent-[#8B5CF6]"
+                className="w-full h-1.5 bg-[#2a3a37] rounded-lg appearance-none cursor-pointer accent-[#CE1A1E]"
               />
-              <div className="flex justify-between text-[10px] text-[#5C5A8A] font-mono">
+              <div className="flex justify-between text-[10px] text-[#837F78] font-mono">
                 <span>0.005</span>
                 <span>0.025</span>
                 <span>0.050</span>
@@ -255,10 +255,10 @@ export default function ExplorePage() {
             {/* Min Trust Score Slider */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-semibold text-[#9B99C4] uppercase tracking-wider">
+                <span className="font-semibold text-[#A8ADA6] uppercase tracking-wider">
                   Min Trust Score
                 </span>
-                <span className="font-mono text-[#A78BFA] font-medium">
+                <span className="font-mono text-[#CE1A1E] font-medium">
                   {minTrustScore}+
                 </span>
               </div>
@@ -269,9 +269,9 @@ export default function ExplorePage() {
                 step="10"
                 value={minTrustScore}
                 onChange={(e) => setMinTrustScore(parseInt(e.target.value, 10))}
-                className="w-full h-1.5 bg-[#14142A] rounded-lg appearance-none cursor-pointer accent-[#8B5CF6]"
+                className="w-full h-1.5 bg-[#2a3a37] rounded-lg appearance-none cursor-pointer accent-[#CE1A1E]"
               />
-              <div className="flex justify-between text-[10px] text-[#5C5A8A] font-mono">
+              <div className="flex justify-between text-[10px] text-[#837F78] font-mono">
                 <span>Any (0)</span>
                 <span>Prov (40)</span>
                 <span>Est (70)</span>
@@ -279,9 +279,9 @@ export default function ExplorePage() {
             </div>
 
             {/* Security Guarantee Notice */}
-            <div className="p-3 rounded-xl bg-[#14142A]/60 border border-[#2D2D52]/60 text-[11px] text-[#9B99C4] leading-relaxed">
-              <span className="text-[#34D399] font-medium">Pay-on-Success Guarantee:</span>{' '}
-              All calls are gated by x402 on Avalanche Fuji. If a provider fails or times out, you are charged 0 USDC.
+            <div className="p-3 rounded-xl bg-[#2a3a37]/60 border border-[rgba(131,127,120,0.35)]/60 text-[11px] text-[#A8ADA6] leading-relaxed">
+              <span className="text-[#2DD4BF] font-medium">Pay-on-Success Guarantee:</span>{' '}
+              All calls are gated by x402 . If a provider fails or times out, you are charged 0 USDC.
             </div>
           </div>
         </div>
@@ -289,9 +289,9 @@ export default function ExplorePage() {
         {/* Right Main Grid */}
         <div className="lg:col-span-3">
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-20 text-[#9B99C4] space-y-3">
-              <Loader2 className="w-8 h-8 animate-spin text-[#8B5CF6]" />
-              <p className="text-sm">Querying Agentra Registry on Fuji...</p>
+            <div className="flex flex-col items-center justify-center py-20 text-[#A8ADA6] space-y-3">
+              <Loader2 className="w-8 h-8 animate-spin text-[#CE1A1E]" />
+              <p className="text-sm">Querying Agentra Registry ...</p>
             </div>
           ) : filteredServices.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -301,14 +301,14 @@ export default function ExplorePage() {
             </div>
           ) : (
             /* Empty State */
-            <div className="bg-[#0E0E1A] border border-[#1E1E3A] rounded-2xl p-12 text-center flex flex-col items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-[#14142A] flex items-center justify-center text-[#5C5A8A] mb-4">
+            <div className="bg-[#223330] border border-[rgba(131,127,120,0.22)] rounded-2xl p-12 text-center flex flex-col items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-[#2a3a37] flex items-center justify-center text-[#837F78] mb-4">
                 <SlidersHorizontal className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-semibold text-[#F1F0FF]">
+              <h3 className="text-base font-semibold text-[#E8EBE4]">
                 No matching services found
               </h3>
-              <p className="text-sm text-[#9B99C4] max-w-sm mt-1">
+              <p className="text-sm text-[#A8ADA6] max-w-sm mt-1">
                 Try loosening your filters, reducing the minimum Trust Score, or broadening your search terms.
               </p>
               <Button
@@ -326,3 +326,4 @@ export default function ExplorePage() {
     </div>
   );
 }
+

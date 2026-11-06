@@ -63,7 +63,7 @@ export async function fetchStats(): Promise<StatsResponse> {
       totalVolumeUsdc: '11.05',
       activeServicesCount: 6,
       averageLatencyMs: 680,
-      settlementGuarantee: '100% On Avalanche Fuji',
+      settlementGuarantee: '100% on Avalanche',
     };
   }
 }
@@ -434,3 +434,4 @@ export async function saveBuyerPolicy(
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return await res.json();
 }
+

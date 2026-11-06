@@ -48,7 +48,7 @@ export default function LiveFeedPage() {
             latencyMs: parsed.latencyMs || 500,
             txHash: parsed.txHash || '0x0000000000000000000000000000000000000000',
             timestamp: parsed.timestamp || new Date().toISOString(),
-            details: parsed.details || `${parsed.type} on Avalanche Fuji`,
+            details: parsed.details || `${parsed.type} on Avalanche`,
           };
           setEvents((prev) => [mappedEvent, ...prev.slice(0, 39)]);
         } catch {}
@@ -123,21 +123,21 @@ export default function LiveFeedPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#1E1E3A]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[rgba(131,127,120,0.22)]">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="relative flex h-2.5 w-2.5">
-              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${connectedSSE ? 'bg-[#34D399]' : 'bg-[#8B5CF6]'} opacity-75`} />
-              <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${connectedSSE ? 'bg-[#34D399]' : 'bg-[#8B5CF6]'}`} />
+              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${connectedSSE ? 'bg-[#2DD4BF]' : 'bg-[#CE1A1E]'} opacity-75`} />
+              <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${connectedSSE ? 'bg-[#2DD4BF]' : 'bg-[#CE1A1E]'}`} />
             </span>
-            <span className="text-xs font-mono uppercase tracking-widest text-[#34D399] font-semibold">
+            <span className="text-xs font-mono uppercase tracking-widest text-[#2DD4BF] font-semibold">
               {connectedSSE ? 'Live SSE Stream (Fastify)' : 'Streaming'}
             </span>
           </div>
-          <h1 className="text-3xl font-extrabold text-[#F1F0FF]">
+          <h1 className="text-3xl font-extrabold text-[#E8EBE4]">
             Marketplace Live Economy Feed
           </h1>
-          <p className="text-sm text-[#9B99C4] mt-1">
+          <p className="text-sm text-[#A8ADA6] mt-1">
             Real-time feed of service executions, x402 payment settlements, and on-chain Trust Score shifts.
           </p>
         </div>
@@ -148,7 +148,7 @@ export default function LiveFeedPage() {
             variant="secondary"
             size="sm"
             onClick={() => setIsStreaming(!isStreaming)}
-            className="border-[#2D2D52]"
+            className="border-[rgba(131,127,120,0.35)]"
           >
             {isStreaming ? (
               <>
@@ -157,7 +157,7 @@ export default function LiveFeedPage() {
               </>
             ) : (
               <>
-                <Play className="w-3.5 h-3.5 mr-1.5 text-[#34D399]" />
+                <Play className="w-3.5 h-3.5 mr-1.5 text-[#2DD4BF]" />
                 Resume Stream
               </>
             )}
@@ -167,30 +167,30 @@ export default function LiveFeedPage() {
 
       {/* Aggregate Ticker Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="p-4 rounded-xl bg-[#0E0E1A] border border-[#1E1E3A]">
-          <span className="text-xs font-mono text-[#5C5A8A] block uppercase">Today's Verified Calls</span>
-          <span className="text-xl font-bold font-mono text-[#F1F0FF] mt-1 block">813</span>
+        <div className="p-4 rounded-xl bg-[#223330] border border-[rgba(131,127,120,0.22)]">
+          <span className="text-xs font-mono text-[#837F78] block uppercase">Today's Verified Calls</span>
+          <span className="text-xl font-bold font-mono text-[#E8EBE4] mt-1 block">813</span>
         </div>
-        <div className="p-4 rounded-xl bg-[#0E0E1A] border border-[#1E1E3A]">
-          <span className="text-xs font-mono text-[#5C5A8A] block uppercase">Volume Settled</span>
-          <span className="text-xl font-bold font-mono text-[#34D399] mt-1 block">$11.05 USDC</span>
+        <div className="p-4 rounded-xl bg-[#223330] border border-[rgba(131,127,120,0.22)]">
+          <span className="text-xs font-mono text-[#837F78] block uppercase">Volume Settled</span>
+          <span className="text-xl font-bold font-mono text-[#2DD4BF] mt-1 block">$11.05 USDC</span>
         </div>
-        <div className="p-4 rounded-xl bg-[#0E0E1A] border border-[#1E1E3A]">
-          <span className="text-xs font-mono text-[#5C5A8A] block uppercase">Avg Fuji Latency</span>
-          <span className="text-xl font-bold font-mono text-[#A78BFA] mt-1 block">680ms</span>
+        <div className="p-4 rounded-xl bg-[#223330] border border-[rgba(131,127,120,0.22)]">
+          <span className="text-xs font-mono text-[#837F78] block uppercase">Avg Latency</span>
+          <span className="text-xl font-bold font-mono text-[#CE1A1E] mt-1 block">680ms</span>
         </div>
-        <div className="p-4 rounded-xl bg-[#0E0E1A] border border-[#1E1E3A]">
-          <span className="text-xs font-mono text-[#5C5A8A] block uppercase">Pay-On-Success Saved</span>
+        <div className="p-4 rounded-xl bg-[#223330] border border-[rgba(131,127,120,0.22)]">
+          <span className="text-xs font-mono text-[#837F78] block uppercase">Pay-On-Success Saved</span>
           <span className="text-xl font-bold font-mono text-[#F87171] mt-1 block">$0.24 USDC</span>
         </div>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-[#1E1E3A]">
+      <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-[rgba(131,127,120,0.22)]">
         {[
           { id: 'ALL', label: 'All Events' },
           { id: 'CALL_SUCCEEDED', label: 'Delivered (200)' },
-          { id: 'PAYMENT_SETTLED', label: 'Settled (Fuji)' },
+          { id: 'PAYMENT_SETTLED', label: 'Settled' },
           { id: 'CALL_FAILED', label: 'Zero-Fee Protected' },
           { id: 'SCORE_CHANGED', label: 'Reputation Updates' },
         ].map((tab) => (
@@ -200,8 +200,8 @@ export default function LiveFeedPage() {
             onClick={() => setFilter(tab.id)}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all cursor-pointer ${
               filter === tab.id
-                ? 'bg-[#14142A] text-[#F1F0FF] border border-[#2D2D52] shadow-xs'
-                : 'text-[#9B99C4] hover:text-[#F1F0FF]'
+                ? 'bg-[#2a3a37] text-[#E8EBE4] border border-[rgba(131,127,120,0.35)] shadow-xs'
+                : 'text-[#A8ADA6] hover:text-[#E8EBE4]'
             }`}
           >
             {tab.label}
@@ -210,9 +210,10 @@ export default function LiveFeedPage() {
       </div>
 
       {/* Stream List */}
-      <div className="bg-[#0E0E1A] border border-[#1E1E3A] rounded-2xl p-6">
+      <div className="bg-[#223330] border border-[rgba(131,127,120,0.22)] rounded-2xl p-6">
         <ActivityFeed events={filteredEvents} maxItems={40} />
       </div>
     </div>
   );
 }
+

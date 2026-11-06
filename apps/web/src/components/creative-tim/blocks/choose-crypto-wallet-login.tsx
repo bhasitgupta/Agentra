@@ -144,7 +144,7 @@ export default function ChooseCryptoWalletLogin() {
   if (!mounted) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-20 flex justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-[#8B5CF6]" />
+        <Loader2 className="w-8 h-8 animate-spin text-[#CE1A1E]" />
       </div>
     );
   }
@@ -152,31 +152,34 @@ export default function ChooseCryptoWalletLogin() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full space-y-8" suppressHydrationWarning>
       {/* Title & Introduction */}
-      <div className="text-center space-y-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#14142A] border border-[#2D2D52] text-xs font-mono text-[#A78BFA] mb-2">
-          <Sparkles className="w-3.5 h-3.5 text-[#8B5CF6]" />
+      <div className="text-center space-y-3 flex flex-col items-center">
+        <div className="w-16 h-16 rounded-2xl overflow-hidden border border-[#CE1A1E]/50 shadow-lg shadow-[#CE1A1E]/20 bg-[#081919] p-0.5 mb-1">
+          <img src="/logo.png" alt="Agentra" className="w-full h-full object-cover rounded-xl" />
+        </div>
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2a3a37] border border-[rgba(131,127,120,0.35)] text-xs font-mono text-[#CE1A1E] mb-2">
+          <Sparkles className="w-3.5 h-3.5 text-[#CE1A1E]" />
           <span>Non-Custodial Avalanche Authentication</span>
         </div>
-        <h1 className="text-3xl font-extrabold text-[#F1F0FF] tracking-tight">
+        <h1 className="text-3xl font-extrabold text-[#E8EBE4] tracking-tight">
           Choose Your Wallet
         </h1>
-        <p className="text-sm text-[#9B99C4] max-w-lg mx-auto">
-          Authenticate your client to browse services, configure autonomous spend policies, or monetize your agent endpoints on Avalanche Fuji.
+        <p className="text-sm text-[#A8ADA6] max-w-lg mx-auto">
+          Authenticate your client to browse services, configure autonomous spend policies, or monetize your agent endpoints on Avalanche.
         </p>
       </div>
 
       {/* Connected State Banner */}
       {isConnected && address ? (
-        <div className="p-6 rounded-2xl bg-[#0E0E1A] border border-[#34D399]/40 space-y-5 shadow-xl shadow-black/40">
-          <div className="flex items-center justify-between pb-4 border-b border-[#1E1E3A]">
+        <div className="p-6 rounded-2xl bg-[#223330] border border-[#2DD4BF]/40 space-y-5 shadow-xl shadow-black/40">
+          <div className="flex items-center justify-between pb-4 border-b border-[rgba(131,127,120,0.22)]">
             <div className="flex items-center gap-3">
-              <div className="w-3 h-3 rounded-full bg-[#34D399] animate-pulse" />
+              <div className="w-3 h-3 rounded-full bg-[#2DD4BF] animate-pulse" />
               <div>
-                <span className="text-xs font-mono text-[#5C5A8A] uppercase tracking-wider block">
+                <span className="text-xs font-mono text-[#837F78] uppercase tracking-wider block">
                   Active Wallet Session
                 </span>
-                <span className="text-sm font-bold text-[#F1F0FF]">
-                  {activeConnector?.name || 'Injected Wallet'} (Avalanche Fuji)
+                <span className="text-sm font-bold text-[#E8EBE4]">
+                  {activeConnector?.name || 'Injected Wallet'} (Avalanche)
                 </span>
               </div>
             </div>
@@ -193,26 +196,26 @@ export default function ChooseCryptoWalletLogin() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-3.5 rounded-xl bg-[#07070F] border border-[#1E1E3A] space-y-1">
-              <span className="text-[11px] font-mono text-[#5C5A8A] block uppercase">Address</span>
+            <div className="p-3.5 rounded-xl bg-[#081919] border border-[rgba(131,127,120,0.22)] space-y-1">
+              <span className="text-[11px] font-mono text-[#837F78] block uppercase">Address</span>
               <div className="flex items-center justify-between">
-                <span className="font-mono text-sm text-[#F1F0FF] font-semibold">
+                <span className="font-mono text-sm text-[#E8EBE4] font-semibold">
                   {truncateAddress(address, 6)}
                 </span>
                 <div className="flex items-center gap-1">
                   <button
                     type="button"
                     onClick={handleCopy}
-                    className="p-1.5 rounded hover:bg-[#1E1E3A] text-[#9B99C4] hover:text-[#F1F0FF]"
+                    className="p-1.5 rounded hover:bg-[rgba(131,127,120,0.22)] text-[#A8ADA6] hover:text-[#E8EBE4]"
                     title="Copy Address"
                   >
-                    {copied ? <Check className="w-3.5 h-3.5 text-[#34D399]" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copied ? <Check className="w-3.5 h-3.5 text-[#2DD4BF]" /> : <Copy className="w-3.5 h-3.5" />}
                   </button>
                   <a
                     href={getSnowtraceAddressUrl(address)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-1.5 rounded hover:bg-[#1E1E3A] text-[#9B99C4] hover:text-[#F1F0FF]"
+                    className="p-1.5 rounded hover:bg-[rgba(131,127,120,0.22)] text-[#A8ADA6] hover:text-[#E8EBE4]"
                     title="View on Snowtrace"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
@@ -221,9 +224,9 @@ export default function ChooseCryptoWalletLogin() {
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-[#07070F] border border-[#1E1E3A] space-y-1">
-              <span className="text-[11px] font-mono text-[#5C5A8A] block uppercase">Testnet Balance</span>
-              <span className="font-mono text-sm text-[#34D399] font-bold block">
+            <div className="p-3.5 rounded-xl bg-[#081919] border border-[rgba(131,127,120,0.22)] space-y-1">
+              <span className="text-[11px] font-mono text-[#837F78] block uppercase">Testnet Balance</span>
+              <span className="font-mono text-sm text-[#2DD4BF] font-bold block">
                 {balanceData ? `${parseFloat(balanceData.formatted).toFixed(4)} ${balanceData.symbol}` : '0.000 AVAX'}
               </span>
             </div>
@@ -246,15 +249,15 @@ export default function ChooseCryptoWalletLogin() {
       ) : null}
 
       {/* Wallet Selector Box */}
-      <div className="rounded-2xl bg-[#0E0E1A] border border-[#1E1E3A] p-6 sm:p-8 space-y-6 shadow-xl shadow-black/30">
+      <div className="rounded-2xl bg-[#223330] border border-[rgba(131,127,120,0.22)] p-6 sm:p-8 space-y-6 shadow-xl shadow-black/30">
         {/* Search Input Filter */}
         <div className="relative">
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search through available wallet providers..."
-            leftIcon={<Search className="w-4 h-4 text-[#8B5CF6]" />}
-            className="h-11 bg-[#07070F] border-[#2D2D52] text-sm pl-10"
+            leftIcon={<Search className="w-4 h-4 text-[#CE1A1E]" />}
+            className="h-11 bg-[#081919] border-[rgba(131,127,120,0.35)] text-sm pl-10"
           />
         </div>
 
@@ -266,30 +269,30 @@ export default function ChooseCryptoWalletLogin() {
               type="button"
               onClick={() => handleWalletSelect(wallet.id)}
               disabled={isPending}
-              className="p-5 rounded-xl bg-[#14142A] border border-[#2D2D52] hover:border-[#8B5CF6] hover:bg-[#1A1A30] transition-all text-left flex flex-col justify-between space-y-4 group cursor-pointer disabled:opacity-50"
+              className="p-5 rounded-xl bg-[#2a3a37] border border-[rgba(131,127,120,0.35)] hover:border-[#CE1A1E] hover:bg-[#1A1A30] transition-all text-left flex flex-col justify-between space-y-4 group cursor-pointer disabled:opacity-50"
             >
               <div className="flex items-start justify-between w-full">
-                <div className="p-2 rounded-xl bg-[#0E0E1A] border border-[#2D2D52] group-hover:scale-105 transition-transform">
+                <div className="p-2 rounded-xl bg-[#223330] border border-[rgba(131,127,120,0.35)] group-hover:scale-105 transition-transform">
                   {wallet.icon}
                 </div>
                 <div className="flex items-center gap-1.5">
                   {wallet.popular && (
-                    <span className="text-[10px] font-mono text-[#34D399] bg-[#34D399]/10 border border-[#34D399]/20 px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] font-mono text-[#2DD4BF] bg-[#2DD4BF]/10 border border-[#2DD4BF]/20 px-2 py-0.5 rounded-full">
                       POPULAR
                     </span>
                   )}
-                  <span className="text-[10px] font-mono text-[#9B99C4] bg-[#07070F] border border-[#1E1E3A] px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-mono text-[#A8ADA6] bg-[#081919] border border-[rgba(131,127,120,0.22)] px-2 py-0.5 rounded-full">
                     {wallet.tag}
                   </span>
                 </div>
               </div>
 
               <div>
-                <h3 className="text-base font-bold text-[#F1F0FF] group-hover:text-[#A78BFA] transition-colors flex items-center justify-between">
+                <h3 className="text-base font-bold text-[#E8EBE4] group-hover:text-[#CE1A1E] transition-colors flex items-center justify-between">
                   <span>{wallet.name}</span>
-                  <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-[#8B5CF6]" />
+                  <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-[#CE1A1E]" />
                 </h3>
-                <p className="text-xs text-[#9B99C4] mt-1 leading-relaxed">
+                <p className="text-xs text-[#A8ADA6] mt-1 leading-relaxed">
                   {wallet.description}
                 </p>
               </div>
@@ -303,7 +306,7 @@ export default function ChooseCryptoWalletLogin() {
             variant="ghost"
             size="sm"
             onClick={openConnectModal}
-            className="text-xs text-[#A78BFA] hover:text-[#F1F0FF]"
+            className="text-xs text-[#CE1A1E] hover:text-[#E8EBE4]"
           >
             Don't see your wallet? Click here to view 300+ additional wallets
           </Button>
@@ -317,11 +320,12 @@ export default function ChooseCryptoWalletLogin() {
         )}
 
         {/* Trust & Non-Custodial Footer */}
-        <div className="pt-4 border-t border-[#1E1E3A] flex items-center justify-center gap-2 text-xs text-[#5C5A8A] text-center">
-          <ShieldCheck className="w-4 h-4 text-[#34D399]" />
+        <div className="pt-4 border-t border-[rgba(131,127,120,0.22)] flex items-center justify-center gap-2 text-xs text-[#837F78] text-center">
+          <ShieldCheck className="w-4 h-4 text-[#2DD4BF]" />
           <span>Non-custodial. Agentra never has access to your private keys or seed phrase.</span>
         </div>
       </div>
     </div>
   );
 }
+

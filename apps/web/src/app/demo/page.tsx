@@ -68,7 +68,7 @@ export default function GuidedDemoPage() {
     },
     {
       stepNumber: 5,
-      title: 'USDC Settles on Avalanche Fuji C-Chain',
+      title: 'USDC Settles on Avalanche C-Chain',
       log: 'Escrow.settle(receipt, sig) → Tx: 0x7b1c3e4a9d821045b4ef081829e1203498acbd12048591820491029481920abc',
       resultTitle: 'Atomic Settlement',
       resultContent: '0.00975 USDC routed to provider, 0.00025 USDC (2.5%) protocol fee deposited.',
@@ -155,20 +155,20 @@ export default function GuidedDemoPage() {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full space-y-8">
       {/* Header */}
       <div>
-        <div className="flex items-center gap-2 text-xs font-mono text-[#8B5CF6] uppercase tracking-wider mb-2">
+        <div className="flex items-center gap-2 text-xs font-mono text-[#CE1A1E] uppercase tracking-wider mb-2">
           <Sparkles className="w-3.5 h-3.5" />
           <span>Interactive Protocol Simulation</span>
         </div>
-        <h1 className="text-3xl font-extrabold text-[#F1F0FF] tracking-tight">
+        <h1 className="text-3xl font-extrabold text-[#E8EBE4] tracking-tight">
           Guided Protocol Demo
         </h1>
-        <p className="text-sm text-[#9B99C4] mt-1 max-w-2xl">
+        <p className="text-sm text-[#A8ADA6] mt-1 max-w-2xl">
           Observe how autonomous agents discover endpoints, verify 402 HTTP challenges, sign EIP-712 vouchers, and settle on Avalanche with zero-charge guarantees.
         </p>
       </div>
 
       {/* Scenario Selector & Action Bar */}
-      <div className="p-4 rounded-2xl bg-[#0E0E1A] border border-[#1E1E3A] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="p-4 rounded-2xl bg-[#223330] border border-[rgba(131,127,120,0.22)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <button
             type="button"
@@ -178,8 +178,8 @@ export default function GuidedDemoPage() {
             }}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
               activeScenario === 'happy-path'
-                ? 'bg-[#8B5CF6] text-white shadow-sm'
-                : 'bg-[#14142A] text-[#9B99C4] hover:text-[#F1F0FF]'
+                ? 'bg-[#CE1A1E] text-white shadow-sm'
+                : 'bg-[#2a3a37] text-[#A8ADA6] hover:text-[#E8EBE4]'
             }`}
           >
             Scenario A: Successful Call & Settlement
@@ -193,7 +193,7 @@ export default function GuidedDemoPage() {
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
               activeScenario === 'failure-path'
                 ? 'bg-[#F87171] text-white shadow-sm'
-                : 'bg-[#14142A] text-[#9B99C4] hover:text-[#F1F0FF]'
+                : 'bg-[#2a3a37] text-[#A8ADA6] hover:text-[#E8EBE4]'
             }`}
           >
             Scenario B: Flaky Failure (Zero Charge)
@@ -240,9 +240,9 @@ export default function GuidedDemoPage() {
               className={`p-5 rounded-xl border transition-all ${
                 isReached
                   ? isCurrent
-                    ? 'bg-[#14142A] border-[#8B5CF6] shadow-lg shadow-[#8B5CF6]/15'
-                    : 'bg-[#0E0E1A] border-[#2D2D52]'
-                  : 'bg-[#07070F] border-[#1E1E3A]'
+                    ? 'bg-[#2a3a37] border-[#CE1A1E] shadow-lg shadow-[#CE1A1E]/15'
+                    : 'bg-[#223330] border-[rgba(131,127,120,0.35)]'
+                  : 'bg-[#081919] border-[rgba(131,127,120,0.22)]'
               }`}
             >
               <div className="flex items-start justify-between gap-4 mb-2">
@@ -252,15 +252,15 @@ export default function GuidedDemoPage() {
                       isReached
                         ? activeScenario === 'failure-path' && idx >= 1
                           ? 'bg-[#F87171] text-white'
-                          : 'bg-[#34D399] text-[#07070F]'
-                        : 'bg-[#14142A] text-[#5C5A8A] border border-[#1E1E3A]'
+                          : 'bg-[#2DD4BF] text-[#081919]'
+                        : 'bg-[#2a3a37] text-[#837F78] border border-[rgba(131,127,120,0.22)]'
                     }`}
                   >
                     {isReached ? <CheckCircle2 className="w-4 h-4" /> : step.stepNumber}
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-[#F1F0FF]">{step.title}</h3>
-                    <span className="text-xs text-[#9B99C4]">{step.resultContent}</span>
+                    <h3 className="text-sm font-bold text-[#E8EBE4]">{step.title}</h3>
+                    <span className="text-xs text-[#A8ADA6]">{step.resultContent}</span>
                   </div>
                 </div>
 
@@ -273,8 +273,8 @@ export default function GuidedDemoPage() {
 
               {/* Terminal code snippet for step */}
               {isReached && (
-                <div className="mt-3 p-3 rounded-lg bg-[#07070F] border border-[#1E1E3A] font-mono text-xs text-[#A78BFA] flex items-center gap-2">
-                  <Terminal className="w-3.5 h-3.5 text-[#5C5A8A] shrink-0" />
+                <div className="mt-3 p-3 rounded-lg bg-[#081919] border border-[rgba(131,127,120,0.22)] font-mono text-xs text-[#CE1A1E] flex items-center gap-2">
+                  <Terminal className="w-3.5 h-3.5 text-[#837F78] shrink-0" />
                   <span className="truncate">{step.log}</span>
                 </div>
               )}
@@ -290,25 +290,25 @@ export default function GuidedDemoPage() {
           animate={{ opacity: 1, y: 0 }}
           className={`p-6 rounded-2xl border text-center space-y-3 ${
             activeScenario === 'happy-path'
-              ? 'bg-[#34D399]/10 border-[#34D399]/30'
-              : 'bg-[#8B5CF6]/10 border-[#8B5CF6]/30'
+              ? 'bg-[#2DD4BF]/10 border-[#2DD4BF]/30'
+              : 'bg-[#CE1A1E]/10 border-[#CE1A1E]/30'
           }`}
         >
-          <div className="inline-flex p-3 rounded-full bg-[#14142A] border border-[#1E1E3A] mb-1">
+          <div className="inline-flex p-3 rounded-full bg-[#2a3a37] border border-[rgba(131,127,120,0.22)] mb-1">
             {activeScenario === 'happy-path' ? (
-              <ShieldCheck className="w-6 h-6 text-[#34D399]" />
+              <ShieldCheck className="w-6 h-6 text-[#2DD4BF]" />
             ) : (
               <AlertTriangle className="w-6 h-6 text-[#F87171]" />
             )}
           </div>
-          <h3 className="text-lg font-bold text-[#F1F0FF]">
+          <h3 className="text-lg font-bold text-[#E8EBE4]">
             {activeScenario === 'happy-path'
               ? 'Protocol Lifecycle Successfully Simulated'
               : 'Zero-Charge Guarantee Proven'}
           </h3>
-          <p className="text-xs text-[#9B99C4] max-w-lg mx-auto leading-relaxed">
+          <p className="text-xs text-[#A8ADA6] max-w-lg mx-auto leading-relaxed">
             {activeScenario === 'happy-path'
-              ? 'Payment was settled in escrow, verified cryptographic receipts were emitted, and the reputation score updated in real time on Avalanche Fuji.'
+              ? 'Payment was settled in escrow, verified cryptographic receipts were emitted, and the reputation score updated in real time on Avalanche.'
               : 'The upstream service failed, but zero USDC was debited from the caller wallet. Proof of failure was logged to prevent future wasted calls.'}
           </p>
         </motion.div>
@@ -316,3 +316,4 @@ export default function GuidedDemoPage() {
     </div>
   );
 }
+

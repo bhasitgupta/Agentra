@@ -2,30 +2,29 @@
 
 @layer base {
   :root {
-    --bg-base: #07070F;
-    --bg-surface: #0E0E1A;
-    --bg-elevated: #14142A;
-    --bg-hover: #1A1A30;
+    /* New palette: Black Stallion / Concealed Green / Iron River / Chain Link / Blood God / Thunder Mountain */
+    --bg-base:     #081919;
+    --bg-surface:  #223330;
+    --bg-elevated: #2a3a37;
+    --bg-hover:    #344340;
 
-    --violet-400: #A78BFA;
-    --violet-500: #8B5CF6;
-    --violet-600: #7C3AED;
-    --violet-900: #2E1065;
+    --accent:      #CE1A1E;  /* Thunder Mountain - primary CTA */
+    --accent-dark: #65060E;  /* Blood God - hover / deep accent */
+    --accent-glow: rgba(206,26,30,0.18);
 
-    --emerald-400: #34D399;
-    --emerald-500: #10B981;
+    --border-subtle:  rgba(131,127,120,0.18);
+    --border-default: rgba(131,127,120,0.32);
+    --border-strong:  rgba(131,127,120,0.55);
 
-    --border-subtle: #1E1E3A;
-    --border-default: #2D2D52;
-    --border-strong: #3D3D6E;
+    --text-primary:   #E8EBE4;
+    --text-secondary: #A8ADA6;
+    --text-muted:     #837F78;  /* Chain Link */
 
-    --text-primary: #F1F0FF;
-    --text-secondary: #9B99C4;
-    --text-muted: #5C5A8A;
+    --success: #2DD4BF;
+    --warn:    #F5B544;
+    --danger:  #CE1A1E;
 
-    --red-400: #F87171;
-    --amber-400: #FBBF24;
-    --cyan-400: #22D3EE;
+    --mono-font: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
   }
 
   * {
@@ -41,91 +40,61 @@
   }
 
   ::selection {
-    background-color: var(--violet-900);
+    background-color: var(--accent-dark);
     color: var(--text-primary);
   }
 }
 
-@theme {
-  --color-bg-base: var(--bg-base);
-  --color-bg-surface: var(--bg-surface);
-  --color-bg-elevated: var(--bg-elevated);
-  --color-bg-hover: var(--bg-hover);
-
-  --color-violet-400: var(--violet-400);
-  --color-violet-500: var(--violet-500);
-  --color-violet-600: var(--violet-600);
-  --color-violet-900: var(--violet-900);
-
-  --color-emerald-400: var(--emerald-400);
-  --color-emerald-500: var(--emerald-500);
-
-  --color-border-subtle: var(--border-subtle);
-  --color-border-default: var(--border-default);
-  --color-border-strong: var(--border-strong);
-
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-text-muted: var(--text-muted);
-
-  --color-red-400: var(--red-400);
-  --color-amber-400: var(--amber-400);
-  --color-cyan-400: var(--cyan-400);
-}
-
-/* Custom background & border utility classes for rock-solid styling */
-.bg-base { background-color: var(--bg-base); }
-.bg-surface { background-color: var(--bg-surface); }
+/* ── Utility classes ───────────────────────────────────────── */
+.bg-base     { background-color: var(--bg-base); }
+.bg-surface  { background-color: var(--bg-surface); }
 .bg-elevated { background-color: var(--bg-elevated); }
-.bg-hover { background-color: var(--bg-hover); }
+.bg-hover    { background-color: var(--bg-hover); }
 
-.border-subtle { border-color: var(--border-subtle); }
-.border-default { border-color: var(--border-default); }
-.border-strong { border-color: var(--border-strong); }
-
-.text-primary { color: var(--text-primary); }
+.text-primary   { color: var(--text-primary); }
 .text-secondary { color: var(--text-secondary); }
-.text-muted { color: var(--text-muted); }
+.text-muted     { color: var(--text-muted); }
+.text-accent    { color: var(--accent); }
 
-/* Glassmorphism specifically for feature panels */
-.glass-panel {
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  background-color: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
+.border-subtle  { border-color: var(--border-subtle); }
+.border-default { border-color: var(--border-default); }
 
-/* Full-bleed hero animated gradient mesh background */
+/* ── Hero gradient mesh ────────────────────────────────────── */
 .hero-gradient-mesh {
-  background-color: #07070F;
-  background-image: 
-    radial-gradient(at 50% 0%, rgba(139, 92, 246, 0.22) 0px, transparent 55%),
-    radial-gradient(at 10% 20%, rgba(46, 16, 101, 0.28) 0px, transparent 45%),
-    radial-gradient(at 90% 15%, rgba(124, 58, 237, 0.16) 0px, transparent 40%),
-    radial-gradient(at 50% 50%, rgba(14, 14, 26, 0.6) 0px, transparent 80%);
+  background-color: var(--bg-base);
+  background-image:
+    radial-gradient(at 50% 0%,  rgba(206,26,30,0.14) 0px, transparent 55%),
+    radial-gradient(at 10% 20%, rgba(101,6,14,0.22)  0px, transparent 50%),
+    radial-gradient(at 90% 15%, rgba(206,26,30,0.08) 0px, transparent 42%),
+    radial-gradient(at 50% 50%, rgba(34,51,48,0.70)  0px, transparent 80%);
 }
 
-/* Card hover glow */
+/* ── Card hover glow ──────────────────────────────────────── */
 .card-hover-glow {
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.18s cubic-bezier(0.16,1,0.3,1);
 }
 .card-hover-glow:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 0 1px #8B5CF6, 0 8px 24px -4px rgba(139, 92, 246, 0.15);
+  box-shadow: 0 0 0 1px var(--accent), 0 8px 24px -4px rgba(206,26,30,0.14);
 }
 
-/* Custom subtle scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+/* ── Glass panel ──────────────────────────────────────────── */
+.glass-panel {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background-color: rgba(34,51,48,0.55);
+  border: 1px solid var(--border-subtle);
 }
-::-webkit-scrollbar-track {
-  background: var(--bg-base);
+
+/* ── Scrollbar ────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+
+/* ── Live pulse dot ───────────────────────────────────────── */
+@keyframes livepulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.85); }
 }
-::-webkit-scrollbar-thumb {
-  background: var(--border-default);
-  border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--border-strong);
-}
+.live-dot { animation: livepulse 1.6s ease-in-out infinite; }

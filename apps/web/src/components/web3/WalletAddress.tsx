@@ -33,20 +33,20 @@ export function WalletAddress({
   };
 
   return (
-    <div className={`inline-flex items-center gap-1.5 font-mono text-xs text-[#9B99C4] ${className}`}>
-      <span className="text-[#F1F0FF]">{truncateAddress(address, chars)}</span>
+    <div className={`inline-flex items-center gap-1.5 font-mono text-xs text-[#A8ADA6] ${className}`}>
+      <span className="text-[#E8EBE4]">{truncateAddress(address, chars)}</span>
 
       {showCopy && (
         <button
           onClick={handleCopy}
           type="button"
           title="Copy address"
-          className="p-1 hover:text-[#A78BFA] hover:bg-[#14142A] rounded transition-colors cursor-pointer"
+          className="p-1 hover:text-[#CE1A1E] hover:bg-[#2a3a37] rounded transition-colors cursor-pointer"
         >
           {copied ? (
-            <Check className="w-3 h-3 text-[#34D399]" />
+            <Check className="w-3 h-3 text-[#2DD4BF]" />
           ) : (
-            <Copy className="w-3 h-3 text-[#5C5A8A]" />
+            <Copy className="w-3 h-3 text-[#837F78]" />
           )}
         </button>
       )}
@@ -57,11 +57,12 @@ export function WalletAddress({
           target="_blank"
           rel="noopener noreferrer"
           title="View on Snowtrace"
-          className="p-1 hover:text-[#A78BFA] hover:bg-[#14142A] rounded transition-colors"
+          className="p-1 hover:text-[#CE1A1E] hover:bg-[#2a3a37] rounded transition-colors"
         >
-          <ExternalLink className="w-3 h-3 text-[#5C5A8A]" />
+          <ExternalLink className="w-3 h-3 text-[#837F78]" />
         </a>
       )}
     </div>
   );
 }
+

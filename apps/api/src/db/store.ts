@@ -478,7 +478,7 @@ class DataStore {
       totalVolumeUsdc: (Number(totalVolumeAtomic) / 1_000_000).toFixed(2),
       activeServicesCount: services.filter((s) => s.status === 'active').length,
       averageLatencyMs: 680,
-      settlementGuarantee: '100% On Avalanche Fuji',
+      settlementGuarantee: '100% On-Chain',
     };
   }
 
@@ -517,4 +517,5 @@ class DataStore {
 }
 
 export const store = new DataStore();
+
 
