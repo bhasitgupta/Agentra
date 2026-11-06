@@ -85,13 +85,13 @@ const SCENARIOS = [
 ];
 
 /* ── Logos Marquee ── */
-const PROTOCOL_LOGOS = [
-  { name: 'Avalanche C-Chain', style: 'serif', color: '#CE1A1E' },
-  { name: 'x402 Protocol', style: 'round', color: '#D9480F' },
-  { name: 'EIP-3009 Vouchers', style: 'mono', color: '#F2C8A0' },
-  { name: 'ERC-8004 Trust', style: 'script', color: '#D59B86' },
-  { name: 'MCP 2.0 Standard', style: 'badge', color: '#CE1A1E' },
-  { name: 'Fastify SSE Pipeline', style: 'round', color: '#B9767A' },
+const PROTOCOL_BADGES = [
+  { name: 'Avalanche C-Chain', tag: 'Settlement Rail', color: '#CE1A1E' },
+  { name: 'x402 Protocol', tag: 'Pay-on-Success', color: '#2DD4BF' },
+  { name: 'EIP-3009 Vouchers', tag: 'Gasless Auth', color: '#F5B544' },
+  { name: 'ERC-8004 Trust', tag: 'Decentralized SLA', color: '#60A5FA' },
+  { name: 'Fastify SSE Pipeline', tag: 'Sub-600ms Stream', color: '#A78BFA' },
+  { name: 'MCP 2.0 Standard', tag: 'Native Agent Tools', color: '#F472B6' },
 ];
 
 /* ── 4-Stage Agent Canvas ── */
@@ -587,20 +587,30 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── SECTION 2: PROTOCOL LOGOS MARQUEE (Cairn Marquee) ── */}
-      <section className="cnl-logos mt-20" data-sec="customers" aria-label="Protocols">
+      {/* ── SECTION 2: PROTOCOL LOGOS MARQUEE (Borderless Floating Marquee) ── */}
+      <section className="cnl-logos my-12" data-sec="customers" aria-label="Protocols">
         <p className="cnl-logos-label text-center text-xs font-mono tracking-widest text-[#a3a5a0] uppercase mb-6" data-reveal="">
           Powering autonomous agent workloads across decentralized protocols
         </p>
-        <div className="cnl-marquee py-4 border-y border-white/10 bg-[#151716]/40" data-reveal="">
-          <ul className="cnl-track flex items-center gap-8">
-            {[...PROTOCOL_LOGOS, ...PROTOCOL_LOGOS].map((p, idx) => (
+        <div className="cnl-marquee" data-reveal="">
+          <ul className="cnl-track flex items-center gap-6">
+            {[...PROTOCOL_BADGES, ...PROTOCOL_BADGES, ...PROTOCOL_BADGES, ...PROTOCOL_BADGES].map((p, idx) => (
               <li
                 key={idx}
-                className="cnl-logo inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#202221]/60 border border-white/10 text-xs font-mono text-[#f0efeb]"
+                className="cnl-logo inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#1b1d1c]/80 backdrop-blur-md border border-white/5 shadow-md shadow-black/20 text-xs font-mono text-[#f0efeb]"
               >
-                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: p.color }} />
-                <span className="font-semibold">{p.name}</span>
+                <span className="relative flex h-2 w-2 flex-shrink-0">
+                  <span
+                    className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+                    style={{ backgroundColor: p.color }}
+                  />
+                  <span
+                    className="relative inline-flex rounded-full h-2 w-2"
+                    style={{ backgroundColor: p.color, boxShadow: `0 0 8px ${p.color}` }}
+                  />
+                </span>
+                <span className="font-semibold text-[#FFFFFF] tracking-wide">{p.name}</span>
+                <span className="text-[#837F78] text-[11px]">· {p.tag}</span>
               </li>
             ))}
           </ul>
@@ -633,10 +643,10 @@ export default function LandingPage() {
               <div
                 key={step.num}
                 onClick={() => setActiveStep(idx)}
-                className={`cursor-pointer rounded-2xl p-5 border transition-all ${
+                className={`cursor-pointer rounded-2xl p-5 border transition-all duration-300 ease-out hover:-translate-y-1.5 hover:scale-[1.01] ${
                   activeStep === idx
-                    ? 'bg-[#1b1d1c] border-[#CE1A1E] shadow-[0_4px_24px_rgba(206,26,30,0.25)]'
-                    : 'bg-[#151716]/60 border-white/10 hover:border-white/20'
+                    ? 'bg-[#1b1d1c] border-[#CE1A1E] shadow-[0_12px_32px_rgba(206,26,30,0.3)]'
+                    : 'bg-[#151716]/60 border-white/10 hover:border-white/25 hover:shadow-[0_10px_25px_rgba(0,0,0,0.4)]'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
@@ -829,7 +839,7 @@ export default function LandingPage() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8" data-reveal="">
-          <div className="p-6 rounded-2xl bg-[#151716] border border-white/10 text-center">
+          <div className="p-6 rounded-2xl bg-[#151716] border border-white/10 text-center transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.03] hover:border-[#CE1A1E]/50 hover:shadow-[0_16px_36px_-10px_rgba(206,26,30,0.3)] cursor-default">
             <div className="text-4xl sm:text-5xl font-serif text-[#CE1A1E] font-normal mb-1">
               $0.00
             </div>
@@ -839,7 +849,7 @@ export default function LandingPage() {
             <div className="text-[11px] text-[#a3a5a0] mt-1">100% refunded when gateways 5xx</div>
           </div>
 
-          <div className="p-6 rounded-2xl bg-[#151716] border border-white/10 text-center">
+          <div className="p-6 rounded-2xl bg-[#151716] border border-white/10 text-center transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.03] hover:border-[#CE1A1E]/50 hover:shadow-[0_16px_36px_-10px_rgba(206,26,30,0.3)] cursor-default">
             <div className="text-4xl sm:text-5xl font-serif text-[#ffffff] font-normal mb-1">
               99.7%
             </div>
@@ -849,7 +859,7 @@ export default function LandingPage() {
             <div className="text-[11px] text-[#a3a5a0] mt-1">Verified cryptographic proofs</div>
           </div>
 
-          <div className="p-6 rounded-2xl bg-[#151716] border border-white/10 text-center">
+          <div className="p-6 rounded-2xl bg-[#151716] border border-white/10 text-center transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.03] hover:border-[#CE1A1E]/50 hover:shadow-[0_16px_36px_-10px_rgba(206,26,30,0.3)] cursor-default">
             <div className="text-4xl sm:text-5xl font-serif text-[#ffffff] font-normal mb-1">
               {stats?.averageLatencyMs || 680}ms
             </div>
@@ -859,7 +869,7 @@ export default function LandingPage() {
             <div className="text-[11px] text-[#a3a5a0] mt-1">Direct SSE stream settlement</div>
           </div>
 
-          <div className="p-6 rounded-2xl bg-[#151716] border border-white/10 text-center">
+          <div className="p-6 rounded-2xl bg-[#151716] border border-white/10 text-center transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.03] hover:border-[#CE1A1E]/50 hover:shadow-[0_16px_36px_-10px_rgba(206,26,30,0.3)] cursor-default">
             <div className="text-4xl sm:text-5xl font-serif text-[#2DD4BF] font-normal mb-1">
               {stats?.totalVerifiedCalls ? `${stats.totalVerifiedCalls.toLocaleString()}+` : '12,000+'}
             </div>
@@ -884,7 +894,7 @@ export default function LandingPage() {
           {QUOTES.map((q, idx) => (
             <div
               key={idx}
-              className="p-8 rounded-2xl bg-[#151716] border border-white/10 flex flex-col justify-between"
+              className="p-8 rounded-2xl bg-[#151716] border border-white/10 flex flex-col justify-between transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:border-[#CE1A1E]/50 hover:shadow-[0_20px_40px_-12px_rgba(206,26,30,0.35)] cursor-default"
             >
               <p className="text-base font-serif text-[#f0efeb] leading-relaxed italic mb-6">
                 &ldquo;{q.quote}&rdquo;

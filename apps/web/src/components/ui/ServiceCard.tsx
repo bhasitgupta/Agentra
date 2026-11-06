@@ -14,7 +14,7 @@ interface ServiceCardProps {
 
 export function ServiceCard({ service }: ServiceCardProps) {
   return (
-    <div className="group relative flex flex-col justify-between rounded-xl bg-[#223330]/35 border border-[#4D524B]/40 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#CE1A1E] hover:shadow-[0_0_0_1px_rgba(206,26,30,0.5),0_14px_32px_-6px_rgba(101,6,14,0.35)]">
+    <div className="group relative flex flex-col justify-between rounded-2xl bg-[#223330]/35 border border-[#4D524B]/40 p-5.5 transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:border-[#CE1A1E] hover:shadow-[0_20px_40px_-10px_rgba(206,26,30,0.35),0_0_20px_rgba(206,26,30,0.15)]">
       {/* Top row: Category Badge & TrustScore */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex flex-wrap items-center gap-1.5">

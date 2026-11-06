@@ -8,11 +8,12 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { fetchServices, discoverServices, DiscoverResult } from '@/lib/api';
 import { Service } from '@/lib/types';
-import { REFERENCE_SERVICES } from '@/lib/mockData';
-import { Search, SlidersHorizontal, RotateCcw, Sparkles, Filter, Loader2 } from 'lucide-react';
+import { getRegisteredServices } from '@/lib/servicesStore';
+import { Search, SlidersHorizontal, RotateCcw, Sparkles, Filter, Loader2, PlusCircle } from 'lucide-react';
+import Link from 'next/link';
 
 export default function ExplorePage() {
-  const [services, setServices] = useState<Service[]>(REFERENCE_SERVICES);
+  const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -23,8 +24,8 @@ export default function ExplorePage() {
 
   // Animated placeholder text rotation
   const placeholders = [
-    'Describe the task, e.g. India EV registrations by state...',
-    'Search for Solidity AST vulnerability scanner...',
+    'Describe the task, e.g. Autonomous transaction audit...',
+    'Search for Avalanche smart contract verification...',
     'Find low-latency sentiment extraction for financial news...',
     'Lightweight token volatility forecast models...',
   ];
@@ -37,17 +38,34 @@ export default function ExplorePage() {
     return () => clearInterval(interval);
   }, [placeholders.length]);
 
-  // Load live services from Backend
+  // Load live services from Local & Backend Registry (No dummy data)
   useEffect(() => {
     let mounted = true;
-    fetchServices().then((res) => {
-      if (mounted) {
-        setServices(res);
-        setLoading(false);
-      }
-    });
+    const loadServices = () => {
+      const registered = getRegisteredServices();
+      setServices(registered);
+      setLoading(false);
+
+      fetchServices().then((res) => {
+        if (!mounted) return;
+        const realApiServices = Array.isArray(res) ? res.filter((s) => !s.isReference) : [];
+        const merged = [...registered];
+        realApiServices.forEach((s) => {
+          if (!merged.find((m) => m.slug === s.slug)) {
+            merged.push(s);
+          }
+        });
+        setServices(merged);
+      }).catch(() => {
+        // Keeps registered services
+      });
+    };
+
+    loadServices();
+    window.addEventListener('agentra_services_updated', loadServices);
     return () => {
       mounted = false;
+      window.removeEventListener('agentra_services_updated', loadServices);
     };
   }, []);
 
@@ -306,19 +324,26 @@ export default function ExplorePage() {
                 <SlidersHorizontal className="w-6 h-6" />
               </div>
               <h3 className="text-base font-semibold text-[#F4F6F4]">
-                No matching services found
+                {services.length === 0 ? 'No services registered on-chain yet' : 'No matching services found'}
               </h3>
               <p className="text-sm text-[#837F78] max-w-sm mt-1">
-                Try loosening your filters, reducing the minimum Trust Score, or broadening your search terms.
+                {services.length === 0
+                  ? 'Publish your agent endpoint on Avalanche Fuji to make it discoverable in the decentralized registry.'
+                  : 'Try loosening your filters, reducing the minimum Trust Score, or broadening your search terms.'}
               </p>
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={resetFilters}
-                className="mt-6"
-              >
-                Clear all filters
-              </Button>
+              <div className="flex items-center gap-3 mt-6">
+                {services.length === 0 ? (
+                  <Link href="/provider/new">
+                    <Button variant="primary" size="sm" rightIcon={<PlusCircle className="w-4 h-4" />}>
+                      Register First Service
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button variant="secondary" size="sm" onClick={resetFilters}>
+                    Clear all filters
+                  </Button>
+                )}
+              </div>
             </div>
           )}
         </div>

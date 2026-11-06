@@ -120,3 +120,4 @@ export function clearAuditTrail(): void {
     window.dispatchEvent(new CustomEvent('agentra_audit_updated'));
   }
 }
+

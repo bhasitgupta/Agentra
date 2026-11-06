@@ -2,14 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useAccount } from 'wagmi';
 import { StatCard } from '@/components/ui/StatCard';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import {
   MOCK_PROVIDER_CALLS,
   MOCK_EARNINGS_CHART,
-  REFERENCE_SERVICES,
 } from '@/lib/mockData';
+import { getRegisteredServices } from '@/lib/servicesStore';
+import { Service } from '@/lib/types';
 import { fetchProviderSummary, toggleProviderServicePause } from '@/lib/api';
 import { formatUSDC, truncateAddress, truncateTx, getSnowtraceUrl } from '@/lib/utils';
 import {
@@ -36,18 +38,34 @@ import {
 } from 'lucide-react';
 
 export default function ProviderDashboardPage() {
+  const { address } = useAccount();
   const [activeTab, setActiveTab] = useState<'overview' | 'services' | 'calls' | 'settings'>('overview');
-  const [serviceStatus, setServiceStatus] = useState<Record<string, boolean>>({
-    'ev-market-data': true,
-    'srv-101': true,
-  });
+  const [serviceStatus, setServiceStatus] = useState<Record<string, boolean>>({});
   const [summaryData, setSummaryData] = useState<any>(null);
+  const [myServices, setMyServices] = useState<Service[]>([]);
 
   useEffect(() => {
+    const loadServices = () => {
+      const registered = getRegisteredServices();
+      if (address) {
+        const owned = registered.filter(
+          (s) => s.providerAddress?.toLowerCase() === address.toLowerCase()
+        );
+        setMyServices(owned.length > 0 ? owned : registered);
+      } else {
+        setMyServices(registered);
+      }
+    };
+
+    loadServices();
+    window.addEventListener('agentra_services_updated', loadServices);
+
     fetchProviderSummary().then((res) => {
       if (res) setSummaryData(res);
     });
-  }, []);
+
+    return () => window.removeEventListener('agentra_services_updated', loadServices);
+  }, [address]);
 
   const toggleService = async (slug: string) => {
     const nextState = !serviceStatus[slug];
@@ -59,8 +77,6 @@ export default function ProviderDashboardPage() {
       await toggleProviderServicePause(slug, !nextState);
     } catch {}
   };
-
-  const myServices = REFERENCE_SERVICES.slice(0, 2);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">

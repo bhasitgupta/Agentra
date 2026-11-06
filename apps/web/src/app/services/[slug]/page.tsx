@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAccount, useSignMessage } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { REFERENCE_SERVICES, MOCK_ACTIVITY_FEED } from '@/lib/mockData';
+import { getServiceBySlug } from '@/lib/servicesStore';
 import { executeGatewayCall, fetchServiceDetail, fetchServiceActivity } from '@/lib/api';
 import { recordAuditEntry } from '@/lib/auditStore';
 import { Badge } from '@/components/ui/Badge';
@@ -33,7 +34,7 @@ export default function ServiceDetailPage() {
   const params = useParams();
   const slug = params?.slug as string;
 
-  const service = REFERENCE_SERVICES.find((s) => s.slug === slug);
+  const service = getServiceBySlug(slug) || REFERENCE_SERVICES.find((s) => s.slug === slug);
 
   if (!service) {
     notFound();
