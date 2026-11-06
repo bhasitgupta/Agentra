@@ -3,5 +3,8 @@
   "framework": "nextjs",
   "installCommand": "npm install",
   "buildCommand": "npm run build --prefix apps/web",
-  "outputDirectory": "apps/web/.next"
+  "outputDirectory": "apps/web/.next",
+  "env": {
+    "NEXT_TELEMETRY_DISABLED": "1"
+  }
 }
